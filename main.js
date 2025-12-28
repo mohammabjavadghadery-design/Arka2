@@ -1,1038 +1,1491 @@
-// ======================
-// 🔐 Security Manager
-// ======================
-class SecurityManager {
-  constructor() {
-    this.sanitizer = new Sanitizer();
-    this.xssPatterns = [
-      /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-      /javascript:/gi,
-      /on\w+\s*=/gi,
-      /<iframe/gi,
-      /<object/gi,
-      /<embed/gi,
-      /eval\(/gi,
-      /document\.cookie/gi
-    ];
-    this.sensitiveDataPatterns = [
-      /api[_-]?key/i,
-      /password/i,
-      /secret/i,
-      /token/i,
-      /private[_-]?key/i,
-      /access[_-]?token/i
-    ];
-    this.init();
-  }
+// ============================================
+// ARKA SYSTEM MANAGER - MAIN JAVASCRIPT
+// Version: 1.0.0
+// Description: Core application logic
+// ============================================
 
-  init() {
-    this.setupEventListeners();
-    console.log('🔐 Security manager initialized');
-  }
+// ============================================
+// Section 1: Initialization
+// ============================================
 
-  setupEventListeners() {
-    document.addEventListener('copy', (event) => this.handleCopyEvent(event));
-    document.addEventListener('paste', (event) => this.handlePasteEvent(event));
-    document.addEventListener('keydown', (event) => this.handleKeyboardEvent(event));
-  }
-
-  sanitizeInput(input) {
-    if (!input || typeof input !== 'string') return input;
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 Arka System Manager v1.0 initialized');
     
-    let sanitized = input;
-    this.xssPatterns.forEach(pattern => {
-      sanitized = sanitized.replace(pattern, '');
-    });
+    // Welcome message in console
+    console.log(`
+    ╔═══════════════════════════════════════╗
+    ║      Arka System Manager v1.0         ║
+    ║     Smart Windows Management with AI  ║
+    ╚═══════════════════════════════════════╝
+    `);
     
-    return sanitized.trim();
-  }
-
-  containsXSS(input) {
-    return this.xssPatterns.some(pattern => pattern.test(input));
-  }
-
-  containsSensitiveData(input) {
-    return this.sensitiveDataPatterns.some(pattern => pattern.test(input));
-  }
-
-  handleCopyEvent(event) {
-    const selection = window.getSelection().toString();
-    if (selection && this.containsSensitiveData(selection)) {
-      event.preventDefault();
-      this.showSecurityWarning('کپی کردن این داده‌ها محدود شده است.');
-    }
-  }
-
-  handlePasteEvent(event) {
-    if (event.clipboardData) {
-      const text = event.clipboardData.getData('text');
-      if (this.containsXSS(text)) {
-        event.preventDefault();
-        this.showSecurityWarning('داده‌های کپی شده حاوی محتوای ناامن هستند.');
-      }
-    }
-  }
-
-  handleKeyboardEvent(event) {
-    if (event.ctrlKey && event.key === 'u') {
-      event.preventDefault();
-      this.showSecurityWarning('مشاهده کد منبع محدود شده است.');
-    }
-  }
-
-  showSecurityWarning(message) {
-    const notification = document.createElement('div');
-    notification.className = 'security-warning js-error';
-    notification.innerHTML = `
-      <i class="fas fa-shield-alt"></i>
-      <span>${this.sanitizeInput(message)}</span>
-    `;
-    document.body.appendChild(notification);
+    // Initialize components
+    await initializeComponents();
     
-    setTimeout(() => {
-      notification.remove();
-    }, 5000);
-  }
-
-  validateCommand(command) {
-    const dangerousCommands = [
-      'format',
-      'del /s',
-      'rm -rf',
-      'diskpart',
-      'cipher',
-      'attrib',
-      'net user',
-      'net localgroup'
-    ];
+    // Start system monitoring
+    startSystemMonitoring();
     
-    return !dangerousCommands.some(dangerous => 
-      command.toLowerCase().includes(dangerous)
-    );
-  }
-}
-
-// ======================
-// 🎵 Audio Manager
-// ======================
-class AudioManager {
-  constructor() {
-    this.context = new (window.AudioContext || window.webkitAudioContext)();
-    this.sounds = {};
-    this.volume = 0.7;
-    this.enabled = true;
-    this.init();
-  }
-
-  async init() {
-    await this.loadSounds();
-    console.log('🎵 Audio manager initialized');
-  }
-
-  async loadSounds() {
-    const soundFiles = {
-      click: 'https://arka-command-hub.ir/assets/media/sounds/click.wav',
-      success: 'https://arka-command-hub.ir/assets/media/sounds/success.wav',
-      error: 'https://arka-command-hub.ir/assets/media/sounds/error.wav',
-      terminal: 'https://arka-command-hub.ir/assets/media/sounds/terminal.wav',
-      notification: 'https://arka-command-hub.ir/assets/media/sounds/notification.wav'
-    };
-
-    for (const [name, url] of Object.entries(soundFiles)) {
-      try {
-        const response = await fetch(url);
-        const arrayBuffer = await response.arrayBuffer();
-        const audioBuffer = await this.context.decodeAudioData(arrayBuffer);
-        this.sounds[name] = audioBuffer;
-      } catch (error) {
-        console.warn(`Failed to load sound ${name}:`, error);
-      }
-    }
-  }
-
-  play(name, volume = this.volume) {
-    if (!this.enabled || !this.sounds[name]) return;
-
-    const source = this.context.createBufferSource();
-    source.buffer = this.sounds[name];
-
-    const gainNode = this.context.createGain();
-    gainNode.gain.value = volume;
-
-    source.connect(gainNode);
-    gainNode.connect(this.context.destination);
-
-    source.start(0);
-  }
-
-  setVolume(volume) {
-    this.volume = Math.max(0, Math.min(1, volume));
-  }
-
-  toggle() {
-    this.enabled = !this.enabled;
-  }
-}
-
-// ======================
-// 🎨 Theme Manager
-// ======================
-class ThemeManager {
-  constructor() {
-    this.currentTheme = localStorage.getItem('theme') || 'dark';
-    this.init();
-  }
-
-  init() {
-    this.applyTheme(this.currentTheme);
-    this.setupEventListeners();
-    console.log('🎨 Theme manager initialized');
-  }
-
-  setupEventListeners() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', () => this.toggleTheme());
-    }
-  }
-
-  applyTheme(theme) {
-    document.documentElement.classList.remove('dark-theme', 'light-theme', 'neon-theme');
-    document.documentElement.classList.add(`${theme}-theme`);
-    localStorage.setItem('theme', theme);
-    this.currentTheme = theme;
-  }
-
-  toggleTheme() {
-    const themes = ['dark', 'neon'];
-    const currentIndex = themes.indexOf(this.currentTheme);
-    const nextIndex = (currentIndex + 1) % themes.length;
-    this.applyTheme(themes[nextIndex]);
-  }
-}
-
-// ======================
-// 🌐 System Profiler
-// ======================
-class SystemProfiler {
-  constructor() {
-    this.permissions = {
-      basicInfo: false,
-      performance: false,
-      display: false,
-      network: false,
-      location: false
-    };
-    this.data = {};
-    this.init();
-  }
-
-  async init() {
-    this.showPermissionModal();
-    console.log('🌐 System profiler initialized');
-  }
-
-  async showPermissionModal() {
-    const modal = document.getElementById('system-profiler-modal');
-    const overlay = document.getElementById('modal-overlay');
+    // Load saved data
+    loadSavedData();
     
-    if (modal && overlay) {
-      overlay.style.display = 'flex';
-      modal.classList.add('active');
-      
-      // Setup modal events
-      modal.querySelector('.allow-btn').addEventListener('click', async () => {
-        await this.requestPermission('basic');
-        overlay.style.display = 'none';
-        modal.classList.remove('active');
-      });
-      
-      modal.querySelector('.deny-btn').addEventListener('click', () => {
-        overlay.style.display = 'none';
-        modal.classList.remove('active');
-      });
-    }
-  }
-
-  async requestPermission(level) {
-    switch (level) {
-      case 'basic':
-        this.permissions.basicInfo = true;
-        this.permissions.performance = false;
-        break;
-      case 'full':
-        this.permissions.basicInfo = true;
-        this.permissions.performance = true;
-        break;
-      case 'none':
-        this.permissions.basicInfo = false;
-        this.permissions.performance = false;
-        break;
-    }
+    // Setup event listeners
+    setupEventListeners();
     
-    if (this.permissions.basicInfo) {
-      await this.collectBasicInfo();
-    }
+    // Run system health check
+    runSystemHealthCheck();
     
-    if (this.permissions.performance) {
-      await this.collectPerformanceInfo();
-    }
-    
-    localStorage.setItem('system-permissions', JSON.stringify(this.permissions));
-    return true;
-  }
+    // Hide loading screen
+    hideLoadingState();
+});
 
-  async collectBasicInfo() {
-    if (!this.permissions.basicInfo) return null;
-    
-    this.data.basic = {
-      os: this.detectOS(),
-      browser: this.detectBrowser(),
-      language: navigator.language,
-      platform: navigator.platform,
-      userAgent: navigator.userAgent,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      screen: {
-        width: screen.width,
-        height: screen.height,
-        colorDepth: screen.colorDepth
-      },
-      hardware: {
-        cores: navigator.hardwareConcurrency || 'نامشخص',
-        deviceMemory: navigator.deviceMemory ? `${navigator.deviceMemory}GB` : 'نامشخص'
-      }
-    };
-    
-    return this.data.basic;
-  }
-
-  async collectPerformanceInfo() {
-    if (!this.permissions.performance) return null;
-    
-    this.data.performance = {
-      cpu: await this.getCPUInfo(),
-      memory: await this.getMemoryInfo(),
-      network: await this.getNetworkInfo()
-    };
-    
-    return this.data.performance;
-  }
-
-  detectOS() {
-    const ua = navigator.userAgent;
-    if (ua.includes('Windows NT 10.0')) return 'Windows 10';
-    if (ua.includes('Windows NT 6.3')) return 'Windows 8.1';
-    if (ua.includes('Windows NT 6.2')) return 'Windows 8';
-    if (ua.includes('Windows NT 6.1')) return 'Windows 7';
-    if (ua.includes('Mac')) return 'macOS';
-    if (ua.includes('Linux')) return 'Linux';
-    return 'نامشخص';
-  }
-
-  detectBrowser() {
-    const ua = navigator.userAgent;
-    if (ua.includes('Chrome') && !ua.includes('Edg')) return 'Chrome';
-    if (ua.includes('Firefox')) return 'Firefox';
-    if (ua.includes('Safari') && !ua.includes('Chrome')) return 'Safari';
-    if (ua.includes('Edg')) return 'Edge';
-    return 'نامشخص';
-  }
-
-  async getCPUInfo() {
-    // Basic CPU info using available APIs
-    return {
-      usage: Math.floor(Math.random() * 100), // Placeholder - real implementation needed
-      temperature: Math.floor(Math.random() * 80) + 30, // Placeholder
-      cores: navigator.hardwareConcurrency || 4,
-      frequency: '2.4 GHz' // Placeholder
-    };
-  }
-
-  async getMemoryInfo() {
-    if ('deviceMemory' in navigator) {
-      const totalMemory = navigator.deviceMemory;
-      return {
-        total: totalMemory,
-        used: Math.floor(totalMemory * 0.7), // Placeholder
-        free: Math.floor(totalMemory * 0.3)  // Placeholder
-      };
-    }
-    return { total: 'نامشخص', used: 'نامشخص', free: 'نامشخص' };
-  }
-
-  async getNetworkInfo() {
-    return {
-      download: '12.8 Mbps', // Placeholder
-      upload: '2.4 Mbps',    // Placeholder
-      ping: '24ms',          // Placeholder
-      connection: 'Wi-Fi'    // Placeholder
-    };
-  }
-}
-
-// ======================
-// 🧠 AI Engine (Local)
-// ======================
-class AILocalEngine {
-  constructor() {
-    this.templates = {
-      system_optimization: `# 🔧 بهینه‌سازی سیستم
-
-**درخواست شما:** "{query}"
-
-**راه‌حل‌های پیشنهادی:**
-
-## 1. پاک‌سازی فایل‌های موقت
-\`\`\`cmd
-cleanmgr /sagerun:1
-\`\`\`
-*این دستور Disk Cleanup ویندوز را اجرا می‌کند.*
-
-## 2. بهینه‌سازی Startup
-\`\`\`powershell
-Get-CimInstance Win32_StartupCommand | Select-Object Name, Command, Location
-\`\`\`
-*برای مشاهده برنامه‌های Startup*
-
-## 3. آزادسازی حافظه
-\`\`\`cmd
-%windir%\\system32\\rundll32.exe advapi32.dll,ProcessIdleTasks
-\`\`\`
-*اجرای تسک‌های پس‌زمینه*
-
-**نکات امنیتی:**
-- قبل از اجرای دستورات، از داده‌های مهم بکاپ بگیرید
-- دستورات را در محیط تست امتحان کنید
-`,
-
-      file_management: `# 📁 مدیریت فایل‌ها
-
-**درخواست شما:** "{query}"
-
-**راه‌حل‌های پیشنهادی:**
-
-## 1. مشاهده فایل‌های حجیم
-\`\`\`powershell
-Get-ChildItem -Path C:\\ -Recurse -File | Sort-Object Length -Descending | Select-Object -First 10 FullName, Length
-\`\`\`
-
-## 2. پاک‌سازی فایل‌های موقت
-\`\`\`cmd
-del /q /s %temp%\\*.*
-\`\`\`
-
-**هشدار امنیتی:** ⚠️ دستور حذف فایل دائمی است. قبل از اجرا مطمئن شوید.
-`,
-
-      network: `# 🌐 مدیریت شبکه
-
-**درخواست شما:** "{query}"
-
-**راه‌حل‌های پیشنهادی:**
-
-## 1. تست اتصال
-\`\`\`cmd
-ping 8.8.8.8 -t
-\`\`\`
-*برای خروج Ctrl+C را بزنید*
-
-## 2. نمایش تنظیمات شبکه
-\`\`\`cmd
-ipconfig /all
-\`\`\`
-`,
-
-      general: `# 🤖 آرکا - دستیار هوشمند
-
-**سلام!** من آرکا هستم، دستیار هوشمند مدیریت سیستم ویندوز.
-
-درخواست شما: "{query}"
-
-برای کمک به شما، لطفاً یکی از موارد زیر را انجام دهید:
-
-## 🎯 گزینه‌های موجود:
-
-1. **درخواست را دقیق‌تر کنید**
-   - مثلاً: "چگونه فایل‌های موقت را پاک کنم؟"
-   - یا: "سرعت اینترنت را چطور تست کنم؟"
-
-2. **از دستورات از پیش تعریف شده استفاده کنید**
-   - به بخش "دستورات" مراجعه کنید
-   - محیط CMD، PowerShell یا Run را انتخاب کنید
-
-3. **سیستم خود را بررسی کنید**
-   - از بخش "مانیتور" وضعیت سیستم را ببینید
-   - مشکلات احتمالی را شناسایی کنید
-`
-    };
-  }
-
-  processQuery(query) {
-    const lowerQuery = query.toLowerCase();
-    let intent = 'general';
-
-    if (lowerQuery.includes('بهینه') || lowerQuery.includes('سرعت') || lowerQuery.includes('کند')) {
-      intent = 'system_optimization';
-    } else if (lowerQuery.includes('فایل') || lowerQuery.includes('پاک') || lowerQuery.includes('حذف')) {
-      intent = 'file_management';
-    } else if (lowerQuery.includes('شبکه') || lowerQuery.includes('اینترنت') || lowerQuery.includes('اتصال')) {
-      intent = 'network';
-    }
-
-    const template = this.templates[intent] || this.templates.general;
-    return template.replace('{query}', query);
-  }
-}
-
-// ======================
-// 🎨 Quantum Background
-// ======================
-class QuantumBackground {
-  constructor() {
-    this.canvas = document.getElementById('quantum-canvas');
-    this.ctx = this.canvas.getContext('2d');
-    this.particles = [];
-    this.running = false;
-    this.animationFrame = null;
-    this.init();
-  }
-
-  init() {
-    this.resizeCanvas();
-    this.createParticles(100);
-    this.setupEventListeners();
-    this.start();
-    console.log('🌌 Quantum background initialized');
-  }
-
-  resizeCanvas() {
-    if (this.canvas) {
-      this.canvas.width = window.innerWidth;
-      this.canvas.height = window.innerHeight;
-    }
-  }
-
-  createParticles(count) {
-    for (let i = 0; i < count; i++) {
-      this.particles.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 2 + 1,
-        opacity: Math.random() * 0.5 + 0.2,
-        color: this.getRandomNeonColor()
-      });
-    }
-  }
-
-  getRandomNeonColor() {
-    const colors = ['#00ff8c', '#00ffff', '#ff00ff', '#ff8c00', '#ffff00'];
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
-
-  animate() {
-    if (!this.running) return;
-
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    // Update and draw particles
-    this.particles.forEach(particle => {
-      particle.x += particle.vx;
-      particle.y += particle.vy;
-
-      // Wrap around edges
-      if (particle.x < 0) particle.x = window.innerWidth;
-      if (particle.x > window.innerWidth) particle.x = 0;
-      if (particle.y < 0) particle.y = window.innerHeight;
-      if (particle.y > window.innerHeight) particle.y = 0;
-
-      // Draw particle
-      this.ctx.beginPath();
-      this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-      this.ctx.fillStyle = particle.color;
-      this.ctx.globalAlpha = particle.opacity;
-      this.ctx.fill();
-      this.ctx.globalAlpha = 1;
-    });
-
-    // Draw connections between nearby particles
-    this.particles.forEach((particle1, i) => {
-      this.particles.slice(i + 1).forEach(particle2 => {
-        const dx = particle1.x - particle2.x;
-        const dy = particle1.y - particle2.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 100) {
-          this.ctx.beginPath();
-          this.ctx.moveTo(particle1.x, particle1.y);
-          this.ctx.lineTo(particle2.x, particle2.y);
-          this.ctx.strokeStyle = `rgba(0, 255, 140, ${0.1 * (1 - distance / 100)})`;
-          this.ctx.lineWidth = 0.5;
-          this.ctx.stroke();
+/**
+ * Initialize all system components
+ */
+async function initializeComponents() {
+    try {
+        // Show loading state
+        showLoadingState('Initializing Arka...', 20);
+        
+        // 1. Initialize charts
+        await initializeCharts();
+        showLoadingState('Monitoring charts ready...', 40);
+        
+        // 2. Initialize AI Assistant
+        initializeAIAssistant();
+        showLoadingState('AI Assistant activated...', 60);
+        
+        // 3. Load system profiles
+        loadSystemProfiles();
+        showLoadingState('System profiles loaded...', 80);
+        
+        // 4. Initialize alert system
+        initializeAlertSystem();
+        showLoadingState('Alert system activated...', 95);
+        
+        // Complete initialization
+        await delay(500);
+        
+        console.log('✅ All components initialized successfully');
+        
+        // Track analytics
+        if (window.ArkaUtils) {
+            window.ArkaUtils.trackEvent('system_initialized', {
+                components: ['charts', 'ai_assistant', 'profiles', 'alerts']
+            });
         }
-      });
+        
+    } catch (error) {
+        console.error('❌ Component initialization error:', error);
+        if (window.ArkaUtils) {
+            window.ArkaUtils.showToast('System initialization error', 'error');
+        }
+    }
+}
+
+// ============================================
+// Section 2: State Management
+// ============================================
+
+// Main application state
+const AppState = {
+    // System status
+    systemStatus: {
+        cpu: { usage: 0, temperature: 45, cores: 8, frequency: 3.2 },
+        ram: { usage: 0, total: 16, used: 0, free: 16, cache: 2 },
+        disk: { usage: 0, total: 512, used: 128, free: 384 },
+        network: { up: 0, down: 0, connections: 0, ping: 28 },
+        lastUpdate: null
+    },
+    
+    // User settings
+    userSettings: {
+        theme: 'dark',
+        autoOptimize: true,
+        notifications: true,
+        selectedProfile: 'default',
+        aiAssistantEnabled: true,
+        chartTimeRange: '5m'
+    },
+    
+    // System profiles
+    profiles: {
+        gaming: {
+            id: 'gaming',
+            name: 'Gaming',
+            icon: '🎮',
+            description: 'Optimized for heavy gaming',
+            settings: {
+                priority: 'high',
+                backgroundApps: 'minimal',
+                powerMode: 'performance',
+                visualEffects: false
+            },
+            active: false
+        },
+        work: {
+            id: 'work',
+            name: 'Work',
+            icon: '💼',
+            description: 'Suitable for office work and programming',
+            settings: {
+                priority: 'normal',
+                backgroundApps: 'normal',
+                powerMode: 'balanced',
+                visualEffects: true
+            },
+            active: false
+        },
+        editing: {
+            id: 'editing',
+            name: 'Video Editing',
+            icon: '🎬',
+            description: 'Optimized for video editing software',
+            settings: {
+                priority: 'high',
+                backgroundApps: 'limited',
+                powerMode: 'performance',
+                visualEffects: true
+            },
+            active: false
+        },
+        default: {
+            id: 'default',
+            name: 'Default',
+            icon: '⚙️',
+            description: 'Normal system settings',
+            settings: {
+                priority: 'normal',
+                backgroundApps: 'normal',
+                powerMode: 'balanced',
+                visualEffects: true
+            },
+            active: true
+        }
+    },
+    
+    // AI Assistant history
+    aiHistory: [],
+    pinnedCommands: [],
+    
+    // Charts
+    charts: {
+        cpu: null,
+        ram: null,
+        disk: null,
+        network: null
+    },
+    
+    // Current page
+    currentPage: 'dashboard'
+};
+
+// ============================================
+// Section 3: Charts and System Monitoring
+// ============================================
+
+/**
+ * Initialize system charts
+ */
+async function initializeCharts() {
+    try {
+        // Check for Chart.js
+        if (typeof Chart === 'undefined') {
+            console.warn('⚠️ Chart.js not loaded');
+            return;
+        }
+        
+        // Chart default settings
+        Chart.defaults.font.family = "'Vazirmatn', 'Segoe UI', Tahoma, sans-serif";
+        Chart.defaults.color = '#94a3b8';
+        
+        // Chart colors
+        const chartColors = {
+            cpu: { border: '#3b82f6', background: 'rgba(59, 130, 246, 0.1)' },
+            ram: { border: '#10b981', background: 'rgba(16, 185, 129, 0.1)' },
+            disk: { border: '#8b5cf6', background: 'rgba(139, 92, 246, 0.1)' },
+        network: { border: '#f59e0b', background: 'rgba(245, 158, 11, 0.1)' }
+        };
+        
+        // Common options
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 1000,
+                easing: 'easeOutQuart'
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleFont: { family: "'Vazirmatn', sans-serif" },
+                    bodyFont: { family: "'Vazirmatn', sans-serif" },
+                    rtl: true
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                    ticks: { maxRotation: 0 }
+                },
+                y: {
+                    display: true,
+                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                    min: 0,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) { return value + '%'; }
+                    }
+                }
+            }
+        };
+        
+        // CPU Chart
+        const cpuCtx = document.getElementById('cpuChart')?.getContext('2d');
+        if (cpuCtx) {
+            AppState.charts.cpu = new Chart(cpuCtx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'CPU Usage',
+                        data: [],
+                        borderColor: chartColors.cpu.border,
+                        backgroundColor: chartColors.cpu.background,
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'CPU Usage',
+                            color: '#f1f5f9',
+                            font: { size: 14, family: "'Vazirmatn', sans-serif" }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // RAM Chart
+        const ramCtx = document.getElementById('ramChart')?.getContext('2d');
+        if (ramCtx) {
+            AppState.charts.ram = new Chart(ramCtx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'RAM Usage',
+                        data: [],
+                        borderColor: chartColors.ram.border,
+                        backgroundColor: chartColors.ram.background,
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'RAM Usage',
+                            color: '#f1f5f9',
+                            font: { size: 14, family: "'Vazirmatn', sans-serif" }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Disk Chart
+        const diskCtx = document.getElementById('diskChart')?.getContext('2d');
+        if (diskCtx) {
+            AppState.charts.disk = new Chart(diskCtx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Disk Usage',
+                        data: [],
+                        borderColor: chartColors.disk.border,
+                        backgroundColor: chartColors.disk.background,
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Storage Usage',
+                            color: '#f1f5f9',
+                            font: { size: 14, family: "'Vazirmatn', sans-serif" }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Network Chart
+        const networkCtx = document.getElementById('networkChart')?.getContext('2d');
+        if (networkCtx) {
+            AppState.charts.network = new Chart(networkCtx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Network Activity',
+                        data: [],
+                        borderColor: chartColors.network.border,
+                        backgroundColor: chartColors.network.background,
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Network Activity',
+                            color: '#f1f5f9',
+                            font: { size: 14, family: "'Vazirmatn', sans-serif" }
+                        }
+                    }
+                }
+            });
+        }
+        
+        console.log('✅ System charts created');
+        
+    } catch (error) {
+        console.error('❌ Chart creation error:', error);
+    }
+}
+
+/**
+ * Start real-time system monitoring
+ */
+function startSystemMonitoring() {
+    // Simulate system monitoring every 2 seconds
+    setInterval(() => {
+        updateSystemStatus();
+        updateCharts();
+        checkAlerts();
+    }, 2000);
+    
+    console.log('🔄 System monitoring started');
+}
+
+/**
+ * Update system status
+ */
+function updateSystemStatus() {
+    // Simulate system data
+    AppState.systemStatus = {
+        cpu: {
+            usage: Math.min(100, Math.max(10, Math.random() * 80 + 10)),
+            temperature: 40 + Math.random() * 20,
+            cores: 8,
+            frequency: 2.5 + Math.random() * 1.7
+        },
+        ram: {
+            usage: Math.min(100, Math.max(20, Math.random() * 60 + 20)),
+            total: 16,
+            used: Math.floor(Math.random() * 10 + 6),
+            free: 16 - (Math.floor(Math.random() * 10 + 6)),
+            cache: 1 + Math.random() * 3
+        },
+        disk: {
+            usage: Math.min(100, Math.max(15, Math.random() * 50 + 15)),
+            total: 512,
+            used: 128 + Math.random() * 100,
+            free: 384 - Math.random() * 100
+        },
+        network: {
+            up: Math.floor(Math.random() * 50),
+            down: Math.floor(Math.random() * 100),
+            connections: Math.floor(Math.random() * 20),
+            ping: 20 + Math.random() * 50
+        },
+        lastUpdate: new Date()
+    };
+    
+    // Update UI
+    updateSystemStatusUI();
+}
+
+/**
+ * Update system status UI
+ */
+function updateSystemStatusUI() {
+    const status = AppState.systemStatus;
+    
+    // Update CPU card
+    const cpuElement = document.getElementById('cpuUsage');
+    if (cpuElement) {
+        cpuElement.textContent = `${status.cpu.usage.toFixed(1)}%`;
+        cpuElement.style.color = window.ArkaUtils ? 
+            window.ArkaUtils.getPercentageColor(status.cpu.usage) : '#3b82f6';
+    }
+    
+    // Update RAM card
+    const ramElement = document.getElementById('ramUsage');
+    if (ramElement) {
+        ramElement.textContent = `${status.ram.usage.toFixed(1)}%`;
+        ramElement.style.color = window.ArkaUtils ? 
+            window.ArkaUtils.getPercentageColor(status.ram.usage) : '#10b981';
+    }
+    
+    // Update Disk card
+    const diskElement = document.getElementById('diskUsage');
+    if (diskElement) {
+        diskElement.textContent = `${status.disk.usage.toFixed(1)}%`;
+        diskElement.style.color = window.ArkaUtils ? 
+            window.ArkaUtils.getPercentageColor(status.disk.usage) : '#8b5cf6';
+    }
+    
+    // Update Network card
+    const networkElement = document.getElementById('networkActivity');
+    if (networkElement) {
+        networkElement.textContent = `${status.network.down} ↓ | ${status.network.up} ↑`;
+    }
+    
+    // Update last update time
+    const timeElement = document.getElementById('lastUpdateTime');
+    if (timeElement && status.lastUpdate) {
+        timeElement.textContent = status.lastUpdate.toLocaleTimeString('fa-IR');
+    }
+}
+
+/**
+ * Update charts with new data
+ */
+function updateCharts() {
+    const now = new Date();
+    
+    // Update each chart
+    Object.keys(AppState.charts).forEach(chartKey => {
+        const chart = AppState.charts[chartKey];
+        if (!chart) return;
+        
+        // Generate new data
+        const newValue = AppState.systemStatus[chartKey]?.usage || 
+                        (Math.random() * 60 + 20);
+        
+        // Add new data point
+        chart.data.labels = chart.data.labels || [];
+        chart.data.datasets[0].data = chart.data.datasets[0].data || [];
+        
+        // Add new point
+        chart.data.labels.push(now.toLocaleTimeString('fa-IR', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            second: '2-digit'
+        }));
+        chart.data.datasets[0].data.push(newValue);
+        
+        // Keep maximum 60 data points
+        if (chart.data.labels.length > 60) {
+            chart.data.labels.shift();
+            chart.data.datasets[0].data.shift();
+        }
+        
+        // Update chart
+        chart.update('none');
     });
-
-    this.animationFrame = requestAnimationFrame(() => this.animate());
-  }
-
-  start() {
-    this.running = true;
-    this.animate();
-  }
-
-  pause() {
-    this.running = false;
-    if (this.animationFrame) {
-      cancelAnimationFrame(this.animationFrame);
-    }
-  }
-
-  resume() {
-    this.running = true;
-    this.animate();
-  }
-
-  setupEventListeners() {
-    window.addEventListener('resize', () => {
-      this.resizeCanvas();
-      this.particles = [];
-      this.createParticles(100);
-    });
-  }
-
-  cleanup() {
-    this.pause();
-  }
 }
 
-// ======================
-// 📱 Device Detector
-// ======================
-class DeviceDetector {
-  constructor() {
-    this.isMobile = this.detectMobile();
-    this.isTablet = this.detectTablet();
-    this.isDesktop = !this.isMobile && !this.isTablet;
-    this.init();
-  }
+// ============================================
+// Section 4: AI Assistant
+// ============================================
 
-  init() {
-    if (this.isMobile || this.isTablet) {
-      this.showMobileWarning();
+/**
+ * Initialize AI Assistant
+ */
+function initializeAIAssistant() {
+    // Load history from localStorage
+    if (window.ArkaUtils) {
+        AppState.aiHistory = window.ArkaUtils.loadFromStorage('arka_chat_history') || [];
+        AppState.pinnedCommands = window.ArkaUtils.loadFromStorage('arka_pinned_commands') || [];
+        
+        // Update UI
+        renderChatHistory();
+        renderPinnedCommands();
     }
-    console.log('📱 Device detector initialized');
-  }
-
-  detectMobile() {
-    const userAgent = navigator.userAgent;
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-  }
-
-  detectTablet() {
-    const userAgent = navigator.userAgent;
-    return /iPad|Android|Tablet/i.test(userAgent) && !/Mobile/i.test(userAgent);
-  }
-
-  showMobileWarning() {
-    const warning = document.getElementById('mobile-warning');
-    if (warning) {
-      warning.style.display = 'flex';
-      
-      // Setup warning events
-      warning.querySelector('#close-warning').addEventListener('click', () => {
-        warning.style.display = 'none';
-      });
-      
-      warning.querySelector('#proceed-anyway').addEventListener('click', () => {
-        warning.style.display = 'none';
-      });
-    }
-  }
+    
+    // Load AI templates
+    loadAITemplates();
+    
+    console.log('🤖 AI Assistant ready');
 }
 
-// ======================
-// 🎯 Notification Manager
-// ======================
-class NotificationManager {
-  constructor() {
-    this.init();
-  }
-
-  init() {
-    console.log('🔔 Notification manager initialized');
-  }
-
-  showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type} js-error`;
-    notification.innerHTML = `
-      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i>
-      <span>${message}</span>
-    `;
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translateX(100%)';
-      setTimeout(() => notification.remove(), 300);
-    }, 3000);
-  }
-
-  showError(message) {
-    this.showNotification(message, 'error');
-  }
-
-  showSuccess(message) {
-    this.showNotification(message, 'success');
-  }
-}
-
-// ======================
-// 🏗️ Main Application
-// ======================
-class ArkaCommandHub {
-  constructor() {
-    this.securityManager = new SecurityManager();
-    this.audioManager = new AudioManager();
-    this.themeManager = new ThemeManager();
-    this.systemProfiler = new SystemProfiler();
-    this.aiEngine = new AILocalEngine();
-    this.quantumBackground = new QuantumBackground();
-    this.deviceDetector = new DeviceDetector();
-    this.notificationManager = new NotificationManager();
+/**
+ * Load AI templates
+ */
+function loadAITemplates() {
+    const templatesContainer = document.getElementById('aiTemplates');
+    if (!templatesContainer || !window.ArkaUtils) return;
     
-    this.loadingProgress = 0;
-    this.init();
-  }
-
-  async init() {
-    await this.initializeLoadingScreen();
-    await this.setupEventListeners();
-    await this.initializePages();
-    await this.updateSystemStats();
-    this.hideLoadingScreen();
-    
-    console.log('🚀 Arka Command Hub initialized successfully');
-  }
-
-  async initializeLoadingScreen() {
-    const loadingBar = document.getElementById('loading-bar');
-    const loadingDetails = document.getElementById('loading-details');
-    
-    const steps = [
-      { text: 'بارگذاری هسته سیستم...', progress: 20 },
-      { text: 'راه‌اندازی امنیت...', progress: 40 },
-      { text: 'پیکربندی صدا...', progress: 60 },
-      { text: 'راه‌اندازی هوش مصنوعی...', progress: 80 },
-      { text: 'آماده‌سازی رابط کاربری...', progress: 100 }
+    // Available templates
+    const templates = [
+        { id: 'analyze_slowdown', title: 'Analyze Slowdown', icon: '⏱️' },
+        { id: 'gaming_optimization', title: 'Gaming Optimization', icon: '🎮' },
+        { id: 'security_scan', title: 'Security Scan', icon: '🛡️' },
+        { id: 'create_script', title: 'Create Script', icon: '📝' },
+        { id: 'system_report', title: 'System Report', icon: '📊' }
     ];
-
-    for (const step of steps) {
-      if (loadingBar) loadingBar.style.width = `${step.progress}%`;
-      if (loadingDetails) loadingDetails.textContent = step.text;
-      await new Promise(resolve => setTimeout(resolve, 300));
-    }
-  }
-
-  hideLoadingScreen() {
-    const loadingScreen = document.getElementById('loading-screen');
-    if (loadingScreen) {
-      loadingScreen.style.opacity = '0';
-      setTimeout(() => {
-        loadingScreen.style.display = 'none';
-      }, 500);
-    }
-  }
-
-  setupEventListeners() {
-    // Navigation
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        const pageId = item.getAttribute('data-page');
-        this.switchPage(pageId);
-      });
-    });
-
-    // AI Quick Input
-    const aiQuickInput = document.getElementById('ai-quick-input');
-    const aiQuickSubmit = document.getElementById('ai-quick-submit');
     
-    if (aiQuickInput && aiQuickSubmit) {
-      aiQuickSubmit.addEventListener('click', () => this.handleAIQuickQuery());
-      aiQuickInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') this.handleAIQuickQuery();
-      });
-    }
-
-    // AI Suggestions
-    document.querySelectorAll('.suggestion-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const query = btn.getAttribute('data-query');
-        aiQuickInput.value = query;
-        this.handleAIQuickQuery();
-      });
-    });
-
-    // Network status
-    window.addEventListener('online', () => this.handleNetworkChange(true));
-    window.addEventListener('offline', () => this.handleNetworkChange(false));
-  }
-
-  handleAIQuickQuery() {
-    const input = document.getElementById('ai-quick-input');
-    if (!input || !input.value.trim()) return;
-
-    const query = input.value.trim();
-    this.processAIQuery(query);
-    input.value = '';
-  }
-
-  processAIQuery(query) {
-    this.audioManager.play('terminal');
+    // Create template HTML
+    templatesContainer.innerHTML = templates.map(template => `
+        <div class="template-btn" data-template="${template.id}">
+            <div class="template-icon">${template.icon}</div>
+            <div class="template-title">${template.title}</div>
+        </div>
+    `).join('');
     
-    const response = this.aiEngine.processQuery(query);
-    this.showAIResponse(query, response);
-    this.addToCommandHistory(query, 'AI Query', 'success');
-  }
-
-  showAIResponse(query, response) {
-    const modal = document.getElementById('ai-response-modal');
-    const overlay = document.getElementById('modal-overlay');
-    const content = document.getElementById('ai-modal-content');
-    
-    if (modal && overlay && content) {
-      content.innerHTML = `
-        <div class="ai-response-header">
-          <h4>پاسخ هوش مصنوعی</h4>
-          <p><strong>درخواست:</strong> ${query}</p>
-        </div>
-        <div class="ai-response-content">
-          <pre class="response-text">${response}</pre>
-        </div>
-        <div class="ai-response-actions">
-          <button class="btn btn-outline-primary" id="copy-ai-response">
-            <i class="fas fa-copy"></i> کپی پاسخ
-          </button>
-        </div>
-      `;
-      
-      overlay.style.display = 'flex';
-      modal.classList.add('active');
-      
-      // Setup copy button
-      const copyBtn = document.getElementById('copy-ai-response');
-      if (copyBtn) {
-        copyBtn.addEventListener('click', () => {
-          navigator.clipboard.writeText(response);
-          this.audioManager.play('success');
-          this.notificationManager.showSuccess('پاسخ با موفقیت کپی شد!');
+    // Add event listeners
+    document.querySelectorAll('.template-btn').forEach(template => {
+        template.addEventListener('click', function() {
+            const templateId = this.dataset.template;
+            loadAITemplate(templateId);
         });
-      }
-      
-      // Close on overlay click
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          overlay.style.display = 'none';
-          modal.classList.remove('active');
-        }
-      });
+    });
+}
+
+/**
+ * Load specific template into chat input
+ * @param {string} templateId - Template ID
+ */
+function loadAITemplate(templateId) {
+    if (!window.ArkaUtils) return;
+    
+    const chatInput = document.getElementById('chatInput');
+    if (!chatInput) return;
+    
+    const template = window.ArkaUtils.getAITemplate(templateId);
+    if (template) {
+        chatInput.value = template;
+        chatInput.focus();
+        
+        // Show confirmation
+        window.ArkaUtils.showToast(`Template "${templateId}" loaded`, 'success');
     }
-  }
+}
 
-  addToCommandHistory(command, name, status) {
-    const historyList = document.getElementById('recent-commands-list');
-    if (!historyList) return;
+/**
+ * Send message to AI Assistant
+ */
+async function sendAIMessage() {
+    const chatInput = document.getElementById('chatInput');
+    if (!chatInput || !chatInput.value.trim()) return;
+    
+    const message = chatInput.value.trim();
+    const chatMessages = document.getElementById('chatMessages');
+    
+    if (!chatMessages) return;
+    
+    try {
+        // Sanitize user input
+        const sanitizedMessage = window.ArkaUtils ? 
+            window.ArkaUtils.sanitizeInput(message) : message;
+        
+        // Show user message
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.className = 'message user-message';
+        userMessageDiv.innerHTML = `
+            <div class="message-avatar">👤</div>
+            <div class="message-content">
+                <div class="message-text">${sanitizedMessage}</div>
+                <div class="message-time">${new Date().toLocaleTimeString('fa-IR')}</div>
+            </div>
+        `;
+        chatMessages.appendChild(userMessageDiv);
+        
+        // Clear input
+        chatInput.value = '';
+        
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Show typing indicator
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'message ai-message typing';
+        typingIndicator.innerHTML = `
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+                <div class="message-text">
+                    <span class="typing-dots">
+                        <span>.</span><span>.</span><span>.</span>
+                    </span>
+                </div>
+            </div>
+        `;
+        chatMessages.appendChild(typingIndicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Simulate AI response delay
+        await delay(1000 + Math.random() * 2000);
+        
+        // Remove typing indicator
+        typingIndicator.remove();
+        
+        // Generate AI response
+        const aiResponse = await generateAIResponse(message);
+        
+        // Show AI response
+        const aiMessageDiv = document.createElement('div');
+        aiMessageDiv.className = 'message ai-message';
+        aiMessageDiv.innerHTML = `
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+                <div class="message-text">${aiResponse}</div>
+                <div class="message-actions">
+                    <button class="action-btn copy-btn" title="Copy">
+                        📋
+                    </button>
+                    <button class="action-btn pin-btn" title="Save">
+                        📌
+                    </button>
+                </div>
+                <div class="message-time">${new Date().toLocaleTimeString('fa-IR')}</div>
+            </div>
+        `;
+        chatMessages.appendChild(aiMessageDiv);
+        
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Save to history
+        if (window.ArkaUtils) {
+            const category = window.ArkaUtils.categorizeCommand(message);
+            window.ArkaUtils.chatHistoryManager.addEntry(
+                message,
+                aiResponse,
+                category
+            );
+            
+            // Update UI history
+            renderChatHistory();
+        }
+        
+        // Track analytics
+        if (window.ArkaUtils) {
+            window.ArkaUtils.trackEvent('ai_message_sent', {
+                category: category || 'general',
+                length: message.length
+            });
+        }
+        
+    } catch (error) {
+        console.error('❌ Message sending error:', error);
+        if (window.ArkaUtils) {
+            window.ArkaUtils.showToast('Error communicating with AI', 'error');
+        }
+    }
+}
 
-    const item = document.createElement('div');
-    item.className = 'command-item';
-    item.innerHTML = `
-      <div class="command-info">
-        <span class="command-text">${command}</span>
-        <span class="command-time">${new Date().toLocaleTimeString('fa-IR')}</span>
-      </div>
-      <span class="command-status ${status}">${status === 'success' ? 'موفق' : 'ناموفق'}</span>
+/**
+ * Generate AI response (simulation)
+ * @param {string} message - User message
+ * @returns {Promise<string>} - AI response
+ */
+async function generateAIResponse(message) {
+    // Simulate processing delay
+    await delay(500 + Math.random() * 1000);
+    
+    const lowerMessage = message.toLowerCase();
+    
+    // Predefined responses
+    if (lowerMessage.includes('slow') || lowerMessage.includes('کند')) {
+        return `✅ Analyzing your system performance:
+        
+• CPU Usage: ${AppState.systemStatus.cpu.usage.toFixed(1)}% (${AppState.systemStatus.cpu.usage > 70 ? 'High' : 'Normal'})
+• RAM Usage: ${AppState.systemStatus.ram.usage.toFixed(1)}% (${AppState.systemStatus.ram.usage > 80 ? 'Needs freeing' : 'Good'})
+• Temperature: ${AppState.systemStatus.cpu.temperature.toFixed(1)}°C
+
+💡 Suggestions:
+1. Run "Memory Optimization" to free up RAM
+2. Close unnecessary background applications
+3. Check for Windows updates
+4. Consider using "Gaming" profile for better performance
+
+Would you like me to run memory optimization?`;
+    }
+    
+    if (lowerMessage.includes('game') || lowerMessage.includes('گیم')) {
+        return `🎮 For gaming optimization:
+        
+1. Switch to "Gaming" profile for best performance
+2. Close background apps: Discord, Chrome, Spotify
+3. Set process priority to High
+4. Disable Windows Update temporarily
+5. Current CPU temperature: ${AppState.systemStatus.cpu.temperature.toFixed(1)}°C
+
+⚡ Performance improvements:
+• 15-25% better FPS in most games
+• Reduced input lag
+• Smoother gameplay experience
+
+Would you like to activate the Gaming profile?`;
+    }
+    
+    if (lowerMessage.includes('security') || lowerMessage.includes('اسکن')) {
+        return `🛡️ Running security analysis...
+        
+✅ Status:
+• Windows Firewall: Active
+• Windows Defender: Updated
+• Open ports: ${AppState.systemStatus.network.connections}
+• Security patches: Checking...
+
+🔍 Scan Results:
+• No malware detected
+• 2 tracking cookies found and removed
+• Network security: Good
+• System integrity: Verified
+
+📋 Recommendations:
+1. Keep Windows updated
+2. Use strong passwords
+3. Enable two-factor authentication
+4. Regular security scans
+
+Would you like me to schedule automatic security scans?`;
+    }
+    
+    // General responses
+    const responses = [
+        "I've received your request and I'm processing it...",
+        "System check completed. Overall status is good.",
+        "Do you need more detailed guidance?",
+        "I can create a custom optimization script for you.",
+        "I recommend selecting the profile that matches your current task.",
+        "System analysis shows normal performance levels.",
+        "Would you like me to check for any performance issues?",
+        "I can help automate routine system maintenance tasks."
+    ];
+    
+    return responses[Math.floor(Math.random() * responses.length)];
+}
+
+/**
+ * Render chat history in sidebar
+ */
+function renderChatHistory() {
+    const historyContainer = document.getElementById('chatHistory');
+    if (!historyContainer || !window.ArkaUtils) return;
+    
+    // Get last 10 items
+    const recentHistory = AppState.aiHistory.slice(0, 10);
+    
+    historyContainer.innerHTML = recentHistory.length > 0 ? 
+        recentHistory.map(entry => `
+            <div class="history-item" data-id="${entry.id}">
+                <div class="history-preview">${entry.userInput.substring(0, 50)}...</div>
+                <div class="history-time">
+                    ${new Date(entry.timestamp).toLocaleDateString('fa-IR')}
+                </div>
+            </div>
+        `).join('') : 
+        '<div class="empty-state">No history found</div>';
+    
+    // Add event listeners
+    document.querySelectorAll('.history-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const entryId = this.dataset.id;
+            const entry = AppState.aiHistory.find(e => e.id === entryId);
+            if (entry) {
+                loadChatHistoryEntry(entry);
+            }
+        });
+    });
+}
+
+/**
+ * Render pinned commands
+ */
+function renderPinnedCommands() {
+    const pinnedContainer = document.getElementById('pinnedCommands');
+    if (!pinnedContainer) return;
+    
+    pinnedContainer.innerHTML = AppState.pinnedCommands.length > 0 ? 
+        AppState.pinnedCommands.map(cmd => `
+            <div class="pinned-command">
+                <div class="command-text">${cmd.command.substring(0, 60)}...</div>
+                <button class="remove-pin" data-id="${cmd.id}">×</button>
+            </div>
+        `).join('') : 
+        '<div class="empty-state">No saved commands</div>';
+}
+
+/**
+ * Load chat history entry
+ * @param {object} entry - History entry
+ */
+function loadChatHistoryEntry(entry) {
+    const chatMessages = document.getElementById('chatMessages');
+    if (!chatMessages) return;
+    
+    // Clear current messages
+    chatMessages.innerHTML = '';
+    
+    // Add messages
+    const userMessageDiv = document.createElement('div');
+    userMessageDiv.className = 'message user-message';
+    userMessageDiv.innerHTML = `
+        <div class="message-avatar">👤</div>
+        <div class="message-content">
+            <div class="message-text">${entry.userInput}</div>
+            <div class="message-time">${new Date(entry.timestamp).toLocaleTimeString('fa-IR')}</div>
+        </div>
+    `;
+    chatMessages.appendChild(userMessageDiv);
+    
+    const aiMessageDiv = document.createElement('div');
+    aiMessageDiv.className = 'message ai-message';
+    aiMessageDiv.innerHTML = `
+        <div class="message-avatar">🤖</div>
+        <div class="message-content">
+            <div class="message-text">${entry.aiResponse}</div>
+            <div class="message-time">${new Date(entry.timestamp).toLocaleTimeString('fa-IR')}</div>
+        </div>
+    `;
+    chatMessages.appendChild(aiMessageDiv);
+    
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// ============================================
+// Section 5: System Operations
+// ============================================
+
+/**
+ * Run system optimization
+ * @param {string} operationType - Operation type
+ */
+async function runSystemOperation(operationType) {
+    try {
+        // Show operation modal
+        const operationModal = document.getElementById('progressModal');
+        const operationTitle = document.getElementById('operationTitle');
+        const operationProgress = document.getElementById('operationProgress');
+        const operationLog = document.getElementById('operationLog');
+        
+        if (!operationModal || !operationTitle || !operationProgress || !operationLog) {
+            throw new Error('Operation elements not found');
+        }
+        
+        // Operation settings
+        const operations = {
+            memory_optimization: {
+                title: 'Memory Optimization',
+                color: '#10b981'
+            },
+            security_scan: {
+                title: 'Security Scan',
+                color: '#ef4444'
+            },
+            troubleshoot: {
+                title: 'System Troubleshooting',
+                color: '#f59e0b'
+            }
+        };
+        
+        const operation = operations[operationType] || operations.memory_optimization;
+        
+        // Set title
+        operationTitle.textContent = operation.title;
+        operationProgress.style.backgroundColor = operation.color;
+        
+        // Clear previous log
+        operationLog.innerHTML = '<p>Starting operation...</p>';
+        
+        // Show modal
+        operationModal.style.display = 'flex';
+        
+        // Run operation
+        if (window.ArkaUtils) {
+            const result = await window.ArkaUtils.simulateSystemOperation(operationType);
+            
+            // Update UI with results
+            updateOperationResult(result);
+            
+            // Track event
+            window.ArkaUtils.trackEvent('system_operation_completed', {
+                type: operationType,
+                success: result.success
+            });
+        }
+        
+        // Close modal after 3 seconds
+        setTimeout(() => {
+            operationModal.style.display = 'none';
+        }, 3000);
+        
+    } catch (error) {
+        console.error('❌ Operation execution error:', error);
+        if (window.ArkaUtils) {
+            window.ArkaUtils.showToast('Operation execution error', 'error');
+        }
+    }
+}
+
+/**
+ * Update operation result
+ * @param {object} result - Operation result
+ */
+function updateOperationResult(result) {
+    // Update system with new results
+    if (result.success) {
+        if (window.ArkaUtils) {
+            window.ArkaUtils.showToast('Operation completed successfully', 'success');
+        }
+        
+        // Update system status
+        if (result.freedMemory > 0) {
+            AppState.systemStatus.ram.free += result.freedMemory / 1024; // Convert to GB
+            AppState.systemStatus.ram.usage = 
+                ((AppState.systemStatus.ram.total - AppState.systemStatus.ram.free) / 
+                AppState.systemStatus.ram.total) * 100;
+        }
+    } else {
+        if (window.ArkaUtils) {
+            window.ArkaUtils.showToast('Operation encountered an error', 'error');
+        }
+    }
+}
+
+// ============================================
+// Section 6: Profile Management
+// ============================================
+
+/**
+ * Load system profiles
+ */
+function loadSystemProfiles() {
+    const profilesContainer = document.getElementById('systemProfiles');
+    if (!profilesContainer) return;
+    
+    // Create profile HTML
+    profilesContainer.innerHTML = Object.values(AppState.profiles).map(profile => `
+        <div class="profile-card ${profile.active ? 'active' : ''}" data-profile="${profile.id}">
+            <div class="profile-icon">${profile.icon}</div>
+            <div class="profile-info">
+                <h4>${profile.name}</h4>
+                <p>${profile.description}</p>
+                <div class="profile-tags">
+                    ${Object.entries(profile.settings).map(([key, value]) => 
+                        `<span class="profile-tag">${key}: ${value}</span>`
+                    ).join('')}
+                </div>
+            </div>
+            <button class="activate-btn ${profile.active ? 'active' : ''}">
+                ${profile.active ? 'Active' : 'Activate'}
+            </button>
+        </div>
+    `).join('');
+    
+    // Add event listeners
+    document.querySelectorAll('.activate-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const profileCard = this.closest('.profile-card');
+            const profileId = profileCard.dataset.profile;
+            activateProfile(profileId);
+        });
+    });
+    
+    console.log('✅ System profiles loaded');
+}
+
+/**
+ * Activate system profile
+ * @param {string} profileId - Profile ID
+ */
+function activateProfile(profileId) {
+    // Deactivate all profiles
+    Object.keys(AppState.profiles).forEach(key => {
+        AppState.profiles[key].active = false;
+    });
+    
+    // Activate selected profile
+    if (AppState.profiles[profileId]) {
+        AppState.profiles[profileId].active = true;
+        AppState.userSettings.selectedProfile = profileId;
+        
+        // Update UI
+        loadSystemProfiles();
+        
+        // Apply profile settings
+        applyProfileSettings(profileId);
+        
+        // Show notification
+        if (window.ArkaUtils) {
+            window.ArkaUtils.showToast(`Profile "${AppState.profiles[profileId].name}" activated`, 'success');
+        }
+        
+        // Track event
+        if (window.ArkaUtils) {
+            window.ArkaUtils.trackEvent('profile_activated', {
+                profile: profileId
+            });
+        }
+    }
+}
+
+/**
+ * Apply profile settings
+ * @param {string} profileId - Profile ID
+ */
+function applyProfileSettings(profileId) {
+    const profile = AppState.profiles[profileId];
+    if (!profile) return;
+    
+    console.log(`🎯 Applying profile settings: ${profile.name}`);
+    
+    // Simulate applying settings
+    switch (profileId) {
+        case 'gaming':
+            console.log('🎮 Gaming mode activated');
+            break;
+        case 'work':
+            console.log('💼 Work mode activated');
+            break;
+        case 'editing':
+            console.log('🎬 Editing mode activated');
+            break;
+    }
+}
+
+// ============================================
+// Section 7: Alert System
+// ============================================
+
+/**
+ * Initialize alert system
+ */
+function initializeAlertSystem() {
+    console.log('🔔 Alert system activated');
+}
+
+/**
+ * Check for alert conditions
+ */
+function checkAlerts() {
+    const status = AppState.systemStatus;
+    
+    // Check CPU
+    if (status.cpu.usage > 85) {
+        showAlert('High CPU Usage Alert', 
+            `CPU usage reached ${status.cpu.usage.toFixed(1)}%`, 
+            'warning');
+    }
+    
+    // Check RAM
+    if (status.ram.usage > 90) {
+        showAlert('High RAM Usage Alert',
+            `RAM usage reached ${status.ram.usage.toFixed(1)}%`,
+            'critical');
+    }
+    
+    // Check temperature
+    if (status.cpu.temperature > 75) {
+        showAlert('High CPU Temperature',
+            `CPU temperature reached ${status.cpu.temperature.toFixed(1)}°C`,
+            'warning');
+    }
+}
+
+/**
+ * Show alert
+ * @param {string} title - Alert title
+ * @param {string} message - Alert message
+ * @param {string} type - Alert type
+ */
+function showAlert(title, message, type = 'info') {
+    // Only if notifications are enabled
+    if (!AppState.userSettings.notifications) return;
+    
+    // Create alert element
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `system-alert alert-${type}`;
+    alertDiv.innerHTML = `
+        <div class="alert-icon">
+            ${type === 'critical' ? '🔥' : 
+              type === 'warning' ? '⚠️' : 'ℹ️'}
+        </div>
+        <div class="alert-content">
+            <div class="alert-title">${title}</div>
+            <div class="alert-message">${message}</div>
+        </div>
+        <button class="alert-close">×</button>
     `;
     
-    historyList.prepend(item);
+    // Add to page
+    const alertsContainer = document.getElementById('alertsContainer');
+    if (alertsContainer) {
+        alertsContainer.appendChild(alertDiv);
+        
+        // Auto remove after 10 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.classList.add('fade-out');
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.parentNode.removeChild(alertDiv);
+                    }
+                }, 300);
+            }
+        }, 10000);
+        
+        // Close button
+        alertDiv.querySelector('.alert-close').addEventListener('click', () => {
+            alertDiv.classList.add('fade-out');
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 300);
+        });
+    }
+}
+
+// ============================================
+// Section 8: Event Listeners
+// ============================================
+
+/**
+ * Setup all event listeners
+ */
+function setupEventListeners() {
+    // System operation buttons
+    document.querySelectorAll('[data-operation]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const operationType = this.dataset.operation;
+            runSystemOperation(operationType);
+        });
+    });
     
-    // Limit to 10 items
-    if (historyList.children.length > 10) {
-      historyList.removeChild(historyList.lastChild);
+    // Send message button
+    const sendBtn = document.getElementById('sendMessageBtn');
+    const chatInput = document.getElementById('chatInput');
+    
+    if (sendBtn && chatInput) {
+        sendBtn.addEventListener('click', sendAIMessage);
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendAIMessage();
+            }
+        });
     }
-  }
+    
+    // Chart time range buttons
+    document.querySelectorAll('[data-time-range]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const range = this.dataset.timeRange;
+            changeChartTimeRange(range);
+        });
+    });
+    
+    // Settings toggles
+    document.querySelectorAll('.toggle-switch').forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            const settingId = this.id;
+            const value = this.checked;
+            
+            // Update settings
+            if (settingId === 'autoOptimizeToggle') {
+                AppState.userSettings.autoOptimize = value;
+            } else if (settingId === 'notificationsToggle') {
+                AppState.userSettings.notifications = value;
+            }
+            
+            // Save settings
+            saveUserSettings();
+        });
+    });
+    
+    // Navigation
+    setupNavigation();
+    
+    console.log('✅ Event listeners configured');
+}
 
-  async initializePages() {
-    // Load initial page data
-    await this.loadDashboardData();
-  }
+/**
+ * Setup navigation
+ */
+function setupNavigation() {
+    const navItems = document.querySelectorAll('.nav-item[data-page]');
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const pageId = this.dataset.page;
+            switchPage(pageId);
+        });
+    });
+}
 
-  async loadDashboardData() {
-    // Simulate loading dashboard data
-    setTimeout(() => {
-      this.updateSystemStats();
-    }, 1000);
-  }
-
-  updateSystemStats() {
-    // Update CPU stats
-    const cpuValue = document.getElementById('cpu-value');
-    const cpuGauge = document.getElementById('cpu-gauge');
-    if (cpuValue && cpuGauge) {
-      const cpuUsage = Math.floor(Math.random() * 100);
-      cpuValue.textContent = `${cpuUsage}%`;
-      cpuGauge.style.width = `${cpuUsage}%`;
-    }
-
-    // Update RAM stats
-    const ramUsed = document.getElementById('ram-used');
-    const ramFree = document.getElementById('ram-free');
-    const ramTotal = document.getElementById('ram-total');
-    if (ramUsed && ramFree && ramTotal) {
-      const total = 16; // GB
-      const used = Math.floor(total * Math.random() * 0.8 + 2);
-      const free = total - used;
-      
-      ramUsed.textContent = `${used}GB`;
-      ramFree.textContent = `${free}GB`;
-      ramTotal.textContent = `${total}GB`;
-    }
-
-    // Update disk stats
-    const diskProgressText = document.getElementById('disk-progress-text');
-    if (diskProgressText) {
-      const usedPercent = 78; // Fixed for demo
-      diskProgressText.textContent = `${usedPercent}% پر - 156GB آزاد`;
-    }
-
-    // Update network stats
-    const networkDownload = document.getElementById('network-download');
-    const networkUpload = document.getElementById('network-upload');
-    const networkPing = document.getElementById('network-ping');
-    if (networkDownload && networkUpload && networkPing) {
-      networkDownload.textContent = '12.8 Mbps';
-      networkUpload.textContent = '2.4 Mbps';
-      networkPing.textContent = '24ms';
-    }
-  }
-
-  switchPage(pageId) {
+/**
+ * Switch between pages
+ * @param {string} pageId - Page ID
+ */
+function switchPage(pageId) {
     // Hide all pages
     document.querySelectorAll('.page').forEach(page => {
-      page.classList.remove('active');
-    });
-    
-    // Remove active class from nav items
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.classList.remove('active');
+        page.classList.remove('active');
     });
     
     // Show selected page
-    const page = document.getElementById(`${pageId}-page`);
-    const navItem = document.querySelector(`[data-page="${pageId}"]`);
-    
-    if (page && navItem) {
-      page.classList.add('active');
-      navItem.classList.add('active');
-      
-      // Play sound
-      this.audioManager.play('click');
+    const targetPage = document.getElementById(`${pageId}-page`);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        AppState.currentPage = pageId;
+        
+        // Update page title
+        const pageTitles = {
+            dashboard: 'Dashboard',
+            'ai-center': 'AI Center',
+            commands: 'Commands',
+            monitor: 'Monitoring',
+            security: 'Security',
+            profiles: 'Profiles',
+            docs: 'Documentation',
+            market: 'Market',
+            terminal: 'Terminal',
+            about: 'About'
+        };
+        
+        if (window.ArkaUtils) {
+            window.ArkaUtils.setPageTitle(pageTitles[pageId] || 'Arka');
+        }
+        
+        // Track page view
+        if (window.ArkaUtils) {
+            window.ArkaUtils.trackEvent('page_view', { page: pageId });
+        }
     }
-  }
-
-  handleNetworkChange(isOnline) {
-    const statusElement = document.getElementById('network-status');
-    if (!statusElement) return;
-
-    if (isOnline) {
-      statusElement.innerHTML = '<i class="fas fa-wifi"></i> <span>اتصال فعال</span>';
-      statusElement.style.background = 'rgba(0, 255, 140, 0.2)';
-      statusElement.style.color = '#00ff8c';
-    } else {
-      statusElement.innerHTML = '<i class="fas fa-wifi"></i> <span>اتصال قطع</span>';
-      statusElement.style.background = 'rgba(255, 26, 26, 0.2)';
-      statusElement.style.color = '#ff1a1a';
-      
-      // Show offline warning
-      const offlineWarning = document.createElement('div');
-      offlineWarning.className = 'js-error';
-      offlineWarning.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #ff1a1a;
-        color: white;
-        padding: 10px 15px;
-        border-radius: var(--border-radius);
-        z-index: var(--z-modal);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      `;
-      offlineWarning.innerHTML = '<i class="fas fa-wifi-slash"></i> وضعیت آفلاین - برخی ویژگی‌ها غیرفعال شدند';
-      document.body.appendChild(offlineWarning);
-      
-      setTimeout(() => {
-        offlineWarning.style.opacity = '0';
-        offlineWarning.style.transform = 'translateY(100%)';
-        setTimeout(() => offlineWarning.remove(), 300);
-      }, 5000);
-    }
-  }
 }
 
-// ======================
-// 🚀 Initialize Application
-// ======================
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    // Initialize main application
-    window.arkaApp = new ArkaCommandHub();
-  } catch (error) {
-    console.error('Failed to initialize Arka Command Hub:', error);
+/**
+ * Change chart time range
+ * @param {string} range - Time range
+ */
+function changeChartTimeRange(range) {
+    AppState.userSettings.chartTimeRange = range;
     
-    // Show error screen
-    const loadingScreen = document.getElementById('loading-screen');
-    if (loadingScreen) {
-      loadingScreen.innerHTML = `
-        <div class="error-state" style="text-align: center; padding: 2rem;">
-          <i class="fas fa-exclamation-triangle" style="color: var(--danger-neon); font-size: 3rem;"></i>
-          <h2 style="color: var(--danger-neon); margin: 1rem 0;">خطای سیستم</h2>
-          <p style="margin: 1rem 0; color: var(--text-secondary);">${error.message || 'خطای ناشناخته'}</p>
-          <button onclick="location.reload()" class="btn btn-danger" style="margin-top: 1.5rem;">
-            <i class="fas fa-redo"></i> تلاش مجدد
-          </button>
-        </div>
-      `;
+    // Update active buttons
+    document.querySelectorAll('[data-time-range]').forEach(btn => {
+        if (btn.dataset.timeRange === range) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // Show notification
+    if (window.ArkaUtils) {
+        window.ArkaUtils.showToast(`Chart time range changed to ${range}`, 'info');
     }
-  }
-});
+}
 
-// Global error handling
-window.addEventListener('error', (event) => {
-  console.error('Global error:', event.error);
-  const errorDisplay = document.getElementById('js-error');
-  if (errorDisplay) {
-    errorDisplay.style.display = 'block';
-    errorDisplay.innerHTML = `
-      <i class="fas fa-exclamation-triangle"></i>
-      <span>خطا: ${event.message || 'خطای ناشناخته'}</span>
-    `;
+// ============================================
+// Section 9: Utility Functions
+// ============================================
+
+/**
+ * Show loading state
+ * @param {string} message - Loading message
+ * @param {number} percent - Progress percentage
+ */
+function showLoadingState(message, percent) {
+    const loadingElement = document.getElementById('loadingOverlay');
+    const loadingText = document.getElementById('loadingText');
+    const loadingBar = document.getElementById('loadingBar');
+    
+    if (loadingElement && loadingText) {
+        loadingElement.style.display = 'flex';
+        loadingText.textContent = message;
+        
+        if (loadingBar) {
+            loadingBar.style.width = `${percent}%`;
+        }
+    }
+}
+
+/**
+ * Hide loading state
+ */
+function hideLoadingState() {
+    const loadingElement = document.getElementById('loadingOverlay');
+    if (loadingElement) {
+        loadingElement.classList.add('fade-out');
+        setTimeout(() => {
+            loadingElement.style.display = 'none';
+            loadingElement.classList.remove('fade-out');
+        }, 500);
+    }
+}
+
+/**
+ * Load saved data
+ */
+function loadSavedData() {
+    if (window.ArkaUtils) {
+        const savedSettings = window.ArkaUtils.loadFromStorage('arka_system_settings');
+        if (savedSettings) {
+            AppState.userSettings = { ...AppState.userSettings, ...savedSettings };
+            applyUserSettings();
+        }
+    }
+}
+
+/**
+ * Save user settings
+ */
+function saveUserSettings() {
+    if (window.ArkaUtils) {
+        window.ArkaUtils.saveToStorage('arka_system_settings', AppState.userSettings);
+    }
+}
+
+/**
+ * Apply user settings
+ */
+function applyUserSettings() {
+    // Apply theme
+    document.body.setAttribute('data-theme', AppState.userSettings.theme);
+    
+    // Apply toggle switches
+    const autoOptimizeToggle = document.getElementById('autoOptimizeToggle');
+    const notificationsToggle = document.getElementById('notificationsToggle');
+    
+    if (autoOptimizeToggle) {
+        autoOptimizeToggle.checked = AppState.userSettings.autoOptimize;
+    }
+    
+    if (notificationsToggle) {
+        notificationsToggle.checked = AppState.userSettings.notifications;
+    }
+}
+
+/**
+ * Run system health check
+ */
+function runSystemHealthCheck() {
     setTimeout(() => {
-      errorDisplay.style.display = 'none';
-    }, 5000);
-  }
-});
-
-// Service Worker registration for offline support
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        console.log('SW registered: ', registration);
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
+        const status = AppState.systemStatus;
+        let healthScore = 100;
+        
+        // Calculate health score
+        if (status.cpu.usage > 80) healthScore -= 20;
+        if (status.ram.usage > 85) healthScore -= 20;
+        if (status.disk.usage > 90) healthScore -= 15;
+        if (status.cpu.temperature > 70) healthScore -= 10;
+        
+        // Update UI
+        const healthElement = document.getElementById('systemHealth');
+        if (healthElement) {
+            healthElement.textContent = `Health Score: ${healthScore}/100`;
+            healthElement.className = `health-status ${
+                healthScore > 80 ? 'excellent' : 
+                healthScore > 60 ? 'good' : 
+                healthScore > 40 ? 'fair' : 'poor'
+            }`;
+        }
+    }, 3000);
 }
+
+/**
+ * Utility delay function
+ * @param {number} ms - Milliseconds
+ */
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ============================================
+// Section 10: Export for Console Access
+// ============================================
+
+// For developer console access
+window.ArkaApp = {
+    version: '1.0.0',
+    state: AppState,
+    utils: {
+        runOptimization: (type) => runSystemOperation(type),
+        activateProfile: (id) => activateProfile(id),
+        sendAIMessage: sendAIMessage,
+        showToast: (msg, type) => window.ArkaUtils ? window.ArkaUtils.showToast(msg, type) : null,
+        getSystemStatus: () => AppState.systemStatus,
+        switchPage: switchPage
+    },
+    debug: {
+        resetSettings: () => {
+            localStorage.clear();
+            location.reload();
+        },
+        simulateHighLoad: () => {
+            AppState.systemStatus.cpu.usage = 95;
+            AppState.systemStatus.ram.usage = 98;
+            updateSystemStatusUI();
+            showAlert('Simulated high load', 'CPU and RAM usage artificially increased', 'warning');
+        },
+        testAI: (message) => {
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.value = message;
+                sendAIMessage();
+            }
+        }
+    }
+};
+
+console.log('💡 Use `ArkaApp` in console to access application functions.');
+
+// ============================================
+// Mobile Warning Handler
+// ============================================
+
+// Show mobile warning on small screens
+function checkMobileWarning() {
+    const isMobile = window.innerWidth < 768;
+    const mobileWarning = document.getElementById('mobile-warning');
+    
+    if (isMobile && mobileWarning) {
+        mobileWarning.style.display = 'flex';
+    }
+}
+
+// Dismiss mobile warning
+function dismissMobileWarning() {
+    const mobileWarning = document.getElementById('mobile-warning');
+    if (mobileWarning) {
+        mobileWarning.style.display = 'none';
+    }
+}
+
+// Check on load and resize
+window.addEventListener('load', checkMobileWarning);
+window.addEventListener('resize', checkMobileWarning);
+
+// ============================================
+// END OF MAIN.JS
+// ============================================
+
+console.log('✅ main.js loaded successfully.');
