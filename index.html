@@ -1,880 +1,2118 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" class="dark-theme">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=no">
-    <meta name="description" content="آرکا - هوش مصنوعی پیشرفته برای مدیریت سیستم ویندوز با دستورات CMD، PowerShell و Run">
-    <meta name="keywords" content="آرکا, هوش مصنوعی, CMD, PowerShell, Run, دستورات ویندوز, مدیریت سیستم, AI, Windows, Neural Network">
-    <meta name="author" content="محمد جواد قادری">
-    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Arka - سیستم مدیریت هوشمند ویندوز با AI. بهینه‌سازی، مانیتورینگ و عیب‌یابی خودکار.">
+    <meta name="keywords" content="Arka, System Manager, Windows Optimization, AI Assistant, System Monitoring">
+    <meta name="author" content="Arka Team">
     <meta name="theme-color" content="#0a0a12">
     
-    <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="آرکا - Neural Command Hub">
-    <meta property="og:description" content="انقلابی در مدیریت سیستم با هوش مصنوعی پیشرفته">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://arka-command-hub.ir">
-    <meta property="og:image" content="https://arka-command-hub.ir/assets/media/images/logo-neon.png">
-    <meta property="og:site_name" content="آرکا کامند هاب">
+    <title>Arka System Manager - مدیریت هوشمند ویندوز</title>
     
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="آرکا - Neural Command Hub">
-    <meta name="twitter:description" content="سیستم مدیریت هوشمند ویندوز با هوش مصنوعی پیشرفته">
-    <meta name="twitter:image" content="https://arka-command-hub.ir/assets/media/images/logo-neon.png">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Icons -->
-    <link rel="icon" href="https://arka-command-hub.ir/assets/media/icons/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="https://arka-command-hub.ir/assets/media/icons/apple-touch-icon.png">
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js"></script>
     
-    <!-- Preloading Strategy -->
-    <link rel="preload" href="https://arka-command-hub.ir/assets/media/fonts/vazir.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="https://arka-command-hub.ir/assets/media/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="https://arka-command-hub.ir/assets/media/sounds/click.wav" as="audio">
-    <link rel="preload" href="https://arka-command-hub.ir/assets/media/sounds/success.wav" as="audio">
-    <link rel="preload" href="https://arka-command-hub.ir/assets/media/sounds/error.wav" as="audio">
-    <link rel="preload" href="https://arka-command-hub.ir/assets/media/sounds/terminal.wav" as="audio">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="main.css">
     
-    <!-- DNS Prefetch -->
-    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    
-    <!-- CDN Libraries -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    
-    <!-- Local CSS -->
-    <link rel="stylesheet" href="main.css?v=2.1.0">
-    
-    <!-- Title -->
-    <title>آرکا - Neural Command Hub | مدیریت هوشمند سیستم ویندوز</title>
-    
-    <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://*.googleapis.com https://api.openai.com;
-        style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com;
-        font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.gstatic.com data:;
-        img-src 'self' https://arka-command-hub.ir  https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
-        connect-src 'self' https://*.googleapis.com https://api.openai.com https://arka-command-hub.ir;
-        media-src 'self' https://arka-command-hub.ir data:;
-        object-src 'none';
-        base-uri 'self';
-        frame-ancestors 'none';
-        form-action 'self';
-        upgrade-insecure-requests;
-    ">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<base target="_blank">
 </head>
-<body>
+<body data-theme="dark">
     <!-- Loading Screen -->
-    <div id="loading-screen">
+    <div id="loading-screen" class="loading-overlay">
         <div class="loading-container">
             <div class="loading-logo">
-                <i class="fas fa-brain quantum-pulse"></i>
+                <div class="logo-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>ARKA</h1>
+                    <p>System Manager</p>
+                </div>
             </div>
-            <h1 class="loading-text">آرکا در حال بارگذاری...</h1>
             <div class="loading-progress">
-                <div class="loading-progress-bar" id="loading-bar"></div>
-            </div>
-            <p class="loading-details" id="loading-details">بارگذاری هسته سیستم</p>
-            <div class="loading-stats">
-                <span class="stat-item"><i class="fas fa-microchip"></i> <span id="cpu-stat">0%</span></span>
-                <span class="stat-item"><i class="fas fa-memory"></i> <span id="ram-stat">0%</span></span>
-                <span class="stat-item"><i class="fas fa-hdd"></i> <span id="disk-stat">0%</span></span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="loadingBar"></div>
+                </div>
+                <div class="loading-text" id="loadingText">در حال بارگذاری...</div>
+                <div class="loading-stats">
+                    <span id="loadingPercent">0%</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript Error Display -->
-    <div class="js-error" id="js-error">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span>خطای جاوااسکریپت رخ داد. لطفاً صفحه را رفرش کنید.</span>
-    </div>
-
-    <!-- Mobile Warning Overlay -->
-    <div class="mobile-warning" id="mobile-warning">
-        <div class="warning-content">
-            <button class="close-warning" id="close-warning">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="warning-header">
-                <i class="fas fa-mobile-alt warning-icon"></i>
-                <h2>دسترسی محدود</h2>
+    <!-- Mobile Warning -->
+    <div id="mobile-warning" class="mobile-warning-overlay">
+        <div class="warning-container">
+            <div class="warning-icon">
+                <i class="fas fa-mobile-alt"></i>
             </div>
-            <div class="warning-body">
-                <p>⚠️ <strong>آرکا کامند هاب</strong> به صورت اختصاصی برای سیستم‌های دسکتاپ و لپ‌تاپ طراحی شده است.</p>
-                <div class="device-recommendation">
-                    <div class="device-item recommended">
-                        <i class="fas fa-desktop"></i>
-                        <span>دسکتاپ</span>
-                        <small>تجربه کامل</small>
-                    </div>
-                    <div class="device-item recommended">
-                        <i class="fas fa-laptop"></i>
-                        <span>لپ‌تاپ</span>
-                        <small>بهینه</small>
-                    </div>
-                    <div class="device-item limited">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>موبایل</span>
-                        <small>محدود</small>
-                    </div>
+            <h2>توجه!</h2>
+            <p>Arka برای تجربه دسکتاپ بهینه‌سازی شده است. برخی ویژگی‌ها در موبایل ممکن است محدود باشند.</p>
+            <div class="warning-features">
+                <div class="feature-item disabled">
+                    <i class="fas fa-times-circle"></i>
+                    <span>نمودارهای Real-time</span>
                 </div>
-                <div class="warning-features">
-                    <h4>🔧 ویژگی‌های غیرفعال در موبایل:</h4>
-                    <ul>
-                        <li><i class="fas fa-times-circle"></i> اجرای مستقیم دستورات سیستمی</li>
-                        <li><i class="fas fa-times-circle"></i> مانیتورینگ لحظه‌ای سیستم</li>
-                        <li><i class="fas fa-times-circle"></i> ترمینال کوانتومی کامل</li>
-                        <li><i class="fas fa-times-circle"></i> پردازش هوش مصنوعی پیشرفته</li>
-                    </ul>
+                <div class="feature-item disabled">
+                    <i class="fas fa-times-circle"></i>
+                    <span>ترمینال کامل</span>
+                </div>
+                <div class="feature-item enabled">
+                    <i class="fas fa-check-circle"></i>
+                    <span>AI Assistant</span>
+                </div>
+                <div class="feature-item enabled">
+                    <i class="fas fa-check-circle"></i>
+                    <span>مدیریت پروفایل</span>
                 </div>
             </div>
-            <div class="warning-options">
-                <button class="btn btn-warning" id="request-desktop-mode">
-                    <i class="fas fa-desktop"></i> درخواست نسخه دسکتاپ
-                </button>
-                <button class="btn btn-primary" id="proceed-anyway">
-                    <i class="fas fa-arrow-right"></i> ادامه با محدودیت‌ها
-                </button>
-            </div>
-            <div class="warning-footer">
-                <small><i class="fas fa-info-circle"></i> برای بهترین تجربه، از Chrome در حالت Desktop Mode استفاده کنید</small>
+            <div class="warning-actions">
+                <button class="btn btn-primary" onclick="dismissMobileWarning()">ادامه</button>
+                <button class="btn btn-secondary" onclick="window.close()">بستن</button>
             </div>
         </div>
     </div>
 
     <!-- Quantum Background Canvas -->
-    <canvas id="quantum-canvas"></canvas>
+    <canvas id="quantum-background" class="quantum-bg"></canvas>
 
-    <!-- Network Status Indicator -->
-    <div class="network-status" id="network-status">
-        <i class="fas fa-wifi"></i>
-        <span>بررسی امنیت شبکه</span>
-    </div>
-
-    <!-- Main App Container -->
-    <div id="app-container">
-        <!-- Top Navigation -->
-        <header class="main-navbar" id="main-navbar">
-            <nav class="navbar-container">
-                <!-- Logo & Brand -->
+    <!-- Main Application -->
+    <div id="app-container" class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="main-navbar">
+            <div class="navbar-container">
                 <div class="navbar-brand">
                     <div class="brand-logo">
-                        <i class="fas fa-brain quantum-pulse"></i>
-                        <div class="logo-text">
-                            <span class="brand-name">آرکا</span>
-                            <span class="brand-subtitle">Neural Command Hub</span>
-                        </div>
+                        <i class="fas fa-rocket"></i>
                     </div>
-                    <div class="version-badge">v2.1.0</div>
+                    <div class="brand-text">
+                        <h1>ARKA</h1>
+                        <span>System Manager</span>
+                    </div>
                 </div>
                 
-                <!-- Main Navigation -->
-                <div class="navbar-menu">
-                    <ul class="nav-list">
-                        <li class="nav-item active" data-page="dashboard">
-                            <a href="#dashboard">
-                                <i class="fas fa-home"></i>
-                                <span>داشبورد</span>
+                <ul class="nav-list">
+                    <li class="nav-item" data-page="dashboard">
+                        <a href="#dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>داشبورد</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-page="ai-center">
+                        <a href="#ai-center">
+                            <i class="fas fa-brain"></i>
+                            <span>مرکز AI</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-page="commands">
+                        <a href="#commands">
+                            <i class="fas fa-terminal"></i>
+                            <span>دستورات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-page="monitor">
+                        <a href="#monitor">
+                            <i class="fas fa-chart-line"></i>
+                            <span>مانیتورینگ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-page="security">
+                        <a href="#security">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>امنیت</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#">
+                            <i class="fas fa-ellipsis-v"></i>
+                            <span>بیشتر</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="#profiles" data-page="profiles">
+                                <i class="fas fa-user-cog"></i>
+                                <span>پروفایل‌ها</span>
                             </a>
-                        </li>
-                        <li class="nav-item" data-page="ai">
-                            <a href="#ai">
-                                <i class="fas fa-robot"></i>
-                                <span>هوش مصنوعی</span>
+                            <a href="#docs" data-page="docs">
+                                <i class="fas fa-book"></i>
+                                <span>مستندات</span>
                             </a>
-                        </li>
-                        <li class="nav-item" data-page="commands">
-                            <a href="#commands">
-                                <i class="fas fa-terminal"></i>
-                                <span>دستورات</span>
+                            <a href="#market" data-page="market">
+                                <i class="fas fa-store"></i>
+                                <span>مارکت</span>
                             </a>
-                        </li>
-                        <li class="nav-item" data-page="terminal">
-                            <a href="#terminal">
+                            <a href="#terminal" data-page="terminal">
                                 <i class="fas fa-code"></i>
                                 <span>ترمینال</span>
                             </a>
-                        </li>
-                        <li class="nav-item" data-page="monitor">
-                            <a href="#monitor">
-                                <i class="fas fa-chart-line"></i>
-                                <span>مانیتور</span>
+                            <a href="#about" data-page="about">
+                                <i class="fas fa-info-circle"></i>
+                                <span>درباره</span>
                             </a>
-                        </li>
-                        <li class="nav-item" data-page="security">
-                            <a href="#security">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>امنیت</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                </ul>
                 
-                <!-- Right Controls -->
                 <div class="navbar-controls">
-                    <button class="control-btn notification-btn" id="notification-btn" aria-label="اعلانات">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">0</span>
-                    </button>
-                    <button class="control-btn user-btn" id="user-menu" aria-label="منوی کاربر">
-                        <i class="fas fa-user-circle"></i>
-                    </button>
-                    <button class="control-btn theme-toggle" id="theme-toggle" aria-label="تغییر تم">
+                    <button class="control-btn" id="themeToggle" title="تغییر تم">
                         <i class="fas fa-moon"></i>
                     </button>
-                    <button class="control-btn system-info-btn" id="system-info-btn" aria-label="اطلاعات سیستم">
-                        <i class="fas fa-info-circle"></i>
+                    <button class="control-btn" id="notificationsBtn" title="اعلانات">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="control-btn" id="settingsBtn" title="تنظیمات">
+                        <i class="fas fa-cog"></i>
                     </button>
                 </div>
-            </nav>
-        </header>
+            </div>
+        </nav>
 
         <!-- Main Content -->
-        <main class="main-content" id="main-content">
+        <main class="main-content">
             <!-- Dashboard Page -->
-            <div class="page active" id="dashboard-page">
+            <section id="dashboard-page" class="page active">
                 <div class="page-header">
-                    <h1><i class="fas fa-tachometer-alt"></i> داشبورد مدیریت سیستم</h1>
-                    <p>نمای کلی وضعیت سیستم و دسترسی سریع به ابزارها</p>
+                    <h1>
+                        <i class="fas fa-tachometer-alt"></i>
+                        داشبورد سیستم
+                    </h1>
+                    <p>مانیتورینگ لحظه‌ای وضعیت سیستم و دسترسی سریع به ابزارها</p>
                 </div>
-                
+
                 <!-- System Status Cards -->
                 <div class="dashboard-grid">
-                    <!-- CPU Status -->
-                    <div class="status-card cpu-card glass-card">
+                    <!-- CPU Card -->
+                    <div class="glass-card status-card cpu-card">
                         <div class="card-header">
                             <i class="fas fa-microchip"></i>
                             <h3>پردازنده (CPU)</h3>
                             <div class="card-actions">
-                                <button class="card-action-btn" title="جزئیات بیشتر">
-                                    <i class="fas fa-info-circle"></i>
+                                <button class="card-action-btn" title="جزئیات">
+                                    <i class="fas fa-info"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="gauge-container">
-                                <div class="gauge" id="cpu-gauge">
-                                    <div class="gauge-fill" style="width: 0%"></div>
-                                </div>
-                                <div class="gauge-value" id="cpu-value">0%</div>
+                        <div class="cpu-chart-container">
+                            <canvas id="cpuChart"></canvas>
+                        </div>
+                        <div class="cpu-time-selector">
+                            <button class="time-btn active" data-time-range="1m">1 دقیقه</button>
+                            <button class="time-btn" data-time-range="5m">5 دقیقه</button>
+                            <button class="time-btn" data-time-range="1h">1 ساعت</button>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-row">
+                                <span>مصرف فعلی:</span>
+                                <span class="stat-value" id="cpuUsage">45.2%</span>
                             </div>
-                            <div class="status-details">
-                                <div class="detail-row">
-                                    <div class="detail-item">
-                                        <span class="label">دمای فعلی:</span>
-                                        <span class="value" id="cpu-temp">--°C</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="label">فرکانس:</span>
-                                        <span class="value" id="cpu-frequency">-- GHz</span>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-item">
-                                        <span class="label">هسته‌ها:</span>
-                                        <span class="value" id="cpu-cores">0 Core</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="label">ترد:</span>
-                                        <span class="value" id="cpu-threads">0 Thread</span>
-                                    </div>
-                                </div>
+                            <div class="stat-row">
+                                <span>دما:</span>
+                                <span class="stat-value">65°C</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>هسته‌ها:</span>
+                                <span class="stat-value">8</span>
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="footer-actions">
-                                <button class="btn btn-sm btn-outline-primary" id="cpu-details">
-                                    <i class="fas fa-chart-line"></i> تحلیل عملکرد
-                                </button>
-                                <button class="btn btn-sm btn-outline-success" id="cpu-optimize">
-                                    <i class="fas fa-bolt"></i> بهینه‌سازی
-                                </button>
+                                <button class="btn btn-sm btn-outline-primary">تحلیل دقیق</button>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- RAM Status -->
-                    <div class="status-card ram-card glass-card">
+
+                    <!-- RAM Card -->
+                    <div class="glass-card status-card ram-card">
                         <div class="card-header">
                             <i class="fas fa-memory"></i>
                             <h3>حافظه (RAM)</h3>
                             <div class="card-actions">
-                                <button class="card-action-btn" title="جزئیات بیشتر">
-                                    <i class="fas fa-info-circle"></i>
+                                <button class="card-action-btn" title="بهینه‌سازی">
+                                    <i class="fas fa-broom"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="memory-chart">
-                                <div class="chart-bar">
-                                    <div class="bar-used" id="ram-used-bar" style="height: 0%"></div>
-                                    <div class="bar-free" id="ram-free-bar" style="height: 100%"></div>
+                        <div class="ram-chart-container">
+                            <canvas id="ramChart"></canvas>
+                        </div>
+                        <div class="ram-details">
+                            <div class="ram-progress">
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 62%"></div>
                                 </div>
-                                <div class="chart-legend">
-                                    <div class="legend-item used">
-                                        <span class="dot used-dot"></span>
-                                        <span>مصرف شده: <span id="ram-used">0GB</span></span>
-                                    </div>
-                                    <div class="legend-item free">
-                                        <span class="dot free-dot"></span>
-                                        <span>آزاد: <span id="ram-free">0GB</span></span>
-                                    </div>
-                                    <div class="legend-item total">
-                                        <span class="dot total-dot"></span>
-                                        <span>کل: <span id="ram-total">0GB</span></span>
-                                    </div>
+                                <div class="progress-text">
+                                    <span>استفاده شده</span>
+                                    <span class="percentage">62%</span>
                                 </div>
                             </div>
-                            <div class="memory-stats">
-                                <div class="stat-item">
-                                    <i class="fas fa-database"></i>
-                                    <span class="label">حافظه کش:</span>
-                                    <span class="value" id="ram-cache">0GB</span>
+                            <div class="ram-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="label">کل</span>
+                                    <span class="value">16 GB</span>
                                 </div>
-                                <div class="stat-item">
-                                    <i class="fas fa-tachometer-alt"></i>
-                                    <span class="label">سرعت:</span>
-                                    <span class="value" id="ram-speed">-- MHz</span>
+                                <div class="breakdown-item">
+                                    <span class="label">استفاده</span>
+                                    <span class="value">9.9 GB</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="label">آزاد</span>
+                                    <span class="value">6.1 GB</span>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-sm btn-outline-success" id="ram-optimize">
-                                <i class="fas fa-broom"></i> بهینه‌سازی حافظه
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Disk Status -->
-                    <div class="status-card disk-card glass-card">
-                        <div class="card-header">
-                            <i class="fas fa-hdd"></i>
-                            <h3>دیسک (Storage)</h3>
-                            <div class="card-actions">
-                                <button class="card-action-btn" title="جزئیات بیشتر">
-                                    <i class="fas fa-info-circle"></i>
+                            <div class="footer-actions">
+                                <button class="btn btn-sm btn-success" data-operation="memory_optimization">
+                                    <i class="fas fa-broom"></i>
+                                    بهینه‌سازی
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="disk-info">
-                                <div class="disk-overview">
-                                    <div class="disk-progress">
-                                        <div class="progress-container">
-                                            <div class="progress">
-                                                <div class="progress-bar" id="disk-progress-bar" style="width: 0%"></div>
-                                            </div>
-                                            <div class="progress-text" id="disk-progress-text">0% پر - 0GB آزاد</div>
-                                        </div>
+                    </div>
+
+                    <!-- Disk Card -->
+                    <div class="glass-card status-card disk-card">
+                        <div class="card-header">
+                            <i class="fas fa-hdd"></i>
+                            <h3>فضای ذخیره‌سازی</h3>
+                            <div class="card-actions">
+                                <button class="card-action-btn" title="اسکن">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="disk-chart-container">
+                            <canvas id="diskChart"></canvas>
+                        </div>
+                        <div class="disk-partitions">
+                            <div class="partition-item">
+                                <div class="partition-header">
+                                    <span class="partition-drive">C:</span>
+                                    <span class="partition-type">NTFS</span>
+                                    <span class="partition-space">
+                                        <span class="used">128 GB</span> / <span class="total">256 GB</span>
+                                    </span>
+                                </div>
+                                <div class="partition-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 50%"></div>
                                     </div>
-                                    
-                                    <div class="disk-partitions">
-                                        <div class="partition-item" id="partition-c">
-                                            <div class="partition-header">
-                                                <span class="partition-drive">C:</span>
-                                                <span class="partition-type">سیستمی</span>
-                                            </div>
-                                            <div class="partition-progress">
-                                                <div class="progress">
-                                                    <div class="progress-bar" style="width: 0%"></div>
-                                                </div>
-                                                <div class="partition-stats">
-                                                    <span class="partition-used">0GB</span>
-                                                    <span class="partition-free">0GB</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="partition-item" id="partition-d">
-                                            <div class="partition-header">
-                                                <span class="partition-drive">D:</span>
-                                                <span class="partition-type">داده</span>
-                                            </div>
-                                            <div class="partition-progress">
-                                                <div class="progress">
-                                                    <div class="progress-bar" style="width: 0%"></div>
-                                                </div>
-                                                <div class="partition-stats">
-                                                    <span class="partition-used">0GB</span>
-                                                    <span class="partition-free">0GB</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div class="partition-item">
+                                <div class="partition-header">
+                                    <span class="partition-drive">D:</span>
+                                    <span class="partition-type">NTFS</span>
+                                    <span class="partition-space">
+                                        <span class="used">205 GB</span> / <span class="total">512 GB</span>
+                                    </span>
+                                </div>
+                                <div class="partition-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 40%"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="footer-actions">
-                                <button class="btn btn-sm btn-outline-warning" id="disk-cleanup">
-                                    <i class="fas fa-trash"></i> پاک‌سازی
-                                </button>
-                                <button class="btn btn-sm btn-outline-info" id="disk-defrag">
-                                    <i class="fas fa-compress"></i> دیفرگمنت
-                                </button>
+                                <button class="btn btn-sm btn-outline-warning">پاک‌سازی</button>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Network Status -->
-                    <div class="status-card network-card glass-card">
+
+                    <!-- Network Card -->
+                    <div class="glass-card status-card network-card">
                         <div class="card-header">
                             <i class="fas fa-network-wired"></i>
                             <h3>شبکه</h3>
                             <div class="card-actions">
-                                <button class="card-action-btn" title="جزئیات بیشتر">
-                                    <i class="fas fa-info-circle"></i>
+                                <button class="card-action-btn" title="تست سرعت">
+                                    <i class="fas fa-tachometer-alt"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="network-stats">
-                                <div class="stat-item primary">
-                                    <i class="fas fa-wifi"></i>
-                                    <span class="label">اتصال:</span>
-                                    <span class="value" id="network-connection">--</span>
+                        <div class="network-chart-container">
+                            <canvas id="networkChart"></canvas>
+                        </div>
+                        <div class="network-stats">
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <i class="fas fa-download"></i>
+                                    <div class="stat-content">
+                                        <span class="label">دانلود</span>
+                                        <span class="value">45.2 Mbps</span>
+                                    </div>
                                 </div>
                                 <div class="stat-item">
                                     <i class="fas fa-upload"></i>
-                                    <span class="label">آپلود:</span>
-                                    <span class="value" id="network-upload">0 Mbps</span>
-                                </div>
-                                <div class="stat-item">
-                                    <i class="fas fa-download"></i>
-                                    <span class="label">دانلود:</span>
-                                    <span class="value" id="network-download">0 Mbps</span>
+                                    <div class="stat-content">
+                                        <span class="label">آپلود</span>
+                                        <span class="value">12.8 Mbps</span>
+                                    </div>
                                 </div>
                                 <div class="stat-item">
                                     <i class="fas fa-signal"></i>
-                                    <span class="label">پینگ:</span>
-                                    <span class="value" id="network-ping">-- ms</span>
+                                    <div class="stat-content">
+                                        <span class="label">پینگ</span>
+                                        <span class="value">28 ms</span>
+                                    </div>
                                 </div>
                                 <div class="stat-item">
-                                    <i class="fas fa-cloud"></i>
-                                    <span class="label">IP عمومی:</span>
-                                    <span class="value" id="network-ip">--.--.--.--</span>
+                                    <i class="fas fa-plug"></i>
+                                    <div class="stat-content">
+                                        <span class="label">اتصالات</span>
+                                        <span class="value">127</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="network-chart" id="network-chart-container">
-                                <canvas id="network-chart"></canvas>
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="footer-actions">
-                                <button class="btn btn-sm btn-outline-info" id="network-test">
-                                    <i class="fas fa-bolt"></i> تست سرعت
-                                </button>
-                                <button class="btn btn-sm btn-outline-primary" id="network-troubleshoot">
-                                    <i class="fas fa-tools"></i> عیب‌یابی
-                                </button>
+                                <button class="btn btn-sm btn-info">تست کامل</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- AI Quick Actions -->
+
+                <!-- Quick Actions -->
+                <div class="quick-actions-section">
+                    <div class="section-header">
+                        <h3>
+                            <i class="fas fa-bolt"></i>
+                            عملیات سریع
+                        </h3>
+                        <p>دسترسی سریع به ابزارهای پرکاربرد</p>
+                    </div>
+                    <div class="quick-actions-grid">
+                        <button class="action-btn glass-card" data-operation="memory_optimization">
+                            <div class="action-icon">
+                                <i class="fas fa-broom"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>بهینه‌سازی حافظه</h4>
+                                <p>آزادسازی RAM و بهبود عملکرد</p>
+                            </div>
+                            <div class="action-badge">پیشنهاد شده</div>
+                        </button>
+                        
+                        <button class="action-btn glass-card" data-operation="security_scan">
+                            <div class="action-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>اسکن امنیتی</h4>
+                                <p>بررسی تهدیدات و آسیب‌پذیری‌ها</p>
+                            </div>
+                        </button>
+                        
+                        <button class="action-btn glass-card" data-operation="troubleshoot">
+                            <div class="action-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>عیب‌یابی خودکار</h4>
+                                <p>تشخیص و رفع مشکلات رایج</p>
+                            </div>
+                        </button>
+                        
+                        <button class="action-btn glass-card" onclick="window.location.href='#ai-center'">
+                            <div class="action-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>دستیار AI</h4>
+                                <p>راهنمایی هوشمند</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Quick Assistant -->
                 <div class="ai-quick-section glass-card">
                     <div class="section-header">
-                        <h3><i class="fas fa-robot"></i> دستیار هوشمند آرکا</h3>
-                        <p>درخواست خود را به فارسی بیان کنید</p>
+                        <h3>
+                            <i class="fas fa-comments"></i>
+                            دستیار سریع AI
+                        </h3>
+                        <p>با هوش مصنوعی در مورد سیستم خود صحبت کنید</p>
                     </div>
                     <div class="ai-quick-input">
-                        <input type="text" class="form-control" id="ai-quick-input"
-                            placeholder="مثلاً: 'سیستم رو بهینه کن' یا 'فایل‌های موقت رو پاک کن'...">
-                        <button class="btn btn-primary" id="ai-quick-submit">
+                        <input type="text" id="quickAIInput" placeholder="مثال: سیستم من کند شده، راهنمایی کن...">
+                        <button class="btn btn-primary" id="quickAISend">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                     <div class="ai-suggestions">
-                        <button class="suggestion-btn" data-query="سیستم رو اسکن کن">
-                            <i class="fas fa-search"></i> سیستم رو اسکن کن
+                        <button class="suggestion-btn">
+                            <i class="fas fa-turtle"></i>
+                            چرا سیستم کند شده؟
                         </button>
-                        <button class="suggestion-btn" data-query="حافظه رو آزاد کن">
-                            <i class="fas fa-memory"></i> حافظه رو آزاد کن
+                        <button class="suggestion-btn">
+                            <i class="fas fa-gamepad"></i>
+                            بهینه‌سازی برای گیمینگ
                         </button>
-                        <button class="suggestion-btn" data-query="اینترنت رو تست کن">
-                            <i class="fas fa-wifi"></i> اینترنت رو تست کن
+                        <button class="suggestion-btn">
+                            <i class="fas fa-code"></i>
+                            ساخت اسکریپت
                         </button>
-                        <button class="suggestion-btn" data-query="برنامه‌های Startup رو مدیریت کن">
-                            <i class="fas fa-play-circle"></i> Startup رو مدیریت کن
-                        </button>
-                        <button class="suggestion-btn" data-query="امنیت سیستم رو بررسی کن">
-                            <i class="fas fa-shield-alt"></i> بررسی امنیت
-                        </button>
-                        <button class="suggestion-btn" data-query="باتری رو بهینه کن">
-                            <i class="fas fa-battery-full"></i> بهینه‌سازی باتری
+                        <button class="suggestion-btn">
+                            <i class="fas fa-chart-line"></i>
+                            گزارش عملکرد
                         </button>
                     </div>
                 </div>
-                
-                <!-- Recent Commands -->
-                <div class="recent-commands glass-card">
-                    <div class="section-header">
-                        <h3><i class="fas fa-history"></i> آخرین دستورات اجرا شده</h3>
-                        <button class="btn btn-sm btn-outline-secondary" id="clear-history">
-                            <i class="fas fa-trash"></i> پاک کردن تاریخچه
-                        </button>
-                    </div>
-                    <div class="commands-list" id="recent-commands-list">
-                        <!-- Commands will be loaded dynamically -->
-                    </div>
-                </div>
-                
-                <!-- System Alerts -->
-                <div class="system-alerts glass-card">
-                    <div class="section-header">
-                        <h3><i class="fas fa-exclamation-triangle"></i> هشدارهای سیستم</h3>
-                        <button class="btn btn-sm btn-outline-warning" id="view-all-alerts">
-                            مشاهده همه
-                        </button>
-                    </div>
-                    <div class="alerts-container" id="system-alerts-container">
-                        <div class="alert-item warning">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <div class="alert-content">
-                                <span class="alert-title">حافظه کم</span>
-                                <span class="alert-message">حافظه سیستم به 80% رسیده است</span>
-                                <span class="alert-time">5 دقیقه پیش</span>
-                            </div>
-                        </div>
-                        <div class="alert-item info">
-                            <i class="fas fa-info-circle"></i>
-                            <div class="alert-content">
-                                <span class="alert-title">به‌روزرسانی موجود</span>
-                                <span class="alert-message">نسخه جدید آرکا در دسترس است</span>
-                                <span class="alert-time">1 ساعت پیش</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- AI Page -->
-            <div class="page" id="ai-page">
-                <div class="page-header">
-                    <h1><i class="fas fa-brain"></i> مرکز هوش مصنوعی</h1>
-                    <p>تعامل با هوش مصنوعی پیشرفته برای مدیریت سیستم</p>
-                </div>
-                <div class="ai-container glass-card">
-                    <div class="ai-chat-container">
-                        <div class="chat-messages" id="ai-chat-messages">
-                            <!-- Chat messages will be added here -->
-                            <div class="message ai-message">
-                                <div class="message-header">
-                                    <i class="fas fa-robot"></i>
-                                    <span class="message-sender">آرکا</span>
-                                    <span class="message-time">اکنون</span>
+
+                <!-- Recent Activity -->
+                <div class="activity-section">
+                    <div class="activity-column">
+                        <div class="glass-card recent-commands">
+                            <h3>
+                                <i class="fas fa-history"></i>
+                                دستورات اخیر
+                            </h3>
+                            <div class="commands-list">
+                                <div class="command-item">
+                                    <div class="command-info">
+                                        <span class="command-text">systeminfo | findstr /C:"OS Name"</span>
+                                        <span class="command-time">۱۲:۳۴:۵۶</span>
+                                    </div>
+                                    <span class="command-status success">موفق</span>
                                 </div>
-                                <div class="message-content">
-                                    <p>سلام! من آرکا هستم، دستیار هوشمند شما برای مدیریت سیستم ویندوز. چطور می‌توانم به شما کمک کنم؟</p>
+                                <div class="command-item">
+                                    <div class="command-info">
+                                        <span class="command-text">tasklist /FI "MEMUSAGE gt 100000"</span>
+                                        <span class="command-time">۱۲:۳۰:۱۵</span>
+                                    </div>
+                                    <span class="command-status success">موفق</span>
+                                </div>
+                                <div class="command-item">
+                                    <div class="command-info">
+                                        <span class="command-text">ipconfig /all</span>
+                                        <span class="command-time">۱۲:۲۵:۴۲</span>
+                                    </div>
+                                    <span class="command-status success">موفق</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="chat-input">
-                            <textarea id="ai-chat-input" placeholder="پیام خود را بنویسید..." rows="3"></textarea>
-                            <button class="btn btn-primary" id="ai-chat-send">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="ai-features">
-                        <div class="feature-card glass-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-cogs"></i>
+                        
+                        <div class="glass-card system-alerts">
+                            <h3>
+                                <i class="fas fa-exclamation-triangle"></i>
+                                هشدارهای سیستم
+                            </h3>
+                            <div class="alerts-container" id="alertsContainer">
+                                <div class="alert-item info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="alert-content">
+                                        <span class="alert-title">به‌روزرسانی در دسترس</span>
+                                        <span class="alert-message">نسخه جدید Arka در دسترس است</span>
+                                        <span class="alert-time">۲ دقیقه پیش</span>
+                                    </div>
+                                </div>
+                                <div class="alert-item warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <div class="alert-content">
+                                        <span class="alert-title">مصرف CPU بالا</span>
+                                        <span class="alert-message">مصرف CPU به ۸۵٪ رسیده است</span>
+                                        <span class="alert-time">۵ دقیقه پیش</span>
+                                    </div>
+                                </div>
                             </div>
-                            <h4>بهینه‌سازی سیستم</h4>
-                            <p>دریافت پیشنهادات هوشمندانه برای بهبود عملکرد سیستم</p>
-                            <button class="btn btn-sm btn-primary" data-feature="optimize">
-                                شروع بهینه‌سازی
-                            </button>
                         </div>
-                        <div class="feature-card glass-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h4>امنیت سیستم</h4>
-                            <p>بررسی آسیب‌پذیری‌ها و پیشنهادات امنیتی</p>
-                            <button class="btn btn-sm btn-danger" data-feature="security">
-                                اسکن امنیتی
-                            </button>
-                        </div>
-                        <div class="feature-card glass-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <h4>رفع مشکلات</h4>
-                            <p>تشخیص و رفع خطاها به صورت خودکار</p>
-                            <button class="btn btn-sm btn-warning" data-feature="troubleshoot">
-                                عیب‌یابی
-                            </button>
-                        </div>
-                        <div class="feature-card glass-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-file-alt"></i>
-                            </div>
-                            <h4>مدیریت فایل‌ها</h4>
-                            <p>سازماندهی و بهینه‌سازی فضای دیسک</p>
-                            <button class="btn btn-sm btn-success" data-feature="file-management">
-                                مدیریت فایل‌ها
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Commands Page -->
-            <div class="page" id="commands-page">
-                <div class="page-header">
-                    <h1><i class="fas fa-terminal"></i> کتابخانه دستورات</h1>
-                    <p>مجموعه کامل دستورات برای مدیریت سیستم</p>
-                </div>
-                <div class="commands-container">
-                    <div class="command-categories">
-                        <button class="category-btn active" data-category="all">
-                            <i class="fas fa-list"></i> همه دستورات
-                        </button>
-                        <button class="category-btn" data-category="system">
-                            <i class="fas fa-microchip"></i> سیستم
-                        </button>
-                        <button class="category-btn" data-category="network">
-                            <i class="fas fa-network-wired"></i> شبکه
-                        </button>
-                        <button class="category-btn" data-category="security">
-                            <i class="fas fa-shield-alt"></i> امنیت
-                        </button>
-                        <button class="category-btn" data-category="storage">
-                            <i class="fas fa-hdd"></i> ذخیره‌سازی
-                        </button>
-                        <button class="category-btn" data-category="performance">
-                            <i class="fas fa-tachometer-alt"></i> عملکرد
-                        </button>
                     </div>
                     
-                    <div class="commands-grid" id="commands-grid">
-                        <!-- Commands will be loaded dynamically -->
+                    <div class="activity-column">
+                        <div class="glass-card performance-tips">
+                            <h3>
+                                <i class="fas fa-lightbulb"></i>
+                                نکات عملکردی
+                            </h3>
+                            <div class="tips-container">
+                                <div class="tip-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <div class="tip-content">
+                                        <h4>کاهش استارت‌آپ‌ها</h4>
+                                        <p>برنامه‌های غیرضروری را از استارت‌آپ ویندوز حذف کنید</p>
+                                    </div>
+                                </div>
+                                <div class="tip-item">
+                                    <i class="fas fa-hdd"></i>
+                                    <div class="tip-content">
+                                        <h4>Defrag دیسک</h4>
+                                        <p>دیفرگمنت کردن هفتگی برای بهبود عملکرد HDD</p>
+                                    </div>
+                                </div>
+                                <div class="tip-item">
+                                    <i class="fas fa-broom"></i>
+                                    <div class="tip-content">
+                                        <h4>پاک‌سازی منظم</h4>
+                                        <p>فایل‌های موقت و کش مرورگر را به‌طور منظم پاک کنید</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Other pages will be added similarly -->
-            
+            </section>
+
+            <!-- AI Center Page -->
+            <section id="ai-center-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-brain"></i>
+                        مرکز هوش مصنوعی
+                    </h1>
+                    <p>دستیار هوشمند Arka برای مدیریت و بهینه‌سازی سیستم</p>
+                </div>
+
+                <div class="ai-container">
+                    <!-- AI Sidebar -->
+                    <aside class="ai-sidebar glass-card">
+                        <!-- Templates -->
+                        <div class="sidebar-section">
+                            <h4>
+                                <i class="fas fa-magic"></i>
+                                قالب‌های آماده
+                            </h4>
+                            <div class="template-list" id="aiTemplates">
+                                <!-- Templates will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Chat History -->
+                        <div class="sidebar-section">
+                            <h4>
+                                <i class="fas fa-history"></i>
+                                تاریخچه گفتگو
+                            </h4>
+                            <div class="history-list" id="chatHistory">
+                                <div class="empty-state">
+                                    <i class="fas fa-comments"></i>
+                                    <p>تاریخچه‌ای یافت نشد</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pinned Commands -->
+                        <div class="sidebar-section">
+                            <h4>
+                                <i class="fas fa-thumbtack"></i>
+                                دستورات پین شده
+                            </h4>
+                            <div class="pinned-list" id="pinnedCommands">
+                                <div class="empty-state">
+                                    <i class="fas fa-thumbtack"></i>
+                                    <p>دستور ذخیره‌شده‌ای وجود ندارد</p>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- AI Main Content -->
+                    <div class="ai-main-content">
+                        <!-- Chat Container -->
+                        <div class="glass-card ai-chat-container">
+                            <div class="chat-header">
+                                <div class="chat-title">
+                                    <i class="fas fa-comments"></i>
+                                    <h3>گفتگو با AI</h3>
+                                </div>
+                                <div class="chat-actions">
+                                    <button class="btn btn-sm btn-secondary" title="پاک‌سازی چت">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" title="خروجی گرفتن">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-messages" id="chatMessages">
+                                <div class="message ai-message">
+                                    <div class="message-avatar">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="message-header">
+                                            <span class="message-sender">Arka AI</span>
+                                            <span class="message-time">الان</span>
+                                        </div>
+                                        <div class="message-body">
+                                            <p>سلام! من دستیار هوشمند Arka هستم. چطور می‌توانم به شما کمک کنم؟</p>
+                                            <p>می‌توانید در مورد بهینه‌سازی سیستم، عیب‌یابی، امنیت یا هر سوال فنی دیگر بپرسید.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-input-container">
+                                <div class="chat-input-actions">
+                                    <button class="input-action-btn" title="افزودن فایل">
+                                        <i class="fas fa-paperclip"></i>
+                                    </button>
+                                    <button class="input-action-btn" title="تمپلیت‌ها">
+                                        <i class="fas fa-magic"></i>
+                                    </button>
+                                    <button class="input-action-btn" title="تنظیمات">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                                <textarea id="chatInput" placeholder="پیام خود را اینجا بنویسید..."></textarea>
+                                <div class="chat-send-actions">
+                                    <button class="btn btn-primary" id="sendMessageBtn">
+                                        <i class="fas fa-paper-plane"></i>
+                                        ارسال
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Tools -->
+                        <div class="glass-card ai-tools-container">
+                            <h3>
+                                <i class="fas fa-tools"></i>
+                                ابزارهای AI
+                            </h3>
+                            <div class="tools-grid">
+                                <div class="tool-card glass-card">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <h4>سازنده اسکریپت</h4>
+                                    <p>ایجاد اسکریپت‌های PowerShell و Batch برای اتوماسیون</p>
+                                    <button class="btn btn-primary btn-sm">شروع</button>
+                                </div>
+                                
+                                <div class="tool-card glass-card">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <h4>تحلیل‌گر سیستم</h4>
+                                    <p>تحلیل عمیق وضعیت سیستم و ارائه گزارش جامع</p>
+                                    <button class="btn btn-primary btn-sm">تحلیل</button>
+                                </div>
+                                
+                                <div class="tool-card glass-card">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-wrench"></i>
+                                    </div>
+                                    <h4>بهینه‌ساز خودکار</h4>
+                                    <p>تنظیمات خودکار برای بهبود عملکرد سیستم</p>
+                                    <button class="btn btn-primary btn-sm">اجرا</button>
+                                </div>
+                                
+                                <div class="tool-card glass-card">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <h4>مشاور امنیت</h4>
+                                    <p>بررسی امنیتی و ارائه توصیه‌های بهبود</p>
+                                    <button class="btn btn-primary btn-sm">اسکن</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Commands Library Page -->
+            <section id="commands-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-terminal"></i>
+                        کتابخانه دستورات
+                    </h1>
+                    <p>مجموعه کامل دستورات سیستمی با توضیحات و نمونه‌ها</p>
+                </div>
+
+                <div class="commands-container">
+                    <!-- Commands Sidebar -->
+                    <aside class="commands-sidebar glass-card">
+                        <div class="search-box">
+                            <input type="text" placeholder="جستجوی دستورات...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <h4>دسته‌بندی</h4>
+                            <div class="filter-list">
+                                <label class="filter-item">
+                                    <input type="checkbox" checked>
+                                    <span>سیستم</span>
+                                </label>
+                                <label class="filter-item">
+                                    <input type="checkbox" checked>
+                                    <span>شبکه</span>
+                                </label>
+                                <label class="filter-item">
+                                    <input type="checkbox" checked>
+                                    <span>امنیت</span>
+                                </label>
+                                <label class="filter-item">
+                                    <input type="checkbox" checked>
+                                    <span>دیسک</span>
+                                </label>
+                                <label class="filter-item">
+                                    <input type="checkbox" checked>
+                                    <span>کارایی</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="toolbar-actions">
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-star"></i>
+                                نشان شده‌ها
+                            </button>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-history"></i>
+                                تاریخچه
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- Commands Grid -->
+                    <div class="commands-grid">
+                        <div class="command-card glass-card">
+                            <div class="command-header">
+                                <span class="command-category system">سیستم</span>
+                                <div class="command-actions">
+                                    <button class="action-btn" title="نشان کردن">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="action-btn" title="کپی">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="command-content">
+                                <h4>systeminfo</h4>
+                                <p>نمایش اطلاعات کامل سیستم شامل نسخه ویندوز، مشخصات سخت‌افزاری و...</p>
+                                <div class="command-example">
+                                    <code>systeminfo | findstr /C:"OS Name"</code>
+                                </div>
+                            </div>
+                            <div class="command-stats">
+                                <span class="usage-count">
+                                    <i class="fas fa-chart-bar"></i>
+                                    ۱,۲۴۵ بار استفاده
+                                </span>
+                                <button class="btn btn-sm btn-primary">اجرا</button>
+                            </div>
+                        </div>
+
+                        <div class="command-card glass-card">
+                            <div class="command-header">
+                                <span class="command-category network">شبکه</span>
+                                <div class="command-actions">
+                                    <button class="action-btn" title="نشان کردن">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="action-btn" title="کپی">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="command-content">
+                                <h4>ipconfig</h4>
+                                <p>نمایش و تنظیمات اطلاعات آدرس IP و شبکه</p>
+                                <div class="command-example">
+                                    <code>ipconfig /all</code>
+                                </div>
+                            </div>
+                            <div class="command-stats">
+                                <span class="usage-count">
+                                    <i class="fas fa-chart-bar"></i>
+                                    ۹۸۷ بار استفاده
+                                </span>
+                                <button class="btn btn-sm btn-primary">اجرا</button>
+                            </div>
+                        </div>
+
+                        <div class="command-card glass-card">
+                            <div class="command-header">
+                                <span class="command-category performance">کارایی</span>
+                                <div class="command-actions">
+                                    <button class="action-btn" title="نشان کردن">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="action-btn" title="کپی">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="command-content">
+                                <h4>tasklist</h4>
+                                <p>نمایش لیست فرآیندهای در حال اجرا</p>
+                                <div class="command-example">
+                                    <code>tasklist /FI "MEMUSAGE gt 100000"</code>
+                                </div>
+                            </div>
+                            <div class="command-stats">
+                                <span class="usage-count">
+                                    <i class="fas fa-chart-bar"></i>
+                                    ۷۵۶ بار استفاده
+                                </span>
+                                <button class="btn btn-sm btn-primary">اجرا</button>
+                            </div>
+                        </div>
+
+                        <div class="command-card glass-card">
+                            <div class="command-header">
+                                <span class="command-category security">امنیت</span>
+                                <div class="command-actions">
+                                    <button class="action-btn" title="نشان کردن">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="action-btn" title="کپی">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="command-content">
+                                <h4>netstat</h4>
+                                <p>نمایش اتصالات شبکه و پورت‌های باز</p>
+                                <div class="command-example">
+                                    <code>netstat -an</code>
+                                </div>
+                            </div>
+                            <div class="command-stats">
+                                <span class="usage-count">
+                                    <i class="fas fa-chart-bar"></i>
+                                    ۶۴۳ بار استفاده
+                                </span>
+                                <button class="btn btn-sm btn-primary">اجرا</button>
+                            </div>
+                        </div>
+
+                        <div class="command-card glass-card">
+                            <div class="command-header">
+                                <span class="command-category disk">دیسک</span>
+                                <div class="command-actions">
+                                    <button class="action-btn" title="نشان کردن">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="action-btn" title="کپی">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="command-content">
+                                <h4>chkdsk</h4>
+                                <p>بررسی و تعمیر خطاهای فایل‌سیستم</p>
+                                <div class="command-example">
+                                    <code>chkdsk C: /f</code>
+                                </div>
+                            </div>
+                            <div class="command-stats">
+                                <span class="usage-count">
+                                    <i class="fas fa-chart-bar"></i>
+                                    ۴۲۱ بار استفاده
+                                </span>
+                                <button class="btn btn-sm btn-primary">اجرا</button>
+                            </div>
+                        </div>
+
+                        <div class="command-card glass-card">
+                            <div class="command-header">
+                                <span class="command-category system">سیستم</span>
+                                <div class="command-actions">
+                                    <button class="action-btn" title="نشان کردن">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="action-btn" title="کپی">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="command-content">
+                                <h4>sfc /scannow</h4>
+                                <p>اسکن و تعمیر فایل‌های سیستمی ویندوز</p>
+                                <div class="command-example">
+                                    <code>sfc /scannow</code>
+                                </div>
+                            </div>
+                            <div class="command-stats">
+                                <span class="usage-count">
+                                    <i class="fas fa-chart-bar"></i>
+                                    ۳۵۸ بار استفاده
+                                </span>
+                                <button class="btn btn-sm btn-primary">اجرا</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Monitor Page -->
+            <section id="monitor-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-chart-line"></i>
+                        مانیتورینگ پیشرفته
+                    </h1>
+                    <p>نمودارهای دقیق و تحلیل عمیق عملکرد سیستم</p>
+                </div>
+
+                <!-- Monitor Controls -->
+                <div class="monitor-controls glass-card">
+                    <div class="control-group">
+                        <label>بازه زمانی:</label>
+                        <select class="form-control">
+                            <option value="1m">1 دقیقه</option>
+                            <option value="5m" selected>5 دقیقه</option>
+                            <option value="15m">15 دقیقه</option>
+                            <option value="1h">1 ساعت</option>
+                            <option value="6h">6 ساعت</option>
+                            <option value="1d">1 روز</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Refresh Rate:</label>
+                        <select class="form-control">
+                            <option value="1">1 ثانیه</option>
+                            <option value="2" selected>2 ثانیه</option>
+                            <option value="5">5 ثانیه</option>
+                            <option value="10">10 ثانیه</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-pause"></i>
+                            توقف موقت
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            خروجی CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Advanced Charts -->
+                <div class="advanced-charts-grid">
+                    <div class="glass-card chart-container large">
+                        <div class="chart-header">
+                            <h3>CPU Performance Over Time</h3>
+                            <div class="chart-legend">
+                                <span class="legend-item">
+                                    <span class="legend-color" style="background: #3b82f6;"></span>
+                                    Usage %
+                                </span>
+                                <span class="legend-item">
+                                    <span class="legend-color" style="background: #ef4444;"></span>
+                                    Temperature
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="advancedCpuChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-card chart-container">
+                        <div class="chart-header">
+                            <h3>Memory Usage</h3>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="advancedRamChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-card chart-container">
+                        <div class="chart-header">
+                            <h3>Disk I/O</h3>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="advancedDiskChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-card chart-container">
+                        <div class="chart-header">
+                            <h3>Network Traffic</h3>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="advancedNetworkChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Logs -->
+                <div class="glass-card system-logs">
+                    <div class="logs-header">
+                        <h3>
+                            <i class="fas fa-file-alt"></i>
+                            لاگ‌های سیستم
+                        </h3>
+                        <div class="logs-controls">
+                            <select class="form-control">
+                                <option>همه سطوح</option>
+                                <option>خطاها</option>
+                                <option>هشدارها</option>
+                                <option>اطلاعات</option>
+                            </select>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-filter"></i>
+                                فیلتر
+                            </button>
+                        </div>
+                    </div>
+                    <div class="logs-container">
+                        <div class="log-entry error">
+                            <span class="log-time">12:45:32</span>
+                            <span class="log-level">ERROR</span>
+                            <span class="log-message">Service 'Windows Update' failed to start</span>
+                        </div>
+                        <div class="log-entry warning">
+                            <span class="log-time">12:43:15</span>
+                            <span class="log-level">WARNING</span>
+                            <span class="log-message">High memory usage detected: 85%</span>
+                        </div>
+                        <div class="log-entry info">
+                            <span class="log-time">12:40:22</span>
+                            <span class="log-level">INFO</span>
+                            <span class="log-message">System optimization completed successfully</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Center Page -->
+            <section id="security-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-shield-alt"></i>
+                        مرکز امنیت
+                    </h1>
+                    <p>بررسی امنیتی سیستم و مدیریت تهدیدات</p>
+                </div>
+
+                <!-- Security Score -->
+                <div class="security-overview">
+                    <div class="glass-card security-score-card">
+                        <div class="score-circle">
+                            <svg class="score-svg" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" stroke-width="8" 
+                                        stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round"
+                                        transform="rotate(-90 50 50)"/>
+                            </svg>
+                            <div class="score-text">
+                                <span class="score-number">75</span>
+                                <span class="score-label">امنیت</span>
+                            </div>
+                        </div>
+                        <div class="score-details">
+                            <h3>وضعیت امنیتی: خوب</h3>
+                            <p>سیستم شما به‌طور کلی امن است، اما موارد بهبود وجود دارد</p>
+                            <div class="score-breakdown">
+                                <div class="score-item">
+                                    <span class="score-label">فایروال</span>
+                                    <span class="score-value excellent">✓</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-label">آنتی‌ویروس</span>
+                                    <span class="score-value good">⚠</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-label">به‌روزرسانی‌ها</span>
+                                    <span class="score-value poor">✗</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Features -->
+                <div class="security-features-grid">
+                    <div class="glass-card security-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-virus"></i>
+                        </div>
+                        <h4>اسکن ویروس</h4>
+                        <p>بررسی کامل سیستم برای یافتن بدافزارها</p>
+                        <div class="feature-status">
+                            <span class="status-indicator protected"></span>
+                            <span>آخرین اسکن: ۲ روز پیش</span>
+                        </div>
+                        <button class="btn btn-primary btn-sm">اسکن کامل</button>
+                    </div>
+
+                    <div class="glass-card security-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h4>فایروال</h4>
+                        <p>کنترل ورودی و خروجی‌های شبکه</p>
+                        <div class="feature-status">
+                            <span class="status-indicator protected"></span>
+                            <span>فعال و محافظت شده</span>
+                        </div>
+                        <button class="btn btn-secondary btn-sm">تنظیمات</button>
+                    </div>
+
+                    <div class="glass-card security-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-virus"></i>
+                        </div>
+                        <h4>ضد بدافزار</h4>
+                        <p>حفاظت در برابر نرم‌افزارهای مخرب</p>
+                        <div class="feature-status">
+                            <span class="status-indicator warning"></span>
+                            <span>نیاز به به‌روزرسانی</span>
+                        </div>
+                        <button class="btn btn-warning btn-sm">به‌روزرسانی</button>
+                    </div>
+
+                    <div class="glass-card security-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h4>رمز عبور</h4>
+                        <p>بررسی قدرت رمزهای عبور</p>
+                        <div class="feature-status">
+                            <span class="status-indicator protected"></span>
+                            <span>سیاست رمز عبور: قوی</span>
+                        </div>
+                        <button class="btn btn-secondary btn-sm">بررسی</button>
+                    </div>
+                </div>
+
+                <!-- Threats List -->
+                <div class="glass-card threats-section">
+                    <div class="section-header">
+                        <h3>
+                            <i class="fas fa-exclamation-triangle"></i>
+                            تهدیدات شناسایی شده
+                        </h3>
+                        <span class="threat-count">۳ مورد</span>
+                    </div>
+                    <div class="threats-list">
+                        <div class="threat-item medium">
+                            <div class="threat-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="threat-content">
+                                <h4>فایل‌های موقت زیاد</h4>
+                                <p>بیش از ۲ گیگابایت فایل موقت در سیستم یافت شد</p>
+                                <span class="threat-type">کارایی</span>
+                            </div>
+                            <div class="threat-actions">
+                                <button class="btn btn-sm btn-success">رفع</button>
+                                <button class="btn btn-sm btn-secondary">نادیده</button>
+                            </div>
+                        </div>
+
+                        <div class="threat-item low">
+                            <div class="threat-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="threat-content">
+                                <h4>نرم‌افزار قدیمی</h4>
+                                <p>نسخه قدیمی Google Chrome شناسایی شد</p>
+                                <span class="threat-type">امنیت</span>
+                            </div>
+                            <div class="threat-actions">
+                                <button class="btn btn-sm btn-primary">به‌روزرسانی</button>
+                                <button class="btn btn-sm btn-secondary">بعداً</button>
+                            </div>
+                        </div>
+
+                        <div class="threat-item info">
+                            <div class="threat-icon">
+                                <i class="fas fa-windows"></i>
+                            </div>
+                            <div class="threat-content">
+                                <h4>به‌روزرسانی ویندوز</h4>
+                                <p>۵ به‌روزرسانی امنیتی در انتظار نصب</p>
+                                <span class="threat-type">سیستم</span>
+                            </div>
+                            <div class="threat-actions">
+                                <button class="btn btn-sm btn-primary">نصب</button>
+                                <button class="btn btn-sm btn-secondary">برنامه‌ریزی</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="glass-card security-actions">
+                    <h3>عملیات سریع</h3>
+                    <div class="actions-grid">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-shield-alt"></i>
+                            اسکن کامل سیستم
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-file-alt"></i>
+                            گزارش امنیتی
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-cog"></i>
+                            تنظیمات امنیتی
+                        </button>
+                        <button class="btn btn-info">
+                            <i class="fas fa-graduation-cap"></i>
+                            راهنمای امنیت
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profiles Page -->
+            <section id="profiles-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-user-cog"></i>
+                        پروفایل‌های سیستم
+                    </h1>
+                    <p>مدیریت تنظیمات مختلف برای سناریوهای گوناگون</p>
+                </div>
+
+                <!-- Profiles Grid -->
+                <div class="profiles-grid" id="systemProfiles">
+                    <!-- Profiles will be loaded here -->
+                </div>
+
+                <!-- Profile Details -->
+                <div class="glass-card profile-details">
+                    <h3>جزئیات پروفایل فعال</h3>
+                    <div class="settings-section">
+                        <h4>تنظیمات اعمال شده</h4>
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <span class="setting-name">اولویت پردازش:</span>
+                                <span class="setting-value">Normal</span>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-name">برنامه‌های پس‌زمینه:</span>
+                                <span class="setting-value">Normal</span>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-name">حالت مصرف انرژی:</span>
+                                <span class="setting-value">Balanced</span>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-name">سرویس‌های غیرفعال:</span>
+                                <span class="setting-value">None</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-section">
+                        <h4>تأثیر بر عملکرد</h4>
+                        <div class="performance-metrics">
+                            <div class="metric">
+                                <span class="metric-name">بهبود CPU:</span>
+                                <span class="metric-value">+0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-name">بهبود RAM:</span>
+                                <span class="metric-value">+0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-name">بهبود دیسک:</span>
+                                <span class="metric-value">+0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Profile Creator -->
+                <div class="glass-card profile-creator">
+                    <h3>ایجاد پروفایل سفارشی</h3>
+                    <div class="creator-form">
+                        <div class="form-group">
+                            <label>نام پروفایل:</label>
+                            <input type="text" class="form-control" placeholder="مثال: Development">
+                        </div>
+                        <div class="form-group">
+                            <label>توضیحات:</label>
+                            <textarea class="form-control" placeholder="توضیحات پروفایل..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>آیکون:</label>
+                            <select class="form-control">
+                                <option>🎮 گیمینگ</option>
+                                <option>💼 کار</option>
+                                <option>🎬 ادیت</option>
+                                <option>🔧 سفارشی</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>تنظیمات:</label>
+                            <div class="settings-checklist">
+                                <label>
+                                    <input type="checkbox">
+                                    <span>غیرفعال‌سازی جلوه‌های بصری</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox">
+                                    <span>کاهش سرویس‌های پس‌زمینه</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox">
+                                    <span>افزایش اولویت پردازش</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox">
+                                    <span>بهینه‌سازی شبکه</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">ایجاد پروفایل</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documentation Page -->
+            <section id="docs-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-book"></i>
+                        مستندات
+                    </h1>
+                    <p>راهنمای جامع استفاده از Arka و ویژگی‌های آن</p>
+                </div>
+
+                <div class="docs-container">
+                    <!-- Docs Sidebar -->
+                    <aside class="docs-sidebar glass-card">
+                        <div class="docs-search">
+                            <input type="text" placeholder="جستجوی مستندات...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        
+                        <nav class="docs-nav">
+                            <ul>
+                                <li><a href="#getting-started" class="active">شروع کار</a></li>
+                                <li><a href="#dashboard">داشبورد</a></li>
+                                <li><a href="#ai-assistant">دستیار AI</a></li>
+                                <li><a href="#commands">دستورات</a></li>
+                                <li><a href="#monitoring">مانیتورینگ</a></li>
+                                <li><a href="#security">امنیت</a></li>
+                                <li><a href="#profiles">پروفایل‌ها</a></li>
+                                <li><a href="#api">API Reference</a></li>
+                                <li><a href="#troubleshooting">عیب‌یابی</a></li>
+                            </ul>
+                        </nav>
+                    </aside>
+
+                    <!-- Docs Content -->
+                    <div class="docs-content">
+                        <article class="doc-section">
+                            <h2>شروع کار با Arka</h2>
+                            <p>Arka یک سیستم مدیریت هوشمند ویندوز است که با استفاده از هوش مصنوعی، بهینه‌سازی و عیب‌یابی سیستم را آسان می‌کند.</p>
+                            
+                            <h3>ویژگی‌های اصلی</h3>
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <i class="fas fa-chart-line"></i>
+                                    <h4>مانیتورینگ Real-time</h4>
+                                    <p>مشاهده لحظه‌ای وضعیت CPU، RAM، دیسک و شبکه</p>
+                                </div>
+                                <div class="feature-card">
+                                    <i class="fas fa-brain"></i>
+                                    <h4>AI Assistant</h4>
+                                    <p>راهنمایی هوشمند برای بهینه‌سازی سیستم</p>
+                                </div>
+                                <div class="feature-card">
+                                    <i class="fas fa-terminal"></i>
+                                    <h4>کتابخانه دستورات</h4>
+                                    <p>مجموعه کامل دستورات سیستمی با توضیحات</p>
+                                </div>
+                            </div>
+
+                            <h3>نصب و راه‌اندازی</h3>
+                            <p>Arka نیازی به نصب ندارد و به صورت Portable اجرا می‌شود:</p>
+                            <ol>
+                                <li>فایل Arka.exe را دانلود کنید</li>
+                                <li>آن را در پوشه دلخواه خود قرار دهید</li>
+                                <li>با دوبار کلیک اجرا کنید</li>
+                            </ol>
+
+                            <div class="info-box">
+                                <i class="fas fa-info-circle"></i>
+                                <p><strong>نکته:</strong> برای استفاده کامل از تمام ویژگی‌ها، Arka باید با دسترسی Administrator اجرا شود.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Market Page -->
+            <section id="market-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-store"></i>
+                        مارکت اسکریپت‌ها
+                    </h1>
+                    <p>اسکریپت‌ها و افزونه‌های آماده برای اتوماسیون و بهینه‌سازی</p>
+                </div>
+
+                <!-- Market Filters -->
+                <div class="market-filters glass-card">
+                    <div class="filter-group">
+                        <label>دسته‌بندی:</label>
+                        <select class="form-control">
+                            <option>همه</option>
+                            <option>بهینه‌سازی</option>
+                            <option>امنیت</option>
+                            <option>مانیتورینگ</option>
+                            <option>تمیزسازی</option>
+                            <option>گیمینگ</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>مرتب‌سازی:</label>
+                        <select class="form-control">
+                            <option>محبوب‌ترین</option>
+                            <option>جدیدترین</option>
+                            <option>بیشترین دانلود</option>
+                            <option>امتیاز بالا</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <input type="text" class="form-control" placeholder="جستجو...">
+                    </div>
+                </div>
+
+                <!-- Scripts Grid -->
+                <div class="scripts-grid">
+                    <div class="script-card glass-card">
+                        <div class="script-header">
+                            <div class="script-badges">
+                                <span class="badge new">جدید</span>
+                                <span class="badge popular">محبوب</span>
+                            </div>
+                            <div class="script-actions">
+                                <button class="action-btn" title="نشان کردن">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="action-btn" title="اشتراک">
+                                    <i class="fas fa-share"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="script-content">
+                            <h3>System Optimizer Pro</h3>
+                            <p>اسکریپت جامع بهینه‌سازی سیستم با قابلیت‌های پیشرفته</p>
+                            <div class="script-tags">
+                                <span class="tag">بهینه‌سازی</span>
+                                <span class="tag">تمیزسازی</span>
+                                <span class="tag">کارایی</span>
+                            </div>
+                            <div class="script-stats">
+                                <span class="stat">
+                                    <i class="fas fa-download"></i>
+                                    12.5K
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-star"></i>
+                                    4.8
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-comment"></i>
+                                    234
+                                </span>
+                            </div>
+                        </div>
+                        <div class="script-footer">
+                            <button class="btn btn-primary">نصب</button>
+                            <button class="btn btn-secondary">مشاهده</button>
+                        </div>
+                    </div>
+
+                    <div class="script-card glass-card">
+                        <div class="script-header">
+                            <div class="script-badges">
+                                <span class="badge verified">تأیید شده</span>
+                            </div>
+                            <div class="script-actions">
+                                <button class="action-btn" title="نشان کردن">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="action-btn" title="اشتراک">
+                                    <i class="fas fa-share"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="script-content">
+                            <h3>Security Scanner</h3>
+                            <p>اسکن امنیتی خودکار با گزارش‌دهی جامع</p>
+                            <div class="script-tags">
+                                <span class="tag">امنیت</span>
+                                <span class="tag">اسکن</span>
+                                <span class="tag">گزارش</span>
+                            </div>
+                            <div class="script-stats">
+                                <span class="stat">
+                                    <i class="fas fa-download"></i>
+                                    8.2K
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-star"></i>
+                                    4.6
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-comment"></i>
+                                    156
+                                </span>
+                            </div>
+                        </div>
+                        <div class="script-footer">
+                            <button class="btn btn-primary">نصب</button>
+                            <button class="btn btn-secondary">مشاهده</button>
+                        </div>
+                    </div>
+
+                    <div class="script-card glass-card">
+                        <div class="script-header">
+                            <div class="script-badges">
+                                <span class="badge trending">پرطرفدار</span>
+                            </div>
+                            <div class="script-actions">
+                                <button class="action-btn" title="نشان کردن">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="action-btn" title="اشتراک">
+                                    <i class="fas fa-share"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="script-content">
+                            <h3>Gaming Booster</h3>
+                            <p>بهینه‌سازی خودکار برای گیمینگ با FPS بالا</p>
+                            <div class="script-tags">
+                                <span class="tag">گیمینگ</span>
+                                <span class="tag">کارایی</span>
+                                <span class="tag">FPS</span>
+                            </div>
+                            <div class="script-stats">
+                                <span class="stat">
+                                    <i class="fas fa-download"></i>
+                                    15.7K
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-star"></i>
+                                    4.9
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-comment"></i>
+                                    412
+                                </span>
+                            </div>
+                        </div>
+                        <div class="script-footer">
+                            <button class="btn btn-primary">نصب</button>
+                            <button class="btn btn-secondary">مشاهده</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Section -->
+                <div class="glass-card upload-section">
+                    <h3>اشتراک‌گذاری اسکریپت شما</h3>
+                    <p>اسکریپت‌های خود را با جامعه Arka به اشتراک بگذارید</p>
+                    <div class="upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>فایل اسکریپت را اینجا رها کنید یا برای انتخاب کلیک کنید</p>
+                        <button class="btn btn-primary">انتخاب فایل</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Terminal Page -->
+            <section id="terminal-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-code"></i>
+                        ترمینال
+                    </h1>
+                    <p>اجرای دستورات سیستمی با محیط شبیه‌سازی شده</p>
+                </div>
+
+                <div class="terminal-container glass-card">
+                    <div class="terminal-header">
+                        <div class="terminal-tabs">
+                            <div class="tab active">
+                                <i class="fas fa-terminal"></i>
+                                PowerShell
+                                <button class="tab-close">×</button>
+                            </div>
+                            <div class="tab">
+                                <i class="fas fa-terminal"></i>
+                                CMD
+                                <button class="tab-close">×</button>
+                            </div>
+                            <button class="tab-add">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="terminal-controls">
+                            <button class="control-btn" title="کپی">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="control-btn" title="چسباندن">
+                                <i class="fas fa-paste"></i>
+                            </button>
+                            <button class="control-btn" title="پاک‌سازی">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="terminal-body">
+                        <div class="terminal-output" id="terminalOutput">
+                            <div class="terminal-line">
+                                <span class="prompt">PS C:\Users\Admin></span>
+                                <span class="command">Get-Process | Sort-Object CPU -Descending | Select-Object -First 5</span>
+                            </div>
+                            <div class="terminal-result">
+<pre>Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+-------  ------    -----      -----     ------     --  -- -----------
+    642      45   234567     198234      45.23   1234   1 chrome
+    234      23    45678      34567      12.45   5678   1 code
+    123      12    23456      12345       8.90   9012   1 explorer
+     89       9    12345       9876       5.67   3456   1 teams
+     67       8     9876       8765       3.21   7890   1 spotify</pre>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="prompt">PS C:\Users\Admin></span>
+                                <span class="cursor">█</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="terminal-input">
+                        <input type="text" id="terminalInput" placeholder="دستور خود را وارد کنید...">
+                        <button class="btn btn-primary" id="terminalExecute">
+                            <i class="fas fa-play"></i>
+                            اجرا
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Page -->
+            <section id="about-page" class="page">
+                <div class="page-header">
+                    <h1>
+                        <i class="fas fa-info-circle"></i>
+                        درباره Arka
+                    </h1>
+                    <p>سیستم مدیریت هوشمند ویندوز با قابلیت‌های AI</p>
+                </div>
+
+                <!-- Hero Section -->
+                <div class="about-hero glass-card">
+                    <div class="hero-content">
+                        <div class="hero-logo">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h2>Arka System Manager</h2>
+                        <p>قدرتمندترین ابزار مدیریت و بهینه‌سازی ویندوز با هوش مصنوعی</p>
+                        <div class="hero-stats">
+                            <div class="stat">
+                                <span class="stat-number">50K+</span>
+                                <span class="stat-label">کاربر فعال</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">99.8%</span>
+                                <span class="stat-label">آپتایم</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.9/5</span>
+                                <span class="stat-label">امتیاز</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Architecture -->
+                <div class="glass-card architecture-section">
+                    <h3>معماری سیستم</h3>
+                    <div class="architecture-diagram">
+                        <div class="layer">
+                            <h4>UI Layer</h4>
+                            <p>React-based Dashboard</p>
+                        </div>
+                        <div class="layer">
+                            <h4>AI Engine</h4>
+                            <p>Machine Learning Models</p>
+                        </div>
+                        <div class="layer">
+                            <h4>System Interface</h4>
+                            <p>PowerShell / WMI / API</p>
+                        </div>
+                        <div class="layer">
+                            <h4>Windows OS</h4>
+                            <p>Core System Components</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team -->
+                <div class="glass-card team-section">
+                    <h3>تیم توسعه</h3>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h4>Ali Rezaei</h4>
+                            <p>Lead Developer & AI Engineer</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-user-astronaut"></i>
+                            </div>
+                            <h4>Sara Ahmadi</h4>
+                            <p>UI/UX Designer</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-dribbble"></i></a>
+                                <a href="#"><i class="fab fa-behance"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <h4>Mohammad Karimi</h4>
+                            <p>Security Specialist</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#"><i class="fab fa-stack-overflow"></i></a>
+                                <a href="#"><i class="fab fa-reddit"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technologies -->
+                <div class="glass-card tech-section">
+                    <h3>تکنولوژی‌های استفاده شده</h3>
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <i class="fab fa-js-square"></i>
+                            <span>JavaScript ES6+</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-python"></i>
+                            <span>Python AI</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-microsoft"></i>
+                            <span>PowerShell</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-react"></i>
+                            <span>React UI</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-database"></i>
+                            <span>Local Storage</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Chart.js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="glass-card contact-section">
+                    <h3>تماس با ما</h3>
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>support@arka-app.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-globe"></i>
+                            <span>www.arka-app.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <span>github.com/arka-app</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-discord"></i>
+                            <span>discord.gg/arka</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
-        
+
         <!-- Footer -->
         <footer class="main-footer">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h5>آرکا کامند هاب</h5>
-                    <p>سیستم مدیریت هوشمند ویندوز با هوش مصنوعی پیشرفته</p>
+                    <h5>
+                        <i class="fas fa-rocket"></i>
+                        Arka System Manager
+                    </h5>
+                    <ul>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>بهینه‌سازی هوشمند سیستم</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>مانیتورینگ Real-time</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>دستیار AI پیشرفته</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>اتوماسیون قدرتمند</span>
+                        </li>
+                    </ul>
                     <div class="social-links">
-                        <a href="https://github.com" target="_blank" class="social-link" aria-label="GitHub">
+                        <a href="#" class="social-link">
                             <i class="fab fa-github"></i>
                         </a>
-                        <a href="https://twitter.com" target="_blank" class="social-link" aria-label="Twitter">
+                        <a href="#" class="social-link">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="https://telegram.org" target="_blank" class="social-link" aria-label="Telegram">
-                            <i class="fab fa-telegram"></i>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
                         </a>
-                        <a href="https://linkedin.com" target="_blank" class="social-link" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-telegram"></i>
                         </a>
                     </div>
                 </div>
+
                 <div class="footer-section">
-                    <h5>توسعه‌دهندگان</h5>
+                    <h5>
+                        <i class="fas fa-link"></i>
+                        لینک‌های مفید
+                    </h5>
                     <ul>
-                        <li><i class="fas fa-code"></i> محمد جواد قادری - توسعه‌دهنده اصلی</li>
-                        <li><i class="fas fa-robot"></i> DeepSeek AI Assistant - همکار فنی</li>
-                        <li><i class="fas fa-users"></i> تیم پشتیبانی آرکا</li>
-                        <li><i class="fas fa-heart"></i> جامعه کاربران آرکا</li>
+                        <li>
+                            <i class="fas fa-chevron-left"></i>
+                            <a href="#docs">مستندات</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-chevron-left"></i>
+                            <a href="#about">درباره ما</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-chevron-left"></i>
+                            <a href="#market">مارکت</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-chevron-left"></i>
+                            <a href="#">وبلاگ</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-chevron-left"></i>
+                            <a href="#">پشتیبانی</a>
+                        </li>
                     </ul>
                 </div>
+
                 <div class="footer-section">
-                    <h5>وضعیت سیستم</h5>
+                    <h5>
+                        <i class="fas fa-shield-alt"></i>
+                        امنیت
+                    </h5>
+                    <ul>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>رمزگذاری End-to-End</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>حفظ حریم خصوصی</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>بدون جمع‌آوری داده</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>متن‌باز و شفاف</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h5>
+                        <i class="fas fa-server"></i>
+                        وضعیت سیستم
+                    </h5>
                     <div class="system-status">
                         <div class="status-item online">
                             <span class="status-dot"></span>
-                            <span>AI: فعال <span class="status-sub">v2.1</span></span>
+                            <span>همه سیستم‌ها آنلاین</span>
                         </div>
-                        <div class="status-item online">
-                            <span class="status-dot"></span>
-                            <span>امنیت: سطح بالا</span>
+                        <div class="status-sub">
+                            <span>آخرین بررسی: ۲ ثانیه پیش</span>
                         </div>
-                        <div class="status-item">
-                            <span class="status-dot"></span>
-                            <span>آخرین بروزرسانی: <span id="last-update-time">امروز</span></span>
-                        </div>
-                        <div class="status-item">
-                            <span class="status-dot"></span>
-                            <span>کاربران آنلاین: <span id="online-users">1.2K</span></span>
+                        <div class="status-sub">
+                            <span>زمان پاسخگویی: 28ms</span>
                         </div>
                     </div>
                 </div>
-                <div class="footer-section">
-                    <h5>تماس با ما</h5>
-                    <ul>
-                        <li><i class="fas fa-envelope"></i> support@arka-command-hub.ir</li>
-                        <li><i class="fas fa-phone"></i> +98 21 1234 5678</li>
-                        <li><i class="fas fa-map-marker-alt"></i> تهران، ایران</li>
-                        <li><i class="fas fa-clock"></i> 24/7 پشتیبانی</li>
-                    </ul>
-                </div>
             </div>
+
             <div class="footer-bottom">
                 <p>
-                    © 2024 آرکا کامند هاب - تمام حقوق محفوظ است.
-                    <span class="credits">با افتخار توسعه یافته توسط تیم آرکا</span>
+                    <span class="credits">Arka System Manager</span>
+                    © 2024 - تمامی حقوق محفوظ است.
                 </p>
                 <div class="footer-links">
-                    <a href="#privacy">حریم خصوصی</a>
-                    <a href="#terms">قوانین</a>
-                    <a href="#cookies">کوکی‌ها</a>
-                    <a href="#contact">تماس با ما</a>
-                    <a href="#api">مستندات API</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">License</a>
                 </div>
             </div>
         </footer>
     </div>
-    
-    <!-- Audio Elements -->
-    <audio id="click-sound" preload="auto">
-        <source src="https://arka-command-hub.ir/assets/media/sounds/click.wav" type="audio/wav">
-    </audio>
-    <audio id="success-sound" preload="auto">
-        <source src="https://arka-command-hub.ir/assets/media/sounds/success.wav" type="audio/wav">
-    </audio>
-    <audio id="error-sound" preload="auto">
-        <source src="https://arka-command-hub.ir/assets/media/sounds/error.wav" type="audio/wav">
-    </audio>
-    <audio id="terminal-sound" preload="auto">
-        <source src="https://arka-command-hub.ir/assets/media/sounds/terminal.wav" type="audio/wav">
-    </audio>
-    <audio id="notification-sound" preload="auto">
-        <source src="https://arka-command-hub.ir/assets/media/sounds/notification.wav" type="audio/wav">
-    </audio>
-    
+
     <!-- Modals -->
-    <div class="modal-overlay" id="modal-overlay"></div>
-    
     <!-- AI Response Modal -->
-    <div class="modal ai-response-modal glass-card" id="ai-response-modal">
-        <div class="modal-header">
-            <h3><i class="fas fa-robot"></i> پاسخ هوش مصنوعی</h3>
-            <button class="modal-close"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="modal-body" id="ai-modal-content">
-            <!-- AI response content will be inserted here -->
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary modal-close">
-                <i class="fas fa-times"></i> بستن
-            </button>
-            <button class="btn btn-success" id="execute-command">
-                <i class="fas fa-play"></i> اجرای دستور
-            </button>
-            <button class="btn btn-primary" id="copy-ai-response">
-                <i class="fas fa-copy"></i> کپی پاسخ
-            </button>
+    <div class="modal-overlay" id="aiResponseModal">
+        <div class="modal ai-response-modal">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-brain"></i>
+                    پاسخ AI
+                </h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="ai-response-content">
+                    <!-- AI response will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">
+                    <i class="fas fa-copy"></i>
+                    کپی
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    ذخیره
+                </button>
+            </div>
         </div>
     </div>
-    
-    <!-- System Profiler Modal -->
-    <div class="modal permission-modal glass-card" id="system-profiler-modal">
-        <div class="modal-header">
-            <h3><i class="fas fa-user-shield"></i> اجازه دسترسی به اطلاعات سیستم</h3>
-            <button class="modal-close"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="modal-body">
-            <div class="permission-intro">
-                <p>برای شخصی‌سازی بهتر تجربه و ارائه پیشنهادات دقیق‌تر، آرکا نیاز به دسترسی به برخی اطلاعات پایه سیستم شما دارد:</p>
+
+    <!-- Permission Modal -->
+    <div class="modal-overlay" id="permissionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-key"></i>
+                    درخواست دسترسی
+                </h3>
+                <button class="modal-close">&times;</button>
             </div>
-            <div class="permission-data">
-                <h4>اطلاعاتی که جمع‌آوری می‌شود:</h4>
+            <div class="modal-body">
+                <p>این عملیات نیاز به دسترسی Administrator دارد.</p>
                 <div class="permission-details">
                     <div class="detail-row">
-                        <div class="detail-icon">
-                            <i class="fas fa-info-circle"></i>
-                        </div>
+                        <i class="fas fa-microchip detail-icon"></i>
                         <div class="detail-content">
-                            <h5>اطلاعات عمومی</h5>
+                            <h5>دسترسی‌های لازم:</h5>
                             <ul>
-                                <li>نوع سیستم عامل (ویندوز، مک، لینوکس)</li>
-                                <li>نوع و نسخه مرورگر</li>
-                                <li>زبان سیستم و منطقه</li>
-                                <li>زمان محلی و منطقه زمانی</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-icon">
-                            <i class="fas fa-tachometer-alt"></i>
-                        </div>
-                        <div class="detail-content">
-                            <h5>عملکرد سیستم (اختیاری)</h5>
-                            <ul>
-                                <li>استفاده از CPU (درصد استفاده)</li>
-                                <li>مصرف حافظه (RAM)</li>
-                                <li>اطلاعات دیسک (فضای آزاد/مصرف شده)</li>
-                                <li>اطلاعات شبکه (سرعت، نوع اتصال)</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div class="detail-content">
-                            <h5>امنیت و حریم خصوصی</h5>
-                            <ul>
-                                <li>هیچ داده‌ای به سرورهای خارجی ارسال نمی‌شود</li>
-                                <li>تمام داده‌ها فقط در مرورگر شما ذخیره می‌شوند</li>
-                                <li>شما می‌توانید هر زمان داده‌ها را پاک کنید</li>
-                                <li>هیچ دسترسی به فایل‌های شخصی یا اطلاعات حساس</li>
+                                <li>خواندن اطلاعات سیستم</li>
+                                <li>تنظیمات رجیستری</li>
+                                <li>مدیریت سرویس‌ها</li>
                             </ul>
                         </div>
                     </div>
                 </div>
+                <div class="privacy-guarantee">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Arka هرگز اطلاعات شخصی شما را جمع‌آوری یا ارسال نمی‌کند.</span>
+                </div>
+                <div class="permission-options">
+                    <label class="permission-option">
+                        <input type="radio" name="permission" value="temp" checked>
+                        <span>دسترسی موقت</span>
+                    </label>
+                    <label class="permission-option">
+                        <input type="radio" name="permission" value="always">
+                        <span>همیشه مجاز کن</span>
+                    </label>
+                    <label class="permission-option">
+                        <input type="radio" name="permission" value="deny">
+                        <span>رد کردن</span>
+                    </label>
+                </div>
             </div>
-            <div class="privacy-guarantee">
-                <i class="fas fa-lock"></i>
-                <strong>تضمین حریم خصوصی:</strong>
-                <p>این اطلاعات فقط در حافظه مرورگر شما ذخیره می‌شود و به هیچ سروری ارسال نمی‌شود. شما می‌توانید هر زمان این داده‌ها را از طریق تنظیمات پاک کنید.</p>
+            <div class="modal-footer">
+                <button class="btn btn-primary">تأیید</button>
+                <button class="btn btn-secondary">لغو</button>
             </div>
-            <div class="permission-options">
-                <label class="permission-option">
-                    <input type="radio" name="permission-level" value="basic" checked>
-                    <span>اطلاعات پایه (توصیه شده)</span>
-                </label>
-                <label class="permission-option">
-                    <input type="radio" name="permission-level" value="full">
-                    <span>اطلاعات کامل + عملکرد</span>
-                </label>
-                <label class="permission-option">
-                    <input type="radio" name="permission-level" value="none">
-                    <span>بدون دسترسی (سایت محدود می‌شود)</span>
-                </label>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary deny-btn">
-                <i class="fas fa-times"></i> انکار
-            </button>
-            <button class="btn btn-primary allow-btn">
-                <i class="fas fa-check"></i> اجازه دادن
-            </button>
         </div>
     </div>
+
+    <!-- Progress Modal -->
+    <div class="modal-overlay" id="progressModal">
+        <div class="modal progress-modal">
+            <div class="modal-header">
+                <h3 id="operationTitle">در حال پردازش...</h3>
+            </div>
+            <div class="modal-body">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="operationProgress"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="progressText">لطفاً صبر کنید...</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                </div>
+                <div class="progress-details" id="operationLog">
+                    <p>شروع عملیات...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <div class="loading-text" id="loadingText">لطفاً صبر کنید...</div>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="utils.js"></script>
+    <script src="main.js"></script>
     
-    <!-- JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-Ih3fY8oYD4cQD6X0r6jZ0QvFhF4w6kzB7D3hFQvQhLzF9q4Qr5Z9cLqH5l9e5X5YwQ5uX8X5Uj9e4c6X2k" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKslvPnBVE97T3ZETlSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-    <!-- Local JavaScript -->
-    <script src="utils.js?v=2.1.0"></script>
-    <script src="main.js?v=2.1.0"></script>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
 </body>
 </html>
