@@ -1,1491 +1,2586 @@
-// ============================================
-// ARKA SYSTEM MANAGER - MAIN JAVASCRIPT
-// Version: 1.0.0
-// Description: Core application logic
-// ============================================
+/* ============================================
+ARKA COMMAND HUB - MAIN STYLESHEET v3.0.0
+Design: Modern Cyberpunk with Glassmorphism
+Responsive: Desktop-First Approach
+============================================ */
 
-// ============================================
-// Section 1: Initialization
-// ============================================
+/* ============================================
+   1. CSS Variables (Custom Properties)
+============================================ */
 
-// Wait for DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 Arka System Manager v1.0 initialized');
-    
-    // Welcome message in console
-    console.log(`
-    ╔═══════════════════════════════════════╗
-    ║      Arka System Manager v1.0         ║
-    ║     Smart Windows Management with AI  ║
-    ╚═══════════════════════════════════════╝
-    `);
-    
-    // Initialize components
-    await initializeComponents();
-    
-    // Start system monitoring
-    startSystemMonitoring();
-    
-    // Load saved data
-    loadSavedData();
-    
-    // Setup event listeners
-    setupEventListeners();
-    
-    // Run system health check
-    runSystemHealthCheck();
-    
-    // Hide loading screen
-    hideLoadingState();
-});
+:root {
+    /* === Colors: 15 Neon Colors === */
+    --primary-neon: #00ff8c;
+    --secondary-neon: #00e6e6;
+    --danger-neon: #ff1a1a;
+    --warning-neon: #ffe640;
+    --info-neon: #00a8ff;
+    --purple-neon: #8c1aff;
+    --pink-neon: #ff1493;
+    --orange-neon: #ff8c00;
+    --cyan-neon: #00ffff;
+    --lime-neon: #32ff00;
+    --gold-neon: #ffd700;
+    --silver-neon: #c0c0c0;
+    --crimson-neon: #dc143c;
+    --indigo-neon: #4b0082;
+    --emerald-neon: #50c878;
 
-/**
- * Initialize all system components
- */
-async function initializeComponents() {
-    try {
-        // Show loading state
-        showLoadingState('Initializing Arka...', 20);
-        
-        // 1. Initialize charts
-        await initializeCharts();
-        showLoadingState('Monitoring charts ready...', 40);
-        
-        // 2. Initialize AI Assistant
-        initializeAIAssistant();
-        showLoadingState('AI Assistant activated...', 60);
-        
-        // 3. Load system profiles
-        loadSystemProfiles();
-        showLoadingState('System profiles loaded...', 80);
-        
-        // 4. Initialize alert system
-        initializeAlertSystem();
-        showLoadingState('Alert system activated...', 95);
-        
-        // Complete initialization
-        await delay(500);
-        
-        console.log('✅ All components initialized successfully');
-        
-        // Track analytics
-        if (window.ArkaUtils) {
-            window.ArkaUtils.trackEvent('system_initialized', {
-                components: ['charts', 'ai_assistant', 'profiles', 'alerts']
-            });
-        }
-        
-    } catch (error) {
-        console.error('❌ Component initialization error:', error);
-        if (window.ArkaUtils) {
-            window.ArkaUtils.showToast('System initialization error', 'error');
-        }
+    /* === Background Colors === */
+    --bg-dark: #0a0a12;
+    --bg-darker: #050509;
+    --bg-panel: rgba(15, 15, 25, 0.8);
+    --bg-card: rgba(20, 20, 35, 0.6);
+    
+    /* === Glassmorphism === */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    
+    /* === Text Colors === */
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-tertiary: #64748b;
+    
+    /* === Gradients: 10 Gradients === */
+    --gradient-primary: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+    --gradient-danger: linear-gradient(135deg, var(--danger-neon), var(--pink-neon));
+    --gradient-warning: linear-gradient(135deg, var(--warning-neon), var(--orange-neon));
+    --gradient-info: linear-gradient(135deg, var(--info-neon), var(--cyan-neon));
+    --gradient-cyber: linear-gradient(135deg, var(--purple-neon), var(--pink-neon));
+    --gradient-success: linear-gradient(135deg, var(--primary-neon), var(--lime-neon));
+    --gradient-dark: linear-gradient(135deg, #1a1a2e, #16213e);
+    --gradient-glow: linear-gradient(135deg, rgba(0, 255, 140, 0.2), rgba(0, 230, 230, 0.2));
+    --gradient-fire: linear-gradient(135deg, #ff416c, #ff4b2b);
+    --gradient-ice: linear-gradient(135deg, #2193b0, #6dd5ed);
+    
+    /* === Shadows: 4 Multi-layer Shadows === */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.3), 0 10px 10px rgba(0, 0, 0, 0.1);
+    --shadow-neon: 0 0 20px rgba(0, 255, 140, 0.4), 0 0 40px rgba(0, 255, 140, 0.2);
+    
+    /* === Spacing === */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+    
+    /* === Border Radius === */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-round: 9999px;
+    
+    /* === Transitions === */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* === Z-Index Layers === */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal: 1040;
+    --z-tooltip: 1050;
+    
+    /* === Fonts === */
+    --font-primary: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+    --font-code: 'Consolas', 'Monaco', 'Courier New', monospace;
+    
+    /* === Breakpoints === */
+    --breakpoint-mobile: 576px;
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 992px;
+    --breakpoint-wide: 1200px;
+    --breakpoint-ultra: 1400px;
+}
+
+/* ============================================
+   2. Reset & Base Styles
+============================================ */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* === Custom Scrollbar === */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-neon);
+    border-radius: 4px;
+    transition: var(--transition-normal);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-neon);
+}
+
+/* === Selection === */
+::selection {
+    background: rgba(0, 255, 140, 0.3);
+    color: var(--primary-neon);
+}
+
+/* === Focus === */
+:focus-visible {
+    outline: 2px solid var(--primary-neon);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   3. Loading Screen
+============================================ */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-darker);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.loading-overlay.fade-out {
+    opacity: 0;
+}
+
+.loading-container {
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.loading-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: var(--space-2xl);
+}
+
+.logo-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--bg-darker);
+    margin-bottom: var(--space-md);
+    animation: quantumPulse 2s infinite;
+}
+
+.logo-text h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--space-xs);
+}
+
+.logo-text p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.loading-progress {
+    margin-bottom: var(--space-lg);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: var(--space-md);
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    width: 0%;
+    transition: width 0.3s ease;
+    box-shadow: var(--shadow-neon);
+}
+
+.loading-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-sm);
+}
+
+.loading-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+}
+
+/* ============================================
+   4. Mobile Warning
+============================================ */
+
+.mobile-warning-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 18, 0.95);
+    backdrop-filter: blur(20px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    padding: var(--space-md);
+}
+
+.warning-container {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    animation: slideIn 0.5s ease;
+}
+
+.warning-icon {
+    font-size: 4rem;
+    color: var(--warning-neon);
+    margin-bottom: var(--space-lg);
+    animation: pulse 2s infinite;
+}
+
+.warning-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: var(--space-md);
+    background: var(--gradient-warning);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.warning-container p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+    line-height: 1.8;
+}
+
+.warning-features {
+    margin-bottom: var(--space-xl);
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--space-sm);
+    margin-bottom: var(--space-xs);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-normal);
+}
+
+.feature-item.disabled {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger-neon);
+}
+
+.feature-item.enabled {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--primary-neon);
+}
+
+.feature-item i {
+    margin-left: var(--space-sm);
+    font-size: 1.2rem;
+}
+
+.warning-actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+}
+
+/* ============================================
+   5. Quantum Background (Canvas)
+============================================ */
+
+.quantum-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+/* ============================================
+   6. Navigation & Header
+============================================ */
+
+.main-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-panel);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: var(--z-fixed);
+    padding: var(--space-sm) 0;
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.brand-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg-darker);
+    font-size: 1.2rem;
+}
+
+.brand-text h1 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.brand-text span {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    gap: var(--space-xs);
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: var(--transition-normal);
+    font-size: 0.9rem;
+}
+
+.nav-item a:hover,
+.nav-item.active a {
+    background: rgba(0, 255, 140, 0.1);
+    color: var(--primary-neon);
+    transform: translateY(-2px);
+}
+
+.nav-item a i {
+    font-size: 1.1rem;
+}
+
+/* Dropdown Menu */
+.nav-item.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-panel);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xl);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all var(--transition-normal);
+    z-index: var(--z-dropdown);
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition-fast);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+    background: rgba(0, 255, 140, 0.1);
+    color: var(--primary-neon);
+    padding-right: var(--space-lg);
+}
+
+/* Navbar Controls */
+.navbar-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.control-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-round);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.control-btn:hover {
+    background: var(--gradient-primary);
+    color: var(--bg-darker);
+    border-color: transparent;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-neon);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--danger-neon);
+    color: var(--bg-darker);
+    font-size: 0.6rem;
+    font-weight: 800;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-round);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+}
+
+/* ============================================
+   7. Main Content Area
+============================================ */
+
+.main-content {
+    flex: 1;
+    padding: var(--space-xl);
+    max-width: 1400px;
+    margin: 100px auto 0;
+    width: 100%;
+}
+
+.page {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: pageEnter var(--transition-normal) forwards;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes pageEnter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-// ============================================
-// Section 2: State Management
-// ============================================
+.page-header {
+    margin-bottom: var(--space-2xl);
+    text-align: right;
+}
 
-// Main application state
-const AppState = {
-    // System status
-    systemStatus: {
-        cpu: { usage: 0, temperature: 45, cores: 8, frequency: 3.2 },
-        ram: { usage: 0, total: 16, used: 0, free: 16, cache: 2 },
-        disk: { usage: 0, total: 512, used: 128, free: 384 },
-        network: { up: 0, down: 0, connections: 0, ping: 28 },
-        lastUpdate: null
-    },
-    
-    // User settings
-    userSettings: {
-        theme: 'dark',
-        autoOptimize: true,
-        notifications: true,
-        selectedProfile: 'default',
-        aiAssistantEnabled: true,
-        chartTimeRange: '5m'
-    },
-    
-    // System profiles
-    profiles: {
-        gaming: {
-            id: 'gaming',
-            name: 'Gaming',
-            icon: '🎮',
-            description: 'Optimized for heavy gaming',
-            settings: {
-                priority: 'high',
-                backgroundApps: 'minimal',
-                powerMode: 'performance',
-                visualEffects: false
-            },
-            active: false
-        },
-        work: {
-            id: 'work',
-            name: 'Work',
-            icon: '💼',
-            description: 'Suitable for office work and programming',
-            settings: {
-                priority: 'normal',
-                backgroundApps: 'normal',
-                powerMode: 'balanced',
-                visualEffects: true
-            },
-            active: false
-        },
-        editing: {
-            id: 'editing',
-            name: 'Video Editing',
-            icon: '🎬',
-            description: 'Optimized for video editing software',
-            settings: {
-                priority: 'high',
-                backgroundApps: 'limited',
-                powerMode: 'performance',
-                visualEffects: true
-            },
-            active: false
-        },
-        default: {
-            id: 'default',
-            name: 'Default',
-            icon: '⚙️',
-            description: 'Normal system settings',
-            settings: {
-                priority: 'normal',
-                backgroundApps: 'normal',
-                powerMode: 'balanced',
-                visualEffects: true
-            },
-            active: true
-        }
-    },
-    
-    // AI Assistant history
-    aiHistory: [],
-    pinnedCommands: [],
-    
-    // Charts
-    charts: {
-        cpu: null,
-        ram: null,
-        disk: null,
-        network: null
-    },
-    
-    // Current page
-    currentPage: 'dashboard'
-};
+.page-header h1 {
+    margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
-// ============================================
-// Section 3: Charts and System Monitoring
-// ============================================
+.page-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin-right: 0;
+}
 
-/**
- * Initialize system charts
- */
-async function initializeCharts() {
-    try {
-        // Check for Chart.js
-        if (typeof Chart === 'undefined') {
-            console.warn('⚠️ Chart.js not loaded');
-            return;
-        }
-        
-        // Chart default settings
-        Chart.defaults.font.family = "'Vazirmatn', 'Segoe UI', Tahoma, sans-serif";
-        Chart.defaults.color = '#94a3b8';
-        
-        // Chart colors
-        const chartColors = {
-            cpu: { border: '#3b82f6', background: 'rgba(59, 130, 246, 0.1)' },
-            ram: { border: '#10b981', background: 'rgba(16, 185, 129, 0.1)' },
-            disk: { border: '#8b5cf6', background: 'rgba(139, 92, 246, 0.1)' },
-        network: { border: '#f59e0b', background: 'rgba(245, 158, 11, 0.1)' }
-        };
-        
-        // Common options
-        const commonOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: 1000,
-                easing: 'easeOutQuart'
-            },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                    titleFont: { family: "'Vazirmatn', sans-serif" },
-                    bodyFont: { family: "'Vazirmatn', sans-serif" },
-                    rtl: true
-                }
-            },
-            scales: {
-                x: {
-                    display: true,
-                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
-                    ticks: { maxRotation: 0 }
-                },
-                y: {
-                    display: true,
-                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
-                    min: 0,
-                    max: 100,
-                    ticks: {
-                        callback: function(value) { return value + '%'; }
-                    }
-                }
-            }
-        };
-        
-        // CPU Chart
-        const cpuCtx = document.getElementById('cpuChart')?.getContext('2d');
-        if (cpuCtx) {
-            AppState.charts.cpu = new Chart(cpuCtx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'CPU Usage',
-                        data: [],
-                        borderColor: chartColors.cpu.border,
-                        backgroundColor: chartColors.cpu.background,
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    plugins: {
-                        ...commonOptions.plugins,
-                        title: {
-                            display: true,
-                            text: 'CPU Usage',
-                            color: '#f1f5f9',
-                            font: { size: 14, family: "'Vazirmatn', sans-serif" }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // RAM Chart
-        const ramCtx = document.getElementById('ramChart')?.getContext('2d');
-        if (ramCtx) {
-            AppState.charts.ram = new Chart(ramCtx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'RAM Usage',
-                        data: [],
-                        borderColor: chartColors.ram.border,
-                        backgroundColor: chartColors.ram.background,
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    plugins: {
-                        ...commonOptions.plugins,
-                        title: {
-                            display: true,
-                            text: 'RAM Usage',
-                            color: '#f1f5f9',
-                            font: { size: 14, family: "'Vazirmatn', sans-serif" }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Disk Chart
-        const diskCtx = document.getElementById('diskChart')?.getContext('2d');
-        if (diskCtx) {
-            AppState.charts.disk = new Chart(diskCtx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Disk Usage',
-                        data: [],
-                        borderColor: chartColors.disk.border,
-                        backgroundColor: chartColors.disk.background,
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    plugins: {
-                        ...commonOptions.plugins,
-                        title: {
-                            display: true,
-                            text: 'Storage Usage',
-                            color: '#f1f5f9',
-                            font: { size: 14, family: "'Vazirmatn', sans-serif" }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Network Chart
-        const networkCtx = document.getElementById('networkChart')?.getContext('2d');
-        if (networkCtx) {
-            AppState.charts.network = new Chart(networkCtx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Network Activity',
-                        data: [],
-                        borderColor: chartColors.network.border,
-                        backgroundColor: chartColors.network.background,
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    plugins: {
-                        ...commonOptions.plugins,
-                        title: {
-                            display: true,
-                            text: 'Network Activity',
-                            color: '#f1f5f9',
-                            font: { size: 14, family: "'Vazirmatn', sans-serif" }
-                        }
-                    }
-                }
-            });
-        }
-        
-        console.log('✅ System charts created');
-        
-    } catch (error) {
-        console.error('❌ Chart creation error:', error);
+/* ============================================
+   8. Dashboard Page
+============================================ */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+}
+
+/* Status Cards */
+.status-card {
+    padding: var(--space-lg);
+    height: 100%;
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition-normal);
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(0, 255, 140, 0.3);
+}
+
+.status-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.status-card .card-header i {
+    font-size: 1.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.status-card .card-header h3 {
+    flex: 1;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.card-actions {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.card-action-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-round);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.card-action-btn:hover {
+    background: var(--primary-neon);
+    color: var(--bg-darker);
+    border-color: transparent;
+    transform: scale(1.1);
+}
+
+/* CPU Card Specific */
+.cpu-chart-container {
+    height: 150px;
+    margin-bottom: var(--space-md);
+}
+
+.cpu-time-selector {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.time-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.time-btn.active,
+.time-btn:hover {
+    background: var(--primary-neon);
+    color: var(--bg-darker);
+    border-color: transparent;
+}
+
+/* RAM Card Specific */
+.ram-chart-container {
+    height: 150px;
+    margin-bottom: var(--space-md);
+}
+
+.ram-details {
+    padding: var(--space-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+}
+
+.ram-progress {
+    margin-bottom: var(--space-sm);
+}
+
+.ram-progress .progress {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: var(--space-xs);
+}
+
+.ram-progress .progress-bar {
+    height: 100%;
+    background: var(--gradient-info);
+    transition: width var(--transition-normal);
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.progress-text .percentage {
+    color: var(--cyan-neon);
+    font-weight: 600;
+}
+
+.ram-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+}
+
+.breakdown-item {
+    text-align: center;
+}
+
+.breakdown-item .label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    margin-bottom: 2px;
+}
+
+.breakdown-item .value {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Disk Card Specific */
+.disk-chart-container {
+    height: 150px;
+    margin-bottom: var(--space-md);
+}
+
+.disk-partitions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.partition-item {
+    padding: var(--space-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+}
+
+.partition-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-xs);
+}
+
+.partition-drive {
+    font-weight: 700;
+    color: var(--primary-neon);
+    font-size: 1rem;
+}
+
+.partition-type {
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.partition-space {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.partition-space .used {
+    color: var(--danger-neon);
+    font-weight: 600;
+}
+
+.partition-space .total {
+    color: var(--text-secondary);
+}
+
+.partition-progress {
+    margin-top: var(--space-xs);
+}
+
+.partition-progress .progress {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.partition-progress .progress-bar {
+    height: 100%;
+    background: var(--gradient-warning);
+    transition: width var(--transition-normal);
+}
+
+/* Network Card Specific */
+.network-chart-container {
+    height: 150px;
+    margin-bottom: var(--space-md);
+}
+
+.network-stats {
+    padding: var(--space-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs);
+}
+
+.stat-item i {
+    font-size: 1.2rem;
+    color: var(--cyan-neon);
+    width: 24px;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-content .label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    margin-bottom: 2px;
+}
+
+.stat-content .value {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Card Footer */
+.card-footer {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-actions {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: flex-end;
+}
+
+.footer-actions .btn {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.8rem;
+}
+
+/* ============================================
+   9. Quick Actions Panel
+============================================ */
+
+.quick-actions-section {
+    margin-bottom: var(--space-2xl);
+}
+
+.section-header {
+    margin-bottom: var(--space-lg);
+}
+
+.section-header h3 {
+    margin-bottom: var(--space-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.section-header p {
+    color: var(--text-tertiary);
+    margin: 0;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-md);
+}
+
+.action-btn {
+    padding: var(--space-lg);
+    text-align: right;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.action-btn:hover {
+    transform: translateY(-8px);
+}
+
+.action-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-md);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.action-content {
+    text-align: right;
+}
+
+.action-content h4 {
+    margin-bottom: var(--space-xs);
+    font-size: 1.1rem;
+}
+
+.action-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.action-badge {
+    position: absolute;
+    top: var(--space-md);
+    left: var(--space-md);
+    background: rgba(0, 255, 140, 0.2);
+    color: var(--primary-neon);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid rgba(0, 255, 140, 0.3);
+}
+
+/* ============================================
+   10. AI Quick Assistant
+============================================ */
+
+.ai-quick-section {
+    padding: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.ai-quick-input {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    align-items: center;
+}
+
+.ai-quick-input input {
+    flex: 1;
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: all var(--transition-normal);
+}
+
+.ai-quick-input input:focus {
+    outline: none;
+    border-color: var(--primary-neon);
+    box-shadow: var(--shadow-neon);
+}
+
+.ai-quick-input input::placeholder {
+    color: var(--text-tertiary);
+}
+
+.ai-quick-input .btn {
+    background: var(--gradient-primary);
+    color: var(--bg-darker);
+    border: none;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    min-width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-quick-input .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+}
+
+.ai-suggestions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-sm);
+}
+
+.suggestion-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-align: right;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+}
+
+.suggestion-btn:hover {
+    background: var(--gradient-primary);
+    color: var(--bg-darker);
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.suggestion-btn i {
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   11. Recent Activity
+============================================ */
+
+.activity-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.activity-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.recent-commands,
+.system-alerts,
+.performance-tips {
+    padding: var(--space-xl);
+}
+
+.commands-list,
+.alerts-container,
+.tips-container {
+    margin-top: var(--space-lg);
+}
+
+.commands-list .empty-state {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--text-tertiary);
+}
+
+.commands-list .empty-state i {
+    font-size: 3rem;
+    margin-bottom: var(--space-md);
+    opacity: 0.5;
+}
+
+.command-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--space-sm);
+    transition: var(--transition-fast);
+}
+
+.command-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 255, 140, 0.2);
+}
+
+.command-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.command-text {
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+    word-break: break-all;
+}
+
+.command-time {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+}
+
+.command-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: 70px;
+    text-align: center;
+}
+
+.command-status.success {
+    background: rgba(0, 255, 140, 0.2);
+    color: var(--primary-neon);
+}
+
+.command-status.error {
+    background: rgba(255, 26, 26, 0.2);
+    color: var(--danger-neon);
+}
+
+/* Alerts */
+.alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--space-sm);
+    transition: var(--transition-fast);
+}
+
+.alert-item.warning {
+    background: rgba(255, 240, 26, 0.1);
+    border-color: rgba(255, 240, 26, 0.3);
+}
+
+.alert-item.info {
+    background: rgba(0, 255, 255, 0.1);
+    border-color: rgba(0, 255, 255, 0.3);
+}
+
+.alert-item.error {
+    background: rgba(255, 26, 26, 0.1);
+    border-color: rgba(255, 26, 26, 0.3);
+}
+
+.alert-item.success {
+    background: rgba(0, 255, 140, 0.1);
+    border-color: rgba(0, 255, 140, 0.3);
+}
+
+.alert-item i {
+    font-size: 1.2rem;
+    margin-top: 2px;
+}
+
+.alert-item.warning i {
+    color: var(--warning-neon);
+}
+
+.alert-item.info i {
+    color: var(--cyan-neon);
+}
+
+.alert-item.error i {
+    color: var(--danger-neon);
+}
+
+.alert-item.success i {
+    color: var(--primary-neon);
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.alert-message {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.alert-time {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+}
+
+/* Tips */
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.tip-item i {
+    color: var(--primary-neon);
+    font-size: 1.2rem;
+    margin-top: 2px;
+}
+
+.tip-content h4 {
+    margin-bottom: 4px;
+    font-size: 1rem;
+}
+
+.tip-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   12. AI Center Page
+============================================ */
+
+.ai-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--space-xl);
+    min-height: 600px;
+}
+
+/* AI Sidebar */
+.ai-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    padding: var(--space-lg);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.sidebar-section {
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.sidebar-section h4 {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.template-list,
+.history-list,
+.pinned-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.template-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-align: right;
+    font-size: 0.9rem;
+}
+
+.template-btn:hover {
+    background: rgba(0, 255, 140, 0.1);
+    color: var(--primary-neon);
+    border-color: rgba(0, 255, 140, 0.3);
+    transform: translateX(-4px);
+}
+
+.history-item,
+.pinned-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.history-item.active,
+.history-item:hover,
+.pinned-item:hover {
+    background: rgba(0, 255, 140, 0.1);
+    color: var(--primary-neon);
+}
+
+.empty-state {
+    text-align: center;
+    padding: var(--space-lg);
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
+}
+
+.empty-state i {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+    opacity: 0.5;
+}
+
+/* AI Main Content */
+.ai-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+/* Chat Container */
+.ai-chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--space-md);
+}
+
+.chat-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.chat-title h3 {
+    margin: 0;
+}
+
+.chat-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.message {
+    display: flex;
+    gap: var(--space-md);
+    max-width: 80%;
+}
+
+.message.ai-message {
+    align-self: flex-start;
+}
+
+.message.user-message {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-round);
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.message.ai-message .message-avatar {
+    background: var(--gradient-primary);
+}
+
+.message.user-message .message-avatar {
+    background: var(--gradient-cyber);
+}
+
+.message-content {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message.ai-message .message-content {
+    border-top-right-radius: 0;
+}
+
+.message.user-message .message-content {
+    border-top-left-radius: 0;
+    background: rgba(0, 255, 255, 0.1);
+    border-color: rgba(0, 255, 255, 0.2);
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-xs);
+}
+
+.message-sender {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.message-time {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+}
+
+.message-body p {
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.message-body ul,
+.message-body ol {
+    padding-right: var(--space-lg);
+    margin-bottom: var(--space-xs);
+}
+
+.message-body li {
+    margin-bottom: 2px;
+    color: var(--text-secondary);
+}
+
+/* Chat Input */
+.chat-input-container {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: var(--space-md);
+}
+
+.chat-input-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.input-action-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-round);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.input-action-btn:hover {
+    background: var(--primary-neon);
+    color: var(--bg-darker);
+    border-color: transparent;
+}
+
+.chat-input-container textarea {
+    width: 100%;
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    resize: vertical;
+    min-height: 80px;
+    transition: var(--transition-normal);
+}
+
+.chat-input-container textarea:focus {
+    outline: none;
+    border-color: var(--primary-neon);
+    box-shadow: var(--shadow-neon);
+}
+
+.chat-send-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--space-sm);
+}
+
+/* AI Tools */
+.ai-tools-container {
+    padding: var(--space-lg);
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-md);
+}
+
+.tool-card {
+    padding: var(--space-lg);
+    text-align: center;
+    transition: var(--transition-normal);
+}
+
+.tool-card:hover {
+    transform: translateY(-8px);
+}
+
+.tool-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-md);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.tool-card h4 {
+    margin-bottom: var(--space-xs);
+}
+
+.tool-card p {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-md);
+    color: var(--text-secondary);
+}
+
+.tool-card .btn {
+    width: 100%;
+}
+
+/* ============================================
+   13. Buttons
+============================================ */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.btn:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    20% {
+        transform: scale(25, 25);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(40, 40);
+        opacity: 0;
     }
 }
 
-/**
- * Start real-time system monitoring
- */
-function startSystemMonitoring() {
-    // Simulate system monitoring every 2 seconds
-    setInterval(() => {
-        updateSystemStatus();
-        updateCharts();
-        checkAlerts();
-    }, 2000);
-    
-    console.log('🔄 System monitoring started');
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
-/**
- * Update system status
- */
-function updateSystemStatus() {
-    // Simulate system data
-    AppState.systemStatus = {
-        cpu: {
-            usage: Math.min(100, Math.max(10, Math.random() * 80 + 10)),
-            temperature: 40 + Math.random() * 20,
-            cores: 8,
-            frequency: 2.5 + Math.random() * 1.7
-        },
-        ram: {
-            usage: Math.min(100, Math.max(20, Math.random() * 60 + 20)),
-            total: 16,
-            used: Math.floor(Math.random() * 10 + 6),
-            free: 16 - (Math.floor(Math.random() * 10 + 6)),
-            cache: 1 + Math.random() * 3
-        },
-        disk: {
-            usage: Math.min(100, Math.max(15, Math.random() * 50 + 15)),
-            total: 512,
-            used: 128 + Math.random() * 100,
-            free: 384 - Math.random() * 100
-        },
-        network: {
-            up: Math.floor(Math.random() * 50),
-            down: Math.floor(Math.random() * 100),
-            connections: Math.floor(Math.random() * 20),
-            ping: 20 + Math.random() * 50
-        },
-        lastUpdate: new Date()
-    };
-    
-    // Update UI
-    updateSystemStatusUI();
+.btn:active {
+    transform: translateY(0);
 }
 
-/**
- * Update system status UI
- */
-function updateSystemStatusUI() {
-    const status = AppState.systemStatus;
-    
-    // Update CPU card
-    const cpuElement = document.getElementById('cpuUsage');
-    if (cpuElement) {
-        cpuElement.textContent = `${status.cpu.usage.toFixed(1)}%`;
-        cpuElement.style.color = window.ArkaUtils ? 
-            window.ArkaUtils.getPercentageColor(status.cpu.usage) : '#3b82f6';
-    }
-    
-    // Update RAM card
-    const ramElement = document.getElementById('ramUsage');
-    if (ramElement) {
-        ramElement.textContent = `${status.ram.usage.toFixed(1)}%`;
-        ramElement.style.color = window.ArkaUtils ? 
-            window.ArkaUtils.getPercentageColor(status.ram.usage) : '#10b981';
-    }
-    
-    // Update Disk card
-    const diskElement = document.getElementById('diskUsage');
-    if (diskElement) {
-        diskElement.textContent = `${status.disk.usage.toFixed(1)}%`;
-        diskElement.style.color = window.ArkaUtils ? 
-            window.ArkaUtils.getPercentageColor(status.disk.usage) : '#8b5cf6';
-    }
-    
-    // Update Network card
-    const networkElement = document.getElementById('networkActivity');
-    if (networkElement) {
-        networkElement.textContent = `${status.network.down} ↓ | ${status.network.up} ↑`;
-    }
-    
-    // Update last update time
-    const timeElement = document.getElementById('lastUpdateTime');
-    if (timeElement && status.lastUpdate) {
-        timeElement.textContent = status.lastUpdate.toLocaleTimeString('fa-IR');
-    }
+/* Button Variants */
+.btn-primary {
+    background: var(--gradient-primary);
+    color: var(--bg-darker);
+    border: none;
 }
 
-/**
- * Update charts with new data
- */
-function updateCharts() {
-    const now = new Date();
-    
-    // Update each chart
-    Object.keys(AppState.charts).forEach(chartKey => {
-        const chart = AppState.charts[chartKey];
-        if (!chart) return;
-        
-        // Generate new data
-        const newValue = AppState.systemStatus[chartKey]?.usage || 
-                        (Math.random() * 60 + 20);
-        
-        // Add new data point
-        chart.data.labels = chart.data.labels || [];
-        chart.data.datasets[0].data = chart.data.datasets[0].data || [];
-        
-        // Add new point
-        chart.data.labels.push(now.toLocaleTimeString('fa-IR', { 
-            hour: '2-digit', 
-            minute: '2-digit',
-            second: '2-digit'
-        }));
-        chart.data.datasets[0].data.push(newValue);
-        
-        // Keep maximum 60 data points
-        if (chart.data.labels.length > 60) {
-            chart.data.labels.shift();
-            chart.data.datasets[0].data.shift();
-        }
-        
-        // Update chart
-        chart.update('none');
-    });
+.btn-primary:hover {
+    background: linear-gradient(135deg, #00e67c, #00e6e6);
+    box-shadow: 0 5px 20px rgba(0, 255, 140, 0.4);
 }
 
-// ============================================
-// Section 4: AI Assistant
-// ============================================
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-/**
- * Initialize AI Assistant
- */
-function initializeAIAssistant() {
-    // Load history from localStorage
-    if (window.ArkaUtils) {
-        AppState.aiHistory = window.ArkaUtils.loadFromStorage('arka_chat_history') || [];
-        AppState.pinnedCommands = window.ArkaUtils.loadFromStorage('arka_pinned_commands') || [];
-        
-        // Update UI
-        renderChatHistory();
-        renderPinnedCommands();
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-success {
+    background: var(--gradient-success);
+    color: var(--bg-darker);
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #00e67c, #00e600);
+}
+
+.btn-danger {
+    background: var(--gradient-danger);
+    color: var(--bg-darker);
+    border: none;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #e60000, #e600e6);
+}
+
+.btn-warning {
+    background: var(--gradient-warning);
+    color: var(--bg-darker);
+    border: none;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #e6d700, #e67c00);
+}
+
+.btn-info {
+    background: var(--gradient-info);
+    color: var(--bg-darker);
+    border: none;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #0077e6, #00e6e6);
+}
+
+/* Outline Variants */
+.btn-outline-primary {
+    background: transparent;
+    color: var(--primary-neon);
+    border: 2px solid var(--primary-neon);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-neon);
+    color: var(--bg-darker);
+}
+
+.btn-outline-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.8rem;
+}
+
+.btn-lg {
+    padding: var(--space-md) var(--space-lg);
+    font-size: 1rem;
+}
+
+.btn-block {
+    width: 100%;
+    display: flex;
+}
+
+/* Button with Icon */
+.btn i {
+    font-size: 1em;
+}
+
+/* ============================================
+   14. Form Elements
+============================================ */
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    transition: all var(--transition-normal);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-neon);
+    box-shadow: var(--shadow-neon);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.form-control::placeholder {
+    color: var(--text-tertiary);
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2300ff8c' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 12px center;
+    background-size: 12px;
+    padding-left: 32px;
+}
+
+/* Checkbox and Radio */
+input[type="checkbox"],
+input[type="radio"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all var(--transition-fast);
+}
+
+input[type="radio"] {
+    border-radius: 50%;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background: var(--primary-neon);
+    border-color: var(--primary-neon);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--bg-darker);
+    font-size: 10px;
+    font-weight: bold;
+}
+
+input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--bg-darker);
+    border-radius: 50%;
+}
+
+/* Range Slider */
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--primary-neon);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: var(--shadow-neon);
+    transform: scale(1.2);
+}
+
+/* ============================================
+   15. Modal Styles
+============================================ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: var(--z-modal);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    animation: fadeIn var(--transition-normal);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
     }
-    
-    // Load AI templates
-    loadAITemplates();
-    
-    console.log('🤖 AI Assistant ready');
-}
-
-/**
- * Load AI templates
- */
-function loadAITemplates() {
-    const templatesContainer = document.getElementById('aiTemplates');
-    if (!templatesContainer || !window.ArkaUtils) return;
-    
-    // Available templates
-    const templates = [
-        { id: 'analyze_slowdown', title: 'Analyze Slowdown', icon: '⏱️' },
-        { id: 'gaming_optimization', title: 'Gaming Optimization', icon: '🎮' },
-        { id: 'security_scan', title: 'Security Scan', icon: '🛡️' },
-        { id: 'create_script', title: 'Create Script', icon: '📝' },
-        { id: 'system_report', title: 'System Report', icon: '📊' }
-    ];
-    
-    // Create template HTML
-    templatesContainer.innerHTML = templates.map(template => `
-        <div class="template-btn" data-template="${template.id}">
-            <div class="template-icon">${template.icon}</div>
-            <div class="template-title">${template.title}</div>
-        </div>
-    `).join('');
-    
-    // Add event listeners
-    document.querySelectorAll('.template-btn').forEach(template => {
-        template.addEventListener('click', function() {
-            const templateId = this.dataset.template;
-            loadAITemplate(templateId);
-        });
-    });
-}
-
-/**
- * Load specific template into chat input
- * @param {string} templateId - Template ID
- */
-function loadAITemplate(templateId) {
-    if (!window.ArkaUtils) return;
-    
-    const chatInput = document.getElementById('chatInput');
-    if (!chatInput) return;
-    
-    const template = window.ArkaUtils.getAITemplate(templateId);
-    if (template) {
-        chatInput.value = template;
-        chatInput.focus();
-        
-        // Show confirmation
-        window.ArkaUtils.showToast(`Template "${templateId}" loaded`, 'success');
-    }
-}
-
-/**
- * Send message to AI Assistant
- */
-async function sendAIMessage() {
-    const chatInput = document.getElementById('chatInput');
-    if (!chatInput || !chatInput.value.trim()) return;
-    
-    const message = chatInput.value.trim();
-    const chatMessages = document.getElementById('chatMessages');
-    
-    if (!chatMessages) return;
-    
-    try {
-        // Sanitize user input
-        const sanitizedMessage = window.ArkaUtils ? 
-            window.ArkaUtils.sanitizeInput(message) : message;
-        
-        // Show user message
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.className = 'message user-message';
-        userMessageDiv.innerHTML = `
-            <div class="message-avatar">👤</div>
-            <div class="message-content">
-                <div class="message-text">${sanitizedMessage}</div>
-                <div class="message-time">${new Date().toLocaleTimeString('fa-IR')}</div>
-            </div>
-        `;
-        chatMessages.appendChild(userMessageDiv);
-        
-        // Clear input
-        chatInput.value = '';
-        
-        // Scroll to bottom
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        // Show typing indicator
-        const typingIndicator = document.createElement('div');
-        typingIndicator.className = 'message ai-message typing';
-        typingIndicator.innerHTML = `
-            <div class="message-avatar">🤖</div>
-            <div class="message-content">
-                <div class="message-text">
-                    <span class="typing-dots">
-                        <span>.</span><span>.</span><span>.</span>
-                    </span>
-                </div>
-            </div>
-        `;
-        chatMessages.appendChild(typingIndicator);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        // Simulate AI response delay
-        await delay(1000 + Math.random() * 2000);
-        
-        // Remove typing indicator
-        typingIndicator.remove();
-        
-        // Generate AI response
-        const aiResponse = await generateAIResponse(message);
-        
-        // Show AI response
-        const aiMessageDiv = document.createElement('div');
-        aiMessageDiv.className = 'message ai-message';
-        aiMessageDiv.innerHTML = `
-            <div class="message-avatar">🤖</div>
-            <div class="message-content">
-                <div class="message-text">${aiResponse}</div>
-                <div class="message-actions">
-                    <button class="action-btn copy-btn" title="Copy">
-                        📋
-                    </button>
-                    <button class="action-btn pin-btn" title="Save">
-                        📌
-                    </button>
-                </div>
-                <div class="message-time">${new Date().toLocaleTimeString('fa-IR')}</div>
-            </div>
-        `;
-        chatMessages.appendChild(aiMessageDiv);
-        
-        // Scroll to bottom
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        // Save to history
-        if (window.ArkaUtils) {
-            const category = window.ArkaUtils.categorizeCommand(message);
-            window.ArkaUtils.chatHistoryManager.addEntry(
-                message,
-                aiResponse,
-                category
-            );
-            
-            // Update UI history
-            renderChatHistory();
-        }
-        
-        // Track analytics
-        if (window.ArkaUtils) {
-            window.ArkaUtils.trackEvent('ai_message_sent', {
-                category: category || 'general',
-                length: message.length
-            });
-        }
-        
-    } catch (error) {
-        console.error('❌ Message sending error:', error);
-        if (window.ArkaUtils) {
-            window.ArkaUtils.showToast('Error communicating with AI', 'error');
-        }
+    to {
+        opacity: 1;
     }
 }
 
-/**
- * Generate AI response (simulation)
- * @param {string} message - User message
- * @returns {Promise<string>} - AI response
- */
-async function generateAIResponse(message) {
-    // Simulate processing delay
-    await delay(500 + Math.random() * 1000);
-    
-    const lowerMessage = message.toLowerCase();
-    
-    // Predefined responses
-    if (lowerMessage.includes('slow') || lowerMessage.includes('کند')) {
-        return `✅ Analyzing your system performance:
-        
-• CPU Usage: ${AppState.systemStatus.cpu.usage.toFixed(1)}% (${AppState.systemStatus.cpu.usage > 70 ? 'High' : 'Normal'})
-• RAM Usage: ${AppState.systemStatus.ram.usage.toFixed(1)}% (${AppState.systemStatus.ram.usage > 80 ? 'Needs freeing' : 'Good'})
-• Temperature: ${AppState.systemStatus.cpu.temperature.toFixed(1)}°C
+.modal {
+    background: var(--bg-panel);
+    border-radius: var(--radius-lg);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalIn var(--transition-normal);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-xl);
+}
 
-💡 Suggestions:
-1. Run "Memory Optimization" to free up RAM
-2. Close unnecessary background applications
-3. Check for Windows updates
-4. Consider using "Gaming" profile for better performance
-
-Would you like me to run memory optimization?`;
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
     }
-    
-    if (lowerMessage.includes('game') || lowerMessage.includes('گیم')) {
-        return `🎮 For gaming optimization:
-        
-1. Switch to "Gaming" profile for best performance
-2. Close background apps: Discord, Chrome, Spotify
-3. Set process priority to High
-4. Disable Windows Update temporarily
-5. Current CPU temperature: ${AppState.systemStatus.cpu.temperature.toFixed(1)}°C
-
-⚡ Performance improvements:
-• 15-25% better FPS in most games
-• Reduced input lag
-• Smoother gameplay experience
-
-Would you like to activate the Gaming profile?`;
-    }
-    
-    if (lowerMessage.includes('security') || lowerMessage.includes('اسکن')) {
-        return `🛡️ Running security analysis...
-        
-✅ Status:
-• Windows Firewall: Active
-• Windows Defender: Updated
-• Open ports: ${AppState.systemStatus.network.connections}
-• Security patches: Checking...
-
-🔍 Scan Results:
-• No malware detected
-• 2 tracking cookies found and removed
-• Network security: Good
-• System integrity: Verified
-
-📋 Recommendations:
-1. Keep Windows updated
-2. Use strong passwords
-3. Enable two-factor authentication
-4. Regular security scans
-
-Would you like me to schedule automatic security scans?`;
-    }
-    
-    // General responses
-    const responses = [
-        "I've received your request and I'm processing it...",
-        "System check completed. Overall status is good.",
-        "Do you need more detailed guidance?",
-        "I can create a custom optimization script for you.",
-        "I recommend selecting the profile that matches your current task.",
-        "System analysis shows normal performance levels.",
-        "Would you like me to check for any performance issues?",
-        "I can help automate routine system maintenance tasks."
-    ];
-    
-    return responses[Math.floor(Math.random() * responses.length)];
-}
-
-/**
- * Render chat history in sidebar
- */
-function renderChatHistory() {
-    const historyContainer = document.getElementById('chatHistory');
-    if (!historyContainer || !window.ArkaUtils) return;
-    
-    // Get last 10 items
-    const recentHistory = AppState.aiHistory.slice(0, 10);
-    
-    historyContainer.innerHTML = recentHistory.length > 0 ? 
-        recentHistory.map(entry => `
-            <div class="history-item" data-id="${entry.id}">
-                <div class="history-preview">${entry.userInput.substring(0, 50)}...</div>
-                <div class="history-time">
-                    ${new Date(entry.timestamp).toLocaleDateString('fa-IR')}
-                </div>
-            </div>
-        `).join('') : 
-        '<div class="empty-state">No history found</div>';
-    
-    // Add event listeners
-    document.querySelectorAll('.history-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const entryId = this.dataset.id;
-            const entry = AppState.aiHistory.find(e => e.id === entryId);
-            if (entry) {
-                loadChatHistoryEntry(entry);
-            }
-        });
-    });
-}
-
-/**
- * Render pinned commands
- */
-function renderPinnedCommands() {
-    const pinnedContainer = document.getElementById('pinnedCommands');
-    if (!pinnedContainer) return;
-    
-    pinnedContainer.innerHTML = AppState.pinnedCommands.length > 0 ? 
-        AppState.pinnedCommands.map(cmd => `
-            <div class="pinned-command">
-                <div class="command-text">${cmd.command.substring(0, 60)}...</div>
-                <button class="remove-pin" data-id="${cmd.id}">×</button>
-            </div>
-        `).join('') : 
-        '<div class="empty-state">No saved commands</div>';
-}
-
-/**
- * Load chat history entry
- * @param {object} entry - History entry
- */
-function loadChatHistoryEntry(entry) {
-    const chatMessages = document.getElementById('chatMessages');
-    if (!chatMessages) return;
-    
-    // Clear current messages
-    chatMessages.innerHTML = '';
-    
-    // Add messages
-    const userMessageDiv = document.createElement('div');
-    userMessageDiv.className = 'message user-message';
-    userMessageDiv.innerHTML = `
-        <div class="message-avatar">👤</div>
-        <div class="message-content">
-            <div class="message-text">${entry.userInput}</div>
-            <div class="message-time">${new Date(entry.timestamp).toLocaleTimeString('fa-IR')}</div>
-        </div>
-    `;
-    chatMessages.appendChild(userMessageDiv);
-    
-    const aiMessageDiv = document.createElement('div');
-    aiMessageDiv.className = 'message ai-message';
-    aiMessageDiv.innerHTML = `
-        <div class="message-avatar">🤖</div>
-        <div class="message-content">
-            <div class="message-text">${entry.aiResponse}</div>
-            <div class="message-time">${new Date(entry.timestamp).toLocaleTimeString('fa-IR')}</div>
-        </div>
-    `;
-    chatMessages.appendChild(aiMessageDiv);
-    
-    // Scroll to bottom
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-// ============================================
-// Section 5: System Operations
-// ============================================
-
-/**
- * Run system optimization
- * @param {string} operationType - Operation type
- */
-async function runSystemOperation(operationType) {
-    try {
-        // Show operation modal
-        const operationModal = document.getElementById('progressModal');
-        const operationTitle = document.getElementById('operationTitle');
-        const operationProgress = document.getElementById('operationProgress');
-        const operationLog = document.getElementById('operationLog');
-        
-        if (!operationModal || !operationTitle || !operationProgress || !operationLog) {
-            throw new Error('Operation elements not found');
-        }
-        
-        // Operation settings
-        const operations = {
-            memory_optimization: {
-                title: 'Memory Optimization',
-                color: '#10b981'
-            },
-            security_scan: {
-                title: 'Security Scan',
-                color: '#ef4444'
-            },
-            troubleshoot: {
-                title: 'System Troubleshooting',
-                color: '#f59e0b'
-            }
-        };
-        
-        const operation = operations[operationType] || operations.memory_optimization;
-        
-        // Set title
-        operationTitle.textContent = operation.title;
-        operationProgress.style.backgroundColor = operation.color;
-        
-        // Clear previous log
-        operationLog.innerHTML = '<p>Starting operation...</p>';
-        
-        // Show modal
-        operationModal.style.display = 'flex';
-        
-        // Run operation
-        if (window.ArkaUtils) {
-            const result = await window.ArkaUtils.simulateSystemOperation(operationType);
-            
-            // Update UI with results
-            updateOperationResult(result);
-            
-            // Track event
-            window.ArkaUtils.trackEvent('system_operation_completed', {
-                type: operationType,
-                success: result.success
-            });
-        }
-        
-        // Close modal after 3 seconds
-        setTimeout(() => {
-            operationModal.style.display = 'none';
-        }, 3000);
-        
-    } catch (error) {
-        console.error('❌ Operation execution error:', error);
-        if (window.ArkaUtils) {
-            window.ArkaUtils.showToast('Operation execution error', 'error');
-        }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
-/**
- * Update operation result
- * @param {object} result - Operation result
- */
-function updateOperationResult(result) {
-    // Update system with new results
-    if (result.success) {
-        if (window.ArkaUtils) {
-            window.ArkaUtils.showToast('Operation completed successfully', 'success');
-        }
-        
-        // Update system status
-        if (result.freedMemory > 0) {
-            AppState.systemStatus.ram.free += result.freedMemory / 1024; // Convert to GB
-            AppState.systemStatus.ram.usage = 
-                ((AppState.systemStatus.ram.total - AppState.systemStatus.ram.free) / 
-                AppState.systemStatus.ram.total) * 100;
-        }
-    } else {
-        if (window.ArkaUtils) {
-            window.ArkaUtils.showToast('Operation encountered an error', 'error');
-        }
+.modal-header {
+    padding: var(--space-lg) var(--space-xl);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-round);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: var(--danger-neon);
+    background: rgba(255, 26, 26, 0.1);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: var(--space-xl);
+}
+
+.modal-footer {
+    padding: var(--space-lg) var(--space-xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: flex-end;
+}
+
+/* AI Response Modal Specific */
+.ai-response-modal {
+    max-width: 800px;
+}
+
+.ai-response-modal .modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* Permission Modal Specific */
+.permission-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    margin: var(--space-lg) 0;
+}
+
+.detail-row {
+    display: flex;
+    gap: var(--space-md);
+    align-items: flex-start;
+}
+
+.detail-icon {
+    font-size: 1.5rem;
+    color: var(--primary-neon);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.detail-content h5 {
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+}
+
+.detail-content ul {
+    list-style: none;
+    padding-right: var(--space-md);
+}
+
+.detail-content li {
+    padding: var(--space-xs) 0;
+    color: var(--text-secondary);
+    position: relative;
+    font-size: 0.9rem;
+}
+
+.detail-content li::before {
+    content: '•';
+    color: var(--primary-neon);
+    margin-left: var(--space-sm);
+    position: absolute;
+    right: -12px;
+}
+
+.privacy-guarantee {
+    background: rgba(0, 255, 140, 0.1);
+    border: 1px solid rgba(0, 255, 140, 0.3);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin: var(--space-lg) 0;
+    font-size: 0.9rem;
+}
+
+.privacy-guarantee i {
+    color: var(--primary-neon);
+    margin-left: var(--space-sm);
+}
+
+.permission-options {
+    margin: var(--space-lg) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.permission-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-normal);
+}
+
+.permission-option:hover {
+    border-color: var(--primary-neon);
+    background: rgba(0, 255, 140, 0.05);
+}
+
+.permission-option input[type="radio"] {
+    margin: 0;
+}
+
+/* Progress Modal Specific */
+.progress-modal {
+    max-width: 500px;
+}
+
+.progress-modal .modal-header {
+    border-bottom: none;
+}
+
+.progress-container {
+    margin-bottom: var(--space-lg);
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: var(--space-sm);
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 4px;
+    transition: width var(--transition-normal);
+    width: 0%;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.progress-details {
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   16. Footer
+============================================ */
+
+.main-footer {
+    background: rgba(10, 10, 18, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-2xl);
+    backdrop-filter: blur(20px);
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-2xl);
+}
+
+.footer-section h5 {
+    color: var(--primary-neon);
+    margin-bottom: var(--space-lg);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.footer-section ul li i {
+    color: var(--primary-neon);
+    width: 20px;
+}
+
+.social-links {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+}
+
+.social-link {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-round);
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+    text-decoration: none;
+}
+
+.social-link:hover {
+    background: var(--primary-neon);
+    color: var(--bg-darker);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-neon);
+}
+
+.system-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+}
+
+.status-item.online {
+    color: var(--primary-neon);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-round);
+    background: var(--primary-neon);
+    animation: pulse 2s infinite;
+}
+
+.status-sub {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    margin-right: var(--space-xs);
+}
+
+.footer-bottom {
+    max-width: 1400px;
+    margin: var(--space-xl) auto 0;
+    padding: var(--space-lg) var(--space-xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: var(--text-tertiary);
+    font-size: 0.875rem;
+}
+
+.credits {
+    color: var(--primary-neon);
+    font-weight: 600;
+    margin-right: var(--space-sm);
+}
+
+.footer-links {
+    display: flex;
+    gap: var(--space-lg);
+}
+
+.footer-links a {
+    color: var(--text-tertiary);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: var(--primary-neon);
+}
+
+/* ============================================
+   17. Responsive Design
+============================================ */
+
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .ai-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .ai-sidebar {
+        position: static;
+        order: 2;
+    }
+    
+    .ai-main-content {
+        order: 1;
     }
 }
 
-// ============================================
-// Section 6: Profile Management
-// ============================================
-
-/**
- * Load system profiles
- */
-function loadSystemProfiles() {
-    const profilesContainer = document.getElementById('systemProfiles');
-    if (!profilesContainer) return;
+@media (max-width: 992px) {
+    html {
+        font-size: 15px;
+    }
     
-    // Create profile HTML
-    profilesContainer.innerHTML = Object.values(AppState.profiles).map(profile => `
-        <div class="profile-card ${profile.active ? 'active' : ''}" data-profile="${profile.id}">
-            <div class="profile-icon">${profile.icon}</div>
-            <div class="profile-info">
-                <h4>${profile.name}</h4>
-                <p>${profile.description}</p>
-                <div class="profile-tags">
-                    ${Object.entries(profile.settings).map(([key, value]) => 
-                        `<span class="profile-tag">${key}: ${value}</span>`
-                    ).join('')}
-                </div>
-            </div>
-            <button class="activate-btn ${profile.active ? 'active' : ''}">
-                ${profile.active ? 'Active' : 'Activate'}
-            </button>
-        </div>
-    `).join('');
+    .main-navbar {
+        padding: var(--space-sm);
+    }
     
-    // Add event listeners
-    document.querySelectorAll('.activate-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const profileCard = this.closest('.profile-card');
-            const profileId = profileCard.dataset.profile;
-            activateProfile(profileId);
-        });
-    });
+    .navbar-container {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
     
-    console.log('✅ System profiles loaded');
-}
-
-/**
- * Activate system profile
- * @param {string} profileId - Profile ID
- */
-function activateProfile(profileId) {
-    // Deactivate all profiles
-    Object.keys(AppState.profiles).forEach(key => {
-        AppState.profiles[key].active = false;
-    });
+    .nav-list {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
     
-    // Activate selected profile
-    if (AppState.profiles[profileId]) {
-        AppState.profiles[profileId].active = true;
-        AppState.userSettings.selectedProfile = profileId;
-        
-        // Update UI
-        loadSystemProfiles();
-        
-        // Apply profile settings
-        applyProfileSettings(profileId);
-        
-        // Show notification
-        if (window.ArkaUtils) {
-            window.ArkaUtils.showToast(`Profile "${AppState.profiles[profileId].name}" activated`, 'success');
-        }
-        
-        // Track event
-        if (window.ArkaUtils) {
-            window.ArkaUtils.trackEvent('profile_activated', {
-                profile: profileId
-            });
-        }
+    .main-content {
+        padding: var(--space-md);
+    }
+    
+    .activity-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/**
- * Apply profile settings
- * @param {string} profileId - Profile ID
- */
-function applyProfileSettings(profileId) {
-    const profile = AppState.profiles[profileId];
-    if (!profile) return;
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
     
-    console.log(`🎯 Applying profile settings: ${profile.name}`);
+    h1 {
+        font-size: 2rem;
+    }
     
-    // Simulate applying settings
-    switch (profileId) {
-        case 'gaming':
-            console.log('🎮 Gaming mode activated');
-            break;
-        case 'work':
-            console.log('💼 Work mode activated');
-            break;
-        case 'editing':
-            console.log('🎬 Editing mode activated');
-            break;
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .ai-suggestions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-links {
+        justify-content: center;
+    }
+    
+    .modal {
+        max-width: 95%;
+    }
+    
+    .warning-options {
+        flex-direction: column;
     }
 }
 
-// ============================================
-// Section 7: Alert System
-// ============================================
-
-/**
- * Initialize alert system
- */
-function initializeAlertSystem() {
-    console.log('🔔 Alert system activated');
-}
-
-/**
- * Check for alert conditions
- */
-function checkAlerts() {
-    const status = AppState.systemStatus;
-    
-    // Check CPU
-    if (status.cpu.usage > 85) {
-        showAlert('High CPU Usage Alert', 
-            `CPU usage reached ${status.cpu.usage.toFixed(1)}%`, 
-            'warning');
+@media (max-width: 576px) {
+    .quick-actions-grid,
+    .ai-suggestions,
+    .tools-grid {
+        grid-template-columns: 1fr;
     }
     
-    // Check RAM
-    if (status.ram.usage > 90) {
-        showAlert('High RAM Usage Alert',
-            `RAM usage reached ${status.ram.usage.toFixed(1)}%`,
-            'critical');
+    .stat-grid {
+        grid-template-columns: 1fr;
     }
     
-    // Check temperature
-    if (status.cpu.temperature > 75) {
-        showAlert('High CPU Temperature',
-            `CPU temperature reached ${status.cpu.temperature.toFixed(1)}°C`,
-            'warning');
+    .ram-breakdown {
+        grid-template-columns: 1fr;
+    }
+    
+    .ai-quick-input {
+        flex-direction: column;
+    }
+    
+    .ai-quick-input .btn {
+        width: 100%;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
     }
 }
 
-/**
- * Show alert
- * @param {string} title - Alert title
- * @param {string} message - Alert message
- * @param {string} type - Alert type
- */
-function showAlert(title, message, type = 'info') {
-    // Only if notifications are enabled
-    if (!AppState.userSettings.notifications) return;
-    
-    // Create alert element
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `system-alert alert-${type}`;
-    alertDiv.innerHTML = `
-        <div class="alert-icon">
-            ${type === 'critical' ? '🔥' : 
-              type === 'warning' ? '⚠️' : 'ℹ️'}
-        </div>
-        <div class="alert-content">
-            <div class="alert-title">${title}</div>
-            <div class="alert-message">${message}</div>
-        </div>
-        <button class="alert-close">×</button>
-    `;
-    
-    // Add to page
-    const alertsContainer = document.getElementById('alertsContainer');
-    if (alertsContainer) {
-        alertsContainer.appendChild(alertDiv);
-        
-        // Auto remove after 10 seconds
-        setTimeout(() => {
-            if (alertDiv.parentNode) {
-                alertDiv.classList.add('fade-out');
-                setTimeout(() => {
-                    if (alertDiv.parentNode) {
-                        alertDiv.parentNode.removeChild(alertDiv);
-                    }
-                }, 300);
-            }
-        }, 10000);
-        
-        // Close button
-        alertDiv.querySelector('.alert-close').addEventListener('click', () => {
-            alertDiv.classList.add('fade-out');
-            setTimeout(() => {
-                if (alertDiv.parentNode) {
-                    alertDiv.parentNode.removeChild(alertDiv);
-                }
-            }, 300);
-        });
+/* ============================================
+   18. Utility Classes
+============================================ */
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.text-primary { color: var(--primary-neon) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-warning { color: var(--warning-neon) !important; }
+.text-danger { color: var(--danger-neon) !important; }
+.text-success { color: var(--primary-neon) !important; }
+.text-info { color: var(--cyan-neon) !important; }
+
+.bg-dark { background: var(--bg-dark) !important; }
+.bg-darker { background: var(--bg-darker) !important; }
+.bg-glass { background: var(--glass-bg) !important; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mt-0 { margin-top: 0 !important; }
+.mb-1 { margin-bottom: var(--space-xs) !important; }
+.mt-1 { margin-top: var(--space-xs) !important; }
+.mb-2 { margin-bottom: var(--space-sm) !important; }
+.mt-2 { margin-top: var(--space-sm) !important; }
+.mb-3 { margin-bottom: var(--space-md) !important; }
+.mt-3 { margin-top: var(--space-md) !important; }
+.mb-4 { margin-bottom: var(--space-lg) !important; }
+.mt-4 { margin-top: var(--space-lg) !important; }
+.mb-5 { margin-bottom: var(--space-xl) !important; }
+.mt-5 { margin-top: var(--space-xl) !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: var(--space-xs) !important; }
+.p-2 { padding: var(--space-sm) !important; }
+.p-3 { padding: var(--space-md) !important; }
+.p-4 { padding: var(--space-lg) !important; }
+.p-5 { padding: var(--space-xl) !important; }
+
+.d-flex { display: flex !important; }
+.d-block { display: block !important; }
+.d-none { display: none !important; }
+
+.flex-column { flex-direction: column !important; }
+.align-items-center { align-items: center !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-between { justify-content: space-between !important; }
+
+.flex-grow-1 { flex-grow: 1 !important; }
+
+.w-100 { width: 100% !important; }
+.h-100 { height: 100% !important; }
+
+/* ============================================
+   19. Animation Keyframes
+============================================ */
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px currentColor; }
+    50% { box-shadow: 0 0 20px currentColor; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes quantumPulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 255, 140, 0.7);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 0 0 20px rgba(0, 255, 140, 0);
     }
 }
 
-// ============================================
-// Section 8: Event Listeners
-// ============================================
-
-/**
- * Setup all event listeners
- */
-function setupEventListeners() {
-    // System operation buttons
-    document.querySelectorAll('[data-operation]').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const operationType = this.dataset.operation;
-            runSystemOperation(operationType);
-        });
-    });
-    
-    // Send message button
-    const sendBtn = document.getElementById('sendMessageBtn');
-    const chatInput = document.getElementById('chatInput');
-    
-    if (sendBtn && chatInput) {
-        sendBtn.addEventListener('click', sendAIMessage);
-        chatInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendAIMessage();
-            }
-        });
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
-    
-    // Chart time range buttons
-    document.querySelectorAll('[data-time-range]').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const range = this.dataset.timeRange;
-            changeChartTimeRange(range);
-        });
-    });
-    
-    // Settings toggles
-    document.querySelectorAll('.toggle-switch').forEach(toggle => {
-        toggle.addEventListener('change', function() {
-            const settingId = this.id;
-            const value = this.checked;
-            
-            // Update settings
-            if (settingId === 'autoOptimizeToggle') {
-                AppState.userSettings.autoOptimize = value;
-            } else if (settingId === 'notificationsToggle') {
-                AppState.userSettings.notifications = value;
-            }
-            
-            // Save settings
-            saveUserSettings();
-        });
-    });
-    
-    // Navigation
-    setupNavigation();
-    
-    console.log('✅ Event listeners configured');
-}
-
-/**
- * Setup navigation
- */
-function setupNavigation() {
-    const navItems = document.querySelectorAll('.nav-item[data-page]');
-    
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            const pageId = this.dataset.page;
-            switchPage(pageId);
-        });
-    });
-}
-
-/**
- * Switch between pages
- * @param {string} pageId - Page ID
- */
-function switchPage(pageId) {
-    // Hide all pages
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-    });
-    
-    // Show selected page
-    const targetPage = document.getElementById(`${pageId}-page`);
-    if (targetPage) {
-        targetPage.classList.add('active');
-        AppState.currentPage = pageId;
-        
-        // Update page title
-        const pageTitles = {
-            dashboard: 'Dashboard',
-            'ai-center': 'AI Center',
-            commands: 'Commands',
-            monitor: 'Monitoring',
-            security: 'Security',
-            profiles: 'Profiles',
-            docs: 'Documentation',
-            market: 'Market',
-            terminal: 'Terminal',
-            about: 'About'
-        };
-        
-        if (window.ArkaUtils) {
-            window.ArkaUtils.setPageTitle(pageTitles[pageId] || 'Arka');
-        }
-        
-        // Track page view
-        if (window.ArkaUtils) {
-            window.ArkaUtils.trackEvent('page_view', { page: pageId });
-        }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/**
- * Change chart time range
- * @param {string} range - Time range
- */
-function changeChartTimeRange(range) {
-    AppState.userSettings.chartTimeRange = range;
-    
-    // Update active buttons
-    document.querySelectorAll('[data-time-range]').forEach(btn => {
-        if (btn.dataset.timeRange === range) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-    
-    // Show notification
-    if (window.ArkaUtils) {
-        window.ArkaUtils.showToast(`Chart time range changed to ${range}`, 'info');
-    }
-}
+/* ============================================
+   20. Print Styles
+============================================ */
 
-// ============================================
-// Section 9: Utility Functions
-// ============================================
-
-/**
- * Show loading state
- * @param {string} message - Loading message
- * @param {number} percent - Progress percentage
- */
-function showLoadingState(message, percent) {
-    const loadingElement = document.getElementById('loadingOverlay');
-    const loadingText = document.getElementById('loadingText');
-    const loadingBar = document.getElementById('loadingBar');
-    
-    if (loadingElement && loadingText) {
-        loadingElement.style.display = 'flex';
-        loadingText.textContent = message;
-        
-        if (loadingBar) {
-            loadingBar.style.width = `${percent}%`;
-        }
-    }
-}
-
-/**
- * Hide loading state
- */
-function hideLoadingState() {
-    const loadingElement = document.getElementById('loadingOverlay');
-    if (loadingElement) {
-        loadingElement.classList.add('fade-out');
-        setTimeout(() => {
-            loadingElement.style.display = 'none';
-            loadingElement.classList.remove('fade-out');
-        }, 500);
-    }
-}
-
-/**
- * Load saved data
- */
-function loadSavedData() {
-    if (window.ArkaUtils) {
-        const savedSettings = window.ArkaUtils.loadFromStorage('arka_system_settings');
-        if (savedSettings) {
-            AppState.userSettings = { ...AppState.userSettings, ...savedSettings };
-            applyUserSettings();
-        }
-    }
-}
-
-/**
- * Save user settings
- */
-function saveUserSettings() {
-    if (window.ArkaUtils) {
-        window.ArkaUtils.saveToStorage('arka_system_settings', AppState.userSettings);
-    }
-}
-
-/**
- * Apply user settings
- */
-function applyUserSettings() {
-    // Apply theme
-    document.body.setAttribute('data-theme', AppState.userSettings.theme);
-    
-    // Apply toggle switches
-    const autoOptimizeToggle = document.getElementById('autoOptimizeToggle');
-    const notificationsToggle = document.getElementById('notificationsToggle');
-    
-    if (autoOptimizeToggle) {
-        autoOptimizeToggle.checked = AppState.userSettings.autoOptimize;
+@media print {
+    #loading-screen,
+    .mobile-warning,
+    .navbar-controls,
+    .notification-badge,
+    .control-btn,
+    .footer-links,
+    .social-links {
+        display: none !important;
     }
     
-    if (notificationsToggle) {
-        notificationsToggle.checked = AppState.userSettings.notifications;
+    body {
+        background: white !important;
+        color: black !important;
     }
-}
-
-/**
- * Run system health check
- */
-function runSystemHealthCheck() {
-    setTimeout(() => {
-        const status = AppState.systemStatus;
-        let healthScore = 100;
-        
-        // Calculate health score
-        if (status.cpu.usage > 80) healthScore -= 20;
-        if (status.ram.usage > 85) healthScore -= 20;
-        if (status.disk.usage > 90) healthScore -= 15;
-        if (status.cpu.temperature > 70) healthScore -= 10;
-        
-        // Update UI
-        const healthElement = document.getElementById('systemHealth');
-        if (healthElement) {
-            healthElement.textContent = `Health Score: ${healthScore}/100`;
-            healthElement.className = `health-status ${
-                healthScore > 80 ? 'excellent' : 
-                healthScore > 60 ? 'good' : 
-                healthScore > 40 ? 'fair' : 'poor'
-            }`;
-        }
-    }, 3000);
-}
-
-/**
- * Utility delay function
- * @param {number} ms - Milliseconds
- */
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// ============================================
-// Section 10: Export for Console Access
-// ============================================
-
-// For developer console access
-window.ArkaApp = {
-    version: '1.0.0',
-    state: AppState,
-    utils: {
-        runOptimization: (type) => runSystemOperation(type),
-        activateProfile: (id) => activateProfile(id),
-        sendAIMessage: sendAIMessage,
-        showToast: (msg, type) => window.ArkaUtils ? window.ArkaUtils.showToast(msg, type) : null,
-        getSystemStatus: () => AppState.systemStatus,
-        switchPage: switchPage
-    },
-    debug: {
-        resetSettings: () => {
-            localStorage.clear();
-            location.reload();
-        },
-        simulateHighLoad: () => {
-            AppState.systemStatus.cpu.usage = 95;
-            AppState.systemStatus.ram.usage = 98;
-            updateSystemStatusUI();
-            showAlert('Simulated high load', 'CPU and RAM usage artificially increased', 'warning');
-        },
-        testAI: (message) => {
-            const chatInput = document.getElementById('chatInput');
-            if (chatInput) {
-                chatInput.value = message;
-                sendAIMessage();
-            }
-        }
-    }
-};
-
-console.log('💡 Use `ArkaApp` in console to access application functions.');
-
-// ============================================
-// Mobile Warning Handler
-// ============================================
-
-// Show mobile warning on small screens
-function checkMobileWarning() {
-    const isMobile = window.innerWidth < 768;
-    const mobileWarning = document.getElementById('mobile-warning');
     
-    if (isMobile && mobileWarning) {
-        mobileWarning.style.display = 'flex';
+    .glass-card {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+    
+    .page-header h1 {
+        background: black !important;
+        -webkit-background-clip: initial !important;
+        background-clip: initial !important;
+        color: black !important;
     }
 }
 
-// Dismiss mobile warning
-function dismissMobileWarning() {
-    const mobileWarning = document.getElementById('mobile-warning');
-    if (mobileWarning) {
-        mobileWarning.style.display = 'none';
+/* ============================================
+   21. Reduced Motion
+============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .loading-logo,
+    .warning-icon,
+    .brand-logo i {
+        animation: none !important;
     }
 }
 
-// Check on load and resize
-window.addEventListener('load', checkMobileWarning);
-window.addEventListener('resize', checkMobileWarning);
-
-// ============================================
-// END OF MAIN.JS
-// ============================================
-
-console.log('✅ main.js loaded successfully.');
+/* ============================================
+   END OF STYLESHEET
+============================================ */
