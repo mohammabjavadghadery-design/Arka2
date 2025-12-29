@@ -5418,6 +5418,2017 @@
         } else {
             initApp();
         }
+        
+    <script>
+        // ============================================
+        // 15. Enhanced Command Manager - Details View (Continued)
+        // ============================================
+
+        // Add more detailed command information for CMD section
+        const detailedCmdCommands = {
+            'dir': {
+                name: 'dir',
+                description: 'نمایش لیست فایل‌ها و پوشه‌های موجود در یک دایرکتوری',
+                syntax: 'dir [Drive:][Path][Filename] [/A[[:]attributes]] [/B] [/C] [/D] [/L] [/N] [/O[[:]sortorder]] [/P] [/Q] [/R] [/S] [/T[[:]timefield]] [/W] [/X] [/4]',
+                parameters: [
+                    { name: '[Drive:][Path][Filename]', description: 'مکان دایرکتوری یا فایل مورد نظر برای لیست شدن.' },
+                    { name: '/A[[:]attributes]', description: 'مشخص کردن ویژگی‌های فایل‌ها یا پوشه‌هایی که باید نمایش داده شوند (مثلاً فقط فایل‌های مخفی).' },
+                    { name: '/B', description: 'حالت خام، فقط نام فایل‌ها و پوشه‌ها را نشان می‌دهد.' },
+                    { name: '/S', description: 'جستجو در زیرشاخه‌ها.' },
+                    { name: '/P', description: 'متوقف کردن خروجی پس از هر صفحه.' }
+                ],
+                examples: [
+                    { example: 'dir', description: 'نمایش همه فایل‌ها در دایرکتوری فعلی' },
+                    { example: 'dir C:\\*.txt', description: 'نمایش فقط فایل‌های متنی در درایو C' },
+                    { example: 'dir /B', description: 'نمایش لیست فایل‌ها در حالت خام' }
+                ],
+                notes: 'این دستور یکی از پرکاربردترین دستورات CMD است. ترکیب‌های مختلف پارامترها می‌تواند اطلاعات بسیار دقیقی را ارائه دهد.'
+            },
+            'cd': {
+                name: 'cd',
+                description: 'تغییر دایرکتوری فعلی',
+                syntax: 'cd [Drive:][Path] یا cd ..',
+                parameters: [
+                    { name: '[Drive:][Path]', description: 'مسیر دایرکتوری جدید.' },
+                    { name: '..', description: 'برگرداندن یک سطح بالاتر.' }
+                ],
+                examples: [
+                    { example: 'cd C:\\Users', description: 'رفتن به پوشه Users' },
+                    { example: 'cd ..', description: 'برگشت یک سطح بالا' }
+                ],
+                notes: 'می‌توان از مسیرهای مطلق یا نسبی استفاده کرد.'
+            },
+            'ipconfig': {
+                name: 'ipconfig',
+                description: 'نمایش اطلاعات پیکربندی IP',
+                syntax: 'ipconfig [/all] [/renew [Adapter]] [/release [Adapter]] [/flushdns]',
+                parameters: [
+                    { name: '/all', description: 'نمایش تمام اطلاعات پیکربندی.' },
+                    { name: '/renew [Adapter]', description: 'تمدید اجاره IP.' },
+                    { name: '/release [Adapter]', description: 'لغو اجاره IP.' },
+                    { name: '/flushdns', description: 'پاک کردن کش DNS.' }
+                ],
+                examples: [
+                    { example: 'ipconfig', description: 'نمایش اطلاعات پایه' },
+                    { example: 'ipconfig /all', description: 'نمایش تمام اطلاعات' },
+                    { example: 'ipconfig /flushdns', description: 'پاک کردن کش DNS' }
+                ],
+                notes: 'برای عیب‌یابی مشکلات شبکه بسیار مفید است.'
+            },
+            'ping': {
+                name: 'ping',
+                description: 'بررسی قابلیت دسترسی به یک میزبان شبکه',
+                syntax: 'ping [-t] [-a] [-n count] [-l size] [-f] [-i TTL] [-v TOS] [-r count] [-s count] [[-j host-list] | [-k host-list]] [-w timeout] [-R] [-S srcaddr] [-4] [-6] target_name',
+                parameters: [
+                    { name: '-t', description: 'ارسال پینگ‌ها تا زمانی که کاربر متوقف کند (Ctrl+C).' },
+                    { name: '-n count', description: 'تعداد پینگ‌های ارسالی.' },
+                    { name: '-l size', description: 'اندازه بایت داده در هر پینگ.' },
+                    { name: '-w timeout', description: 'زمان انتظار بر حسب میلی‌ثانیه.' }
+                ],
+                examples: [
+                    { example: 'ping google.com', description: 'پینگ کردن گوگل' },
+                    { example: 'ping -t 192.168.1.1', description: 'پینگ مداوم یک آی‌پی' }
+                ],
+                notes: 'برای تست اتصال شبکه و اندازه گیری ping latency کاربرد دارد.'
+            },
+            'tasklist': {
+                name: 'tasklist',
+                description: 'نمایش لیست فرآیندهای در حال اجرا',
+                syntax: 'tasklist [/S system [/U username [/P [password]]]] [/M [module] | /SVC | /V] [/FI filter] [/FO format] [/NH]',
+                parameters: [
+                    { name: '/M [module]', description: 'لیست فرآیندهایی که یک ماژول خاص را بارگذاری کرده‌اند.' },
+                    { name: '/SVC', description: 'نمایش سرویس‌های مرتبط با فرآیندها.' },
+                    { name: '/V', description: 'نمایش اطلاعات بیشتر.' },
+                    { name: '/FI filter', description: 'فیلتر کردن نتایج.' }
+                ],
+                examples: [
+                    { example: 'tasklist', description: 'نمایش تمام فرآیندها' },
+                    { example: 'tasklist /FI "MEMUSAGE gt 100000"', description: 'فرآیندهایی که بیش از 100MB حافظه مصرف می‌کنند' }
+                ],
+                notes: 'برای یافتن فرآیندهای پر مصرف کاربرد دارد.'
+            },
+            'taskkill': {
+                name: 'taskkill',
+                description: 'پایان دادن به یک فرآیند',
+                syntax: 'taskkill [/S system [/U username [/P [password]]]] {[/FI filter] [/FI filter] ...} [/IM imagename | /PID pid] [/T] [/F]',
+                parameters: [
+                    { name: '/IM imagename', description: 'نام تصویر فرآیند (مثلاً notepad.exe).' },
+                    { name: '/PID pid', description: 'شناسه فرآیند.' },
+                    { name: '/F', description: 'نیروی پایان دادن (Force).' },
+                    { name: '/T', description: 'پایان دادن به درخت فرآیند.' }
+                ],
+                examples: [
+                    { example: 'taskkill /IM notepad.exe', description: 'بستن نوت‌پد' },
+                    { example: 'taskkill /PID 1234 /F', description: 'نیروی بستن فرآیند با PID 1234' }
+                ],
+                notes: 'دقت کنید، بستن فرآیندهای سیستمی می‌تواند باعث ناپایداری شود.'
+            },
+            'systeminfo': {
+                name: 'systeminfo',
+                description: 'نمایش جزئیات سخت‌افزار و نرم‌افزار سیستم',
+                syntax: 'systeminfo [/S system [/U username [/P [password]]]] [/FO format] [/NH]',
+                parameters: [
+                    { name: '/S system', description: 'نام سیستم راه دور.' },
+                    { name: '/FO format', description: 'فرمت خروجی (TABLE، LIST، CSV).' }
+                ],
+                examples: [
+                    { example: 'systeminfo', description: 'نمایش کلیه اطلاعات سیستم' },
+                    { example: 'systeminfo /FO CSV', description: 'خروجی به صورت CSV' }
+                ],
+                notes: 'اطلاعات جامعی از سیستم عامل، سخت‌افزار، BIOS، و غیره ارائه می‌دهد.'
+            },
+            'sfc': {
+                name: 'sfc',
+                description: 'بررسی و تعمیر فایل‌های سیستمی ویندوز',
+                syntax: 'sfc [/scannow] [/verifyonly] [/scanfile=<file>] [/verifyfile=<file>] [/offbootdir=<offline boot directory>] [/offwindir=<offline windows directory>]',
+                parameters: [
+                    { name: '/scannow', description: 'بررسی و تعمیر تمام فایل‌های سیستمی.' },
+                    { name: '/verifyonly', description: 'فقط بررسی (بدون تعمیر).' },
+                    { name: '/scanfile=<file>', description: 'بررسی یک فایل خاص.' }
+                ],
+                examples: [
+                    { example: 'sfc /scannow', description: 'بررسی و تعمیر کامل' }
+                ],
+                notes: 'برای رفع مشکلات مربوط به فایل‌های سیستمی استفاده می‌شود. نیاز به اجرای CMD با دسترسی ادمین دارد.'
+            },
+            'chkdsk': {
+                name: 'chkdsk',
+                description: 'بررسی و تعمیر خطاها در دیسک',
+                syntax: 'chkdsk [volume[[path]filename]]] [/f] [/v] [/r] [/x] [/i] [/c] [/l[:<size>]]',
+                parameters: [
+                    { name: 'volume', description: 'درایو مورد نظر (مثلاً C:).' },
+                    { name: '/f', description: 'تعمیر خطاها.' },
+                    { name: '/r', description: 'پیدا کردن بخش‌های خراب و بازیابی اطلاعات.' },
+                    { name: '/x', description: 'فورس از دست دادن مونت درایو.' }
+                ],
+                examples: [
+                    { example: 'chkdsk C:', description: 'بررسی درایو C' },
+                    { example: 'chkdsk C: /f', description: 'بررسی و تعمیر درایو C' }
+                ],
+                notes: 'برای رفع مشکلات فیزیکی و منطقی دیسک استفاده می‌شود. نیاز به ادمین دارد و ممکن است نیاز به راه‌اندازی مجدد باشد.'
+            },
+            'netstat': {
+                name: 'netstat',
+                description: 'نمایش وضعیت اتصالات شبکه',
+                syntax: 'netstat [-a] [-b] [-e] [-f] [-n] [-o] [-p Protocol] [-q] [-r] [-s] [-t] [Interval]',
+                parameters: [
+                    { name: '-a', description: 'نمایش اتصالات فعال و پورت‌های گوش داده.' },
+                    { name: '-n', description: 'نمایش آدرس‌های عددی (IP و Port). بدون نام میزبان.' },
+                    { name: '-o', description: 'نمایش شناسه فرآیند (PID) مربوط به هر اتصال.' },
+                    { name: '-r', description: 'نمایش جدول مسیریابی.' }
+                ],
+                examples: [
+                    { example: 'netstat -an', description: 'نمایش تمام اتصالات و پورت‌ها' },
+                    { example: 'netstat -ano', description: 'همراه با PID فرآیند' }
+                ],
+                notes: 'برای تحلیل اتصالات شبکه و پیدا کردن فرآیندهای مرتبط با یک پورت کاربرد دارد.'
+            },
+            'sc': {
+                name: 'sc',
+                description: 'مدیریت سرویس‌های ویندوز',
+                syntax: 'sc [\\ServerName] [command] [ServiceName] [options]',
+                parameters: [
+                    { name: 'query', description: 'پرس و جو درباره یک سرویس.' },
+                    { name: 'start', description: 'شروع یک سرویس.' },
+                    { name: 'stop', description: 'متوقف کردن یک سرویس.' },
+                    { name: 'config', description: 'پیکربندی یک سرویس.' }
+                ],
+                examples: [
+                    { example: 'sc query Spooler', description: 'بررسی وضعیت سرویس چاپ' },
+                    { example: 'sc stop Spooler', description: 'متوقف کردن سرویس چاپ' },
+                    { example: 'sc start Spooler', description: 'شروع سرویس چاپ' }
+                ],
+                notes: 'دستور بسیار قدرتمندی برای مدیریت سرویس‌های سیستمی است.'
+            },
+            'wmic': {
+                name: 'wmic',
+                description: 'رابط خط فرمان برای WMI (Windows Management Instrumentation)',
+                syntax: 'wmic [GlobalSwitches] [Namespace] [Alias] [FormatNotification] [Action] [WhereClause] [PropertyList] [Get/Set/Call Extensions] [Value] [Assignment] [Value]',
+                parameters: [
+                    { name: 'computersystem', description: 'اطلاعات سیستم کامپیوتر.' },
+                    { name: 'process', description: 'اطلاعات فرآیندها.' },
+                    { name: 'service', description: 'اطلاعات سرویس‌ها.' },
+                    { name: 'diskdrive', description: 'اطلاعات درایو دیسک.' }
+                ],
+                examples: [
+                    { example: 'wmic computersystem get name', description: 'نام سیستم' },
+                    { example: 'wmic process list brief', description: 'لیست فرآیندها' }
+                ],
+                notes: 'دستور پیشرفته برای کار با اشیاء WMI. نحوه استفاده پیچیده است.'
+            },
+            'diskpart': {
+                name: 'diskpart',
+                description: 'مدیریت پارتیشن‌های دیسک',
+                syntax: 'diskpart (سپس دستورات داخل محیط diskpart)',
+                parameters: [
+                    { name: 'list disk', description: 'لیست دیسک‌ها.' },
+                    { name: 'select disk N', description: 'انتخاب دیسک شماره N.' },
+                    { name: 'list partition', description: 'لیست پارتیشن‌ها.' },
+                    { name: 'create partition primary', description: 'ایجاد پارتیشن اصلی.' },
+                    { name: 'delete partition', description: 'حذف پارتیشن.' },
+                    { name: 'format', description: 'فرمت کردن.' },
+                    { name: 'assign letter=X', description: 'اختصاص حرف X.' }
+                ],
+                examples: [
+                    { example: 'diskpart -> list disk -> select disk 0 -> list partition', description: 'لیست پارتیشن‌های دیسک 0' }
+                ],
+                notes: 'دستور بسیار پیشرفته و خطرناک. تغییرات دائمی ایجاد می‌کند. دقت زیادی لازم است.'
+            },
+            'cipher': {
+                name: 'cipher',
+                description: 'رمزگذاری یا رمزگشایی دیسک یا فایل‌ها',
+                syntax: 'cipher [/E | /D | /C | /L | /W | /R | /P] [pathname [...]]',
+                parameters: [
+                    { name: '/E', description: 'رمزگذاری یک دایرکتوری.' },
+                    { name: '/D', description: 'رمزگشایی یک دایرکتوری.' },
+                    { name: '/W', description: 'پاک کردن فضای خالی دیسک (پنهان کردن فایل‌های حذف شده).' }
+                ],
+                examples: [
+                    { example: 'cipher /E C:\\MyFolder', description: 'رمزگذاری پوشه' }
+                ],
+                notes: 'برای رمزگذاری EFS (Encrypting File System) استفاده می‌شود.'
+            },
+            'assoc': {
+                name: 'assoc',
+                description: 'مشاهده یا تنظیم نوع فایل مرتبط با پسوندها',
+                syntax: 'assoc [.ext[=File Type]]',
+                parameters: [
+                    { name: '.ext', description: 'پسوند فایل (مثلاً .txt).' },
+                    { name: 'File Type', description: 'نوع فایل مرتبط (مثلاً txtfile).' }
+                ],
+                examples: [
+                    { example: 'assoc .txt', description: 'مشاهده نوع فایل txt' },
+                    { example: 'assoc .txt=Notepad', description: 'تغییر نوع فایل txt' }
+                ],
+                notes: 'برای مدیریت ارتباط پسوند فایل با نوع فایل در رجیستری استفاده می‌شود.'
+            },
+            'ftype': {
+                name: 'ftype',
+                description: 'مشاهده یا تنظیم برنامه‌ای که برای باز کردن نوع فایل استفاده می‌شود',
+                syntax: 'ftype [file-type[=[open|print|printto]=command_string]]',
+                parameters: [
+                    { name: 'file-type', description: 'نوع فایل (مثلاً txtfile).' },
+                    { name: 'command_string', description: 'دستور اجرا شونده (مسیر برنامه).' }
+                ],
+                examples: [
+                    { example: 'ftype txtfile', description: 'مشاهده دستور باز کردن فایل txt' }
+                ],
+                notes: 'معمولاً با دستور assoc کار می‌کند.'
+            },
+            'driverquery': {
+                name: 'driverquery',
+                description: 'نمایش لیست درایورهای نصب شده',
+                syntax: 'driverquery [/S system [/U username [/P [password]]]] [/FO format] [/NH] [/SI]',
+                parameters: [
+                    { name: '/FO format', description: 'فرمت خروجی.' },
+                    { name: '/SI', description: 'شامل اطلاعات امنیتی.' }
+                ],
+                examples: [
+                    { example: 'driverquery', description: 'لیست درایورها' }
+                ],
+                notes: 'برای بررسی درایورهای نصب شده کاربرد دارد.'
+            },
+            'netsh': {
+                name: 'netsh',
+                description: 'پیکربندی و عیب‌یابی شبکه',
+                syntax: 'netsh [Context] [Command] [Parameters]',
+                parameters: [
+                    { name: 'interface', description: 'مدیریت اینترفیس‌های شبکه.' },
+                    { name: 'wlan', description: 'مدیریت وای فای.' },
+                    { name: 'firewall', description: 'مدیریت فایروال.' },
+                    { name: 'show profiles', description: 'نمایش پروفایل‌های وای فای.' }
+                ],
+                examples: [
+                    { example: 'netsh interface show interface', description: 'لیست اینترفیس‌های شبکه' },
+                    { example: 'netsh wlan show profiles', description: 'پروفایل‌های وای فای' }
+                ],
+                notes: 'دستور بسیار پیچیده و قدرتمند برای مدیریت شبکه.'
+            },
+            'gpupdate': {
+                name: 'gpupdate',
+                description: 'به‌روزرسانی سیاست‌های گروهی',
+                syntax: 'gpupdate [/Target:{Domain | Computer}] [/Force] [/Wait:<value>] [/Source:{LGPO | Registry}] [/Boot] [/Logoff]',
+                parameters: [
+                    { name: '/Target:Computer', description: 'فقط کامپیوتر.' },
+                    { name: '/Target:User', description: 'فقط کاربر.' },
+                    { name: '/Force', description: 'اجبار به اعمال تغییرات.' }
+                ],
+                examples: [
+                    { example: 'gpupdate /force', description: 'اجبار به به‌روزرسانی' }
+                ],
+                notes: 'در محیط‌های دامنه کاربرد دارد.'
+            },
+            'reg': {
+                name: 'reg',
+                description: 'کار با رجیستری ویندوز',
+                syntax: 'reg [command] [parameters]',
+                parameters: [
+                    { name: 'query', description: 'پرس و جو از رجیستری.' },
+                    { name: 'add', description: 'افزودن مقدار.' },
+                    { name: 'delete', description: 'حذف مقدار.' },
+                    { name: 'export', description: 'خروجی گرفتن.' },
+                    { name: 'import', description: 'وارد کردن.' }
+                ],
+                examples: [
+                    { example: 'reg query "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"', description: 'پرس و جو از نسخه ویندوز' }
+                ],
+                notes: 'دستور خطرناک. تغییرات نادرست می‌تواند سیستم را غیرقابل استفاده کند.'
+            },
+            'takeown': {
+                name: 'takeown',
+                description: 'دریافت دسترسی مالکیت فایل یا پوشه',
+                syntax: 'takeown [/s System [/u Username [/p [Password]]]] /f InputFile [/a] [/r [/h]]',
+                parameters: [
+                    { name: '/f InputFile', description: 'مسیر فایل یا پوشه.' },
+                    { name: '/r', description: 'اعمال به زیرشاخه‌ها.' }
+                ],
+                examples: [
+                    { example: 'takeown /f "C:\\ProblemFolder" /r', description: 'دریافت مالکیت پوشه و زیرشاخه‌ها' }
+                ],
+                notes: 'معمولاً قبل از استفاده از icacls برای تغییر دسترسی استفاده می‌شود.'
+            },
+            'icacls': {
+                name: 'icacls',
+                description: 'مشاهده یا تغییر دسترسی‌های فایل/پوشه',
+                syntax: 'icacls name [/grant[:r] Sid:perm[...]] [/deny Sid:perm[...]] [/remove[:g|:d]] Sid[...]] [/T] [/C] [/L] [/Q] [/reset] [/setowner name] [/f] [/verify] [/v] [/r] [/p] [/c] [/t] [/h] [/o] [/x] [/y] [/z] [/g] [/d] [/r] [/s] [/e] [/i] [/l] [/b] [/u] [/a] [/m] [/n] [/f] [/v] [/o] [/x] [/y] [/z] [/g] [/d] [/r] [/s] [/e] [/i] [/l] [/b] [/u] [/a] [/m] [/n]',
+                parameters: [
+                    { name: '/grant Sid:perm', description: 'اعطای دسترسی.' },
+                    { name: '/deny Sid:perm', description: 'منع دسترسی.' },
+                    { name: '/remove Sid', description: 'حذف دسترسی.' },
+                    { name: '/T', description: 'اعمال به زیرشاخه‌ها.' }
+                ],
+                examples: [
+                    { example: 'icacls "C:\\MyFile.txt" /grant Users:R', description: 'اعطای دسترسی خواندن به کاربران' }
+                ],
+                notes: 'دستور پیشرفته برای مدیریت ACL (Access Control List).'
+            },
+            'robocopy': {
+                name: 'robocopy',
+                description: 'کپی پیشرفته فایل‌ها و پوشه‌ها',
+                syntax: 'robocopy source destination [file [file]...] [options]',
+                parameters: [
+                    { name: '/E', description: 'کپی زیرشاخه‌ها، شامل پوشه‌های خالی.' },
+                    { name: '/MIR', description: 'نگه داشتن مطابق (همانند ریز، اما حذف فایل‌های اضافی).' },
+                    { name: '/LOG:file', description: 'ثبت در فایل.' }
+                ],
+                examples: [
+                    { example: 'robocopy "C:\\Source" "D:\\Dest" /E', description: 'کپی کامل پوشه' }
+                ],
+                notes: 'جایگزین قدرتمندی برای xcopy.'
+            },
+            'xcopy': {
+                name: 'xcopy',
+                description: 'کپی کردن فایل‌ها و پوشه‌ها (منسوخ)',
+                syntax: 'xcopy source [destination] [/w] [/p] [/c] [/f] [/s] [/e] [/v] [/y] [/i] [/r] [/h] [/a] [/b] [/k] [/o] [/x] [/g] [/d [:date]] [/exclude:file1[+file2][+file3]...]',
+                parameters: [
+                    { name: '/s', description: 'کپی زیرشاخه‌ها.' },
+                    { name: '/e', description: 'همراه با پوشه‌های خالی.' },
+                    { name: '/h', description: 'کپی فایل‌های مخفی.' }
+                ],
+                examples: [
+                    { example: 'xcopy "C:\\Source" "D:\\Dest" /s /e', description: 'کپی پوشه و زیرشاخه‌ها' }
+                ],
+                notes: 'منسوخ شده، از robocopy استفاده کنید.'
+            },
+            'format': {
+                name: 'format',
+                description: 'فرمت کردن یک درایو',
+                syntax: 'format volume [/FS:file-system] [/V:label] [/Q] [/A:size] [/C] [/X] [/P:passes] [/S:standard] [/F:size] [/T:tracks /N:sectors] [/B | /S] [/D]',
+                parameters: [
+                    { name: 'volume', description: 'درایو مورد نظر (مثلاً E:).' },
+                    { name: '/FS:file-system', description: 'سیستم فایل (NTFS، FAT32، exFAT).' },
+                    { name: '/Q', description: 'فرمت سریع.' }
+                ],
+                examples: [
+                    { example: 'format E: /FS:NTFS', description: 'فرمت کردن درایو E با NTFS' }
+                ],
+                notes: 'دستور بسیار خطرناک. تمام داده‌های درایو را پاک می‌کند.'
+            },
+            'copy': {
+                name: 'copy',
+                description: 'کپی کردن فایل‌ها',
+                syntax: 'copy [/d] [/v] [/n] [/y | /-y] [/z] [/l] source [/a | /b] [+ source [/a | /b] [+ ...]] destination [/a | /b]',
+                parameters: [
+                    { name: 'source', description: 'مسیر فایل منبع.' },
+                    { name: 'destination', description: 'مسیر مقصد.' },
+                    { name: '/y', description: 'بی‌پرسش نوشتن روی فایل‌های موجود.' }
+                ],
+                examples: [
+                    { example: 'copy file1.txt file2.txt', description: 'کپی فایل' },
+                    { example: 'copy *.txt C:\\Backup', description: 'کپی تمام txtها' }
+                ],
+                notes: 'برای کپی تک فایل یا چند فایل کاربرد دارد.'
+            },
+            'move': {
+                name: 'move',
+                description: 'انتقال فایل‌ها',
+                syntax: 'move [/y | /-y] [drive:][path]filename1[,...] [drive:][path]filename2',
+                parameters: [
+                    { name: 'filename1', description: 'فایل یا فایل‌های منبع.' },
+                    { name: 'filename2', description: 'مقصد.' },
+                    { name: '/y', description: 'بی‌پرسش جایگزینی.' }
+                ],
+                examples: [
+                    { example: 'move file.txt C:\\NewFolder', description: 'انتقال فایل' }
+                ],
+                notes: 'فایل را از مکان اولیه حذف و به مکان جدید منتقل می‌کند.'
+            },
+            'del': {
+                name: 'del',
+                description: 'حذف فایل‌ها',
+                syntax: 'del [/p] [/f] [/s] [/q] [/a[[:]attributes]] names',
+                parameters: [
+                    { name: 'names', description: 'نام فایل یا الگو.' },
+                    { name: '/f', description: 'حذف فایل‌های فقط خواندنی.' },
+                    { name: '/s', description: 'حذف در زیرشاخه‌ها.' },
+                    { name: '/q', description: 'حذف بی‌پرسش.' }
+                ],
+                examples: [
+                    { example: 'del *.tmp', description: 'حذف تمام tmpها' },
+                    { example: 'del /s /q "C:\\Temp\\*.*"', description: 'حذف تمام فایل‌های داخل Temp' }
+                ],
+                notes: 'دقت کنید، فایل‌ها به سطل بازیافت نمی‌روند.'
+            },
+            'md': {
+                name: 'md',
+                description: 'ایجاد یک پوشه جدید',
+                syntax: 'md [drive:]path',
+                parameters: [
+                    { name: '[drive:]path', description: 'مسیر پوشه جدید.' }
+                ],
+                examples: [
+                    { example: 'md NewFolder', description: 'ایجاد پوشه در مسیر فعلی' },
+                    { example: 'md C:\\MyNewFolder', description: 'ایجاد پوشه در مسیر مشخص' }
+                ],
+                notes: 'همانند دستور mkdir.'
+            },
+            'rd': {
+                name: 'rd',
+                description: 'حذف یک پوشه',
+                syntax: 'rd [/s] [/q] [drive:]path',
+                parameters: [
+                    { name: '[drive:]path', description: 'مسیر پوشه.' },
+                    { name: '/s', description: 'حذف پوشه و تمام محتویات آن.' },
+                    { name: '/q', description: 'حذف بی‌پرسش.' }
+                ],
+                examples: [
+                    { example: 'rd EmptyFolder', description: 'حذف پوشه خالی' },
+                    { example: 'rd /s /q "C:\\OldFolder"', description: 'حذف پوشه و محتویات' }
+                ],
+                notes: 'دقت کنید، فایل‌ها به سطل بازیافت نمی‌روند.'
+            },
+            'type': {
+                name: 'type',
+                description: 'نمایش محتوای یک فایل متنی',
+                syntax: 'type [drive:][path]filename',
+                parameters: [
+                    { name: 'filename', description: 'نام فایل.' }
+                ],
+                examples: [
+                    { example: 'type file.txt', description: 'نمایش محتوای فایل' }
+                ],
+                notes: 'برای فایل‌های متنی مناسب است.'
+            },
+            'find': {
+                name: 'find',
+                description: 'پیدا کردن متن در یک یا چند فایل',
+                syntax: 'find [/v] [/c] [/n] [/i] [/off[LINE]] "string" [[drive:][path]filename[ ...]]',
+                parameters: [
+                    { name: '"string"', description: 'متن جستجو.' },
+                    { name: '/i', description: 'نادیدن حروف بزرگ/کوچک.' }
+                ],
+                examples: [
+                    { example: 'find "error" log.txt', description: 'پیدا کردن error در log' }
+                ],
+                notes: 'برای جستجوی متن در فایل‌های متنی.' },
+            'findstr': {
+                name: 'findstr',
+                description: 'پیدا کردن رشته‌های متنی در فایل‌ها',
+                syntax: 'findstr [/b] [/e] [/l] [/r] [/s] [/i] [/x] [/v] [/n] [/m] [/o] [/p] [/f:file] [/c:string] [/g:file] [/d:dir] [/a:color] [/f] "string" [[drive:][path]filename[ ...]]',
+                parameters: [
+                    { name: '"string"', description: 'رشته جستجو.' },
+                    { name: '/i', description: 'نادیدن حروف بزرگ/کوچک.' },
+                    { name: '/s', description: 'جستجو در زیرشاخه‌ها.' },
+                    { name: '/c:string', description: 'جستجو چند رشته.' }
+                ],
+                examples: [
+                    { example: 'findstr /i "warning" *.log', description: 'پیدا کردن warning در تمام logها' }
+                ],
+                notes: 'پیشرفته‌تر از find است.' },
+            'echo': {
+                name: 'echo',
+                description: 'نمایش پیام یا فعال/غیرفعال کردن پردازش دستورات',
+                syntax: 'echo [on | off] یا echo [message]',
+                parameters: [
+                    { name: 'on', description: 'فعال کردن نمایش دستورات.' },
+                    { name: 'off', description: 'غیرفعال کردن نمایش دستورات.' },
+                    { name: 'message', description: 'پیام مورد نظر.' }
+                ],
+                examples: [
+                    { example: 'echo Hello World', description: 'چاپ پیام' },
+                    { example: 'echo off', description: 'مخفی کردن دستورات بعدی' }
+                ],
+                notes: 'در اسکریپت‌های batch کاربرد دارد.' },
+            'cls': {
+                name: 'cls',
+                description: 'پاک کردن صفحه CMD',
+                syntax: 'cls',
+                parameters: [],
+                examples: [
+                    { example: 'cls', description: 'پاک کردن صفحه' }
+                ],
+                notes: 'برای پاک کردن خروجی قبلی CMD.' },
+            'ver': {
+                name: 'ver',
+                description: 'نمایش شماره نسخه ویندوز',
+                syntax: 'ver',
+                parameters: [],
+                examples: [
+                    { example: 'ver', description: 'نمایش نسخه' }
+                ],
+                notes: 'اطلاعات نسخه سیستم عامل.' },
+            'date': {
+                name: 'date',
+                description: 'نمایش یا تنظیم تاریخ',
+                syntax: 'date [/t] [/c] [date]',
+                parameters: [
+                    { name: '/t', description: 'فقط نمایش.' },
+                    { name: 'date', description: 'تاریخ جدید (اگر دسترسی ادمین وجود داشته باشد).' }
+                ],
+                examples: [
+                    { example: 'date', description: 'پرسش تاریخ' },
+                    { example: 'date /t', description: 'فقط نمایش' }
+                ],
+                notes: 'تنظیم نیاز به ادمین دارد.' },
+            'time': {
+                name: 'time',
+                description: 'نمایش یا تنظیم زمان',
+                syntax: 'time [/t] [/c] [time]',
+                parameters: [
+                    { name: '/t', description: 'فقط نمایش.' },
+                    { name: 'time', description: 'زمان جدید (اگر دسترسی ادمین وجود داشته باشد).' }
+                ],
+                examples: [
+                    { example: 'time', description: 'پرسش زمان' },
+                    { example: 'time /t', description: 'فقط نمایش' }
+                ],
+                notes: 'تنظیم نیاز به ادمین دارد.' },
+            'hostname': {
+                name: 'hostname',
+                description: 'نمایش نام میزبان کامپیوتر',
+                syntax: 'hostname',
+                parameters: [],
+                examples: [
+                    { example: 'hostname', description: 'نمایش نام میزبان' }
+                ],
+                notes: 'نام کامپیوتر در شبکه.' },
+            'whoami': {
+                name: 'whoami',
+                description: 'نمایش نام کاربر فعلی',
+                syntax: 'whoami [/user] [/groups] [/priv] [/fqdn] [/logonid] [/upn]',
+                parameters: [
+                    { name: '/user', description: 'اطلاعات کاربر.' },
+                    { name: '/groups', description: 'گروه‌های کاربر.' }
+                ],
+                examples: [
+                    { example: 'whoami', description: 'نام کاربر' },
+                    { example: 'whoami /groups', description: 'گروه‌های کاربر' }
+                ],
+                notes: 'برای شناسایی کاربر فعلی مفید است.' },
+            'set': {
+                name: 'set',
+                description: 'نمایش، ایجاد یا حذف متغیرهای محیطی',
+                syntax: 'set [variable=[string]]',
+                parameters: [
+                    { name: 'variable', description: 'نام متغیر.' },
+                    { name: 'string', description: 'مقدار متغیر.' }
+                ],
+                examples: [
+                    { example: 'set', description: 'نمایش تمام متغیرها' },
+                    { example: 'set MYVAR=Hello', description: 'تنظیم متغیر' },
+                    { example: 'echo %MYVAR%', description: 'چاپ متغیر' }
+                ],
+                notes: 'برای کار با متغیرهای محیطی در CMD و اسکریپت‌ها.' }
+        };
+
+        // Add more detailed command information for PowerShell section
+        const detailedPsCommands = {
+            'Get-Process': {
+                name: 'Get-Process',
+                description: 'دریافت اطلاعات فرآیندهای در حال اجرا',
+                syntax: 'Get-Process [[-Name] <string[]>] [-FileVersionInfo] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام فرآیند یا فرآیندهای مورد نظر (بدون پسوند).' },
+                    { name: '-FileVersionInfo', description: 'دریافت اطلاعات نسخه فایل برای فرآیند.' }
+                ],
+                examples: [
+                    { example: 'Get-Process', description: 'نمایش همه فرآیندها' },
+                    { example: 'Get-Process chrome', description: 'نمایش فرآیند chrome' },
+                    { example: 'Get-Process | Where-Object {$_.WorkingSet64 -gt 100MB}', description: 'فرآیندهایی که بیش از 100MB حافظه مصرف می‌کنند' }
+                ],
+                notes: 'این دستور بسیار قدرتمند است و می‌تواند به همراه فیلترها و دیگر دستورات برای تحلیل عمیق‌تر سیستم استفاده شود.'
+            },
+            'Get-Service': {
+                name: 'Get-Service',
+                description: 'دریافت اطلاعات سرویس‌های ویندوز',
+                syntax: 'Get-Service [[-Name] <string[]>] [-DependentServices] [-Include <string[]>] [-Exclude <string[]>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام سرویس.' },
+                    { name: '-DependentServices', description: 'سرویس‌های وابسته.' }
+                ],
+                examples: [
+                    { example: 'Get-Service', description: 'نمایش همه سرویس‌ها' },
+                    { example: 'Get-Service Spooler', description: 'نمایش سرویس چاپ' }
+                ],
+                notes: 'برای مدیریت سرویس‌ها کاربرد دارد.'
+            },
+            'Get-NetIPConfiguration': {
+                name: 'Get-NetIPConfiguration',
+                description: 'دریافت اطلاعات پیکربندی IP',
+                syntax: 'Get-NetIPConfiguration [-InterfaceAlias <string[]>] [-InterfaceIndex <UInt32[]>] [-Detailed] [-All] [<CommonParameters>]',
+                parameters: [
+                    { name: '-InterfaceAlias', description: 'نام مستعار اینترفیس.' },
+                    { name: '-Detailed', description: 'اطلاعات جزئی.' }
+                ],
+                examples: [
+                    { example: 'Get-NetIPConfiguration', description: 'اطلاعات IP' },
+                    { example: 'Get-NetIPConfiguration -Detailed', description: 'اطلاعات جزئی' }
+                ],
+                notes: 'برای تحلیل تنظیمات شبکه.' },
+            'Test-NetConnection': {
+                name: 'Test-NetConnection',
+                description: 'بررسی اتصال شبکه',
+                syntax: 'Test-NetConnection [[-ComputerName] <string>] [[-Port] <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-ComputerName', description: 'نام یا IP میزبان.' },
+                    { name: '-Port', description: 'شماره پورت.' }
+                ],
+                examples: [
+                    { example: 'Test-NetConnection google.com', description: 'بررسی اتصال به گوگل' },
+                    { example: 'Test-NetConnection 192.168.1.1 -Port 80', description: 'بررسی پورت 80' }
+                ],
+                notes: 'برای تست ping، DNS، Route، و پورت.' },
+            'Get-ComputerInfo': {
+                name: 'Get-ComputerInfo',
+                description: 'دریافت جزئیات سخت‌افزار و نرم‌افزار سیستم',
+                syntax: 'Get-ComputerInfo [[-Property] <string[]>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Property', description: 'ویژگی خاص.' }
+                ],
+                examples: [
+                    { example: 'Get-ComputerInfo', description: 'تمام اطلاعات' },
+                    { example: 'Get-ComputerInfo -Property "WindowsProductName", "TotalPhysicalMemory"', description: 'اطلاعات خاص' }
+                ],
+                notes: 'اطلاعات جامعی از سیستم ارائه می‌دهد.' },
+            'Get-EventLog': {
+                name: 'Get-EventLog',
+                description: 'دریافت ورودی‌های گزارش رویداد',
+                syntax: 'Get-EventLog [-LogName] <string> [[-InstanceId] <long[]>] [-After <DateTime>] [-Before <DateTime>] [-EntryType <string[]>] [-Index <int[]>] [-Message <string>] [-Newest <int>] [-Source <string[]>] [-UserName <string[]>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-LogName', description: 'نام گزارش (مثلاً System، Application).' },
+                    { name: '-Newest', description: 'تعداد ورودی‌های جدید.' }
+                ],
+                examples: [
+                    { example: 'Get-EventLog -LogName System -Newest 10', description: '10 ورودی جدید سیستم' }
+                ],
+                notes: 'برای تحلیل مشکلات.' },
+            'Get-WmiObject': {
+                name: 'Get-WmiObject',
+                description: 'دریافت اشیاء WMI',
+                syntax: 'Get-WmiObject [[-Class] <string>] [-List] [-Namespace <string>] [-Impersonation <ImpersonationLevel>] [-Authentication <AuthenticationLevel>] [-Locale <string>] [-EnableAllPrivileges] [-ComputerName <string[]>] [-Credential <PSCredential>] [-ThrottleLimit <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Class', description: 'نام کلاس WMI (مثلاً Win32_OperatingSystem).' }
+                ],
+                examples: [
+                    { example: 'Get-WmiObject -Class Win32_OperatingSystem', description: 'اطلاعات سیستم عامل' }
+                ],
+                notes: 'برای دسترسی به داده‌های سیستم.' },
+            'Get-ItemProperty': {
+                name: 'Get-ItemProperty',
+                description: 'دریافت خصوصیات یک آیتم',
+                syntax: 'Get-ItemProperty [-Path] <string[]> [-Name <string[]>] [-Filter <string>] [-Include <string[]>] [-Exclude <string[]>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Path', description: 'مسیر آیتم (مثلاً رجیستری یا فایل).' }
+                ],
+                examples: [
+                    { example: 'Get-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"', description: 'اطلاعات رجیستری ویندوز' }
+                ],
+                notes: 'برای خواندن مقادیر رجیستری یا فایل.' },
+            'Set-ItemProperty': {
+                name: 'Set-ItemProperty',
+                description: 'تنظیم خصوصیات یک آیتم',
+                syntax: 'Set-ItemProperty [-Path] <string> [-Name] <string> [-Value] <Object> [-PassThru] [-Filter <string>] [-Include <string[]>] [-Exclude <string[]>] [-Force] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Path', description: 'مسیر.' },
+                    { name: '-Name', description: 'نام ویژگی.' },
+                    { name: '-Value', description: 'مقدار جدید.' }
+                ],
+                examples: [
+                    { example: 'Set-ItemProperty "HKCU:\\Control Panel\\Desktop" -Name WallpaperStyle -Value 2', description: 'تنظیم حالت تصویر زمینه' }
+                ],
+                notes: 'برای نوشتن در رجیستری یا فایل.' },
+            'Remove-Item': {
+                name: 'Remove-Item',
+                description: 'حذف یک آیتم',
+                syntax: 'Remove-Item [-Path] <string[]> [-Filter <string>] [-Include <string[]>] [-Exclude <string[]>] [-Recurse] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Path', description: 'مسیر.' },
+                    { name: '-Recurse', description: 'حذف زیرشاخه‌ها.' }
+                ],
+                examples: [
+                    { example: 'Remove-Item "C:\\Temp\\MyFile.txt"', description: 'حذف فایل' },
+                    { example: 'Remove-Item "C:\\Temp\\MyFolder" -Recurse', description: 'حذف پوشه و محتویات' }
+                ],
+                notes: 'دقت کنید، فایل‌ها به سطل بازیافت نمی‌روند.' },
+            'New-Item': {
+                name: 'New-Item',
+                description: 'ایجاد یک آیتم جدید',
+                syntax: 'New-Item [-Path] <string> [[-Name] <string>] [-ItemType <string>] [-Value <Object>] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Path', description: 'مسیر.' },
+                    { name: '-ItemType', description: 'نوع (Directory، File).' }
+                ],
+                examples: [
+                    { example: 'New-Item -ItemType Directory -Path "C:\\NewFolder"', description: 'ایجاد پوشه' }
+                ],
+                notes: 'برای ایجاد فایل یا پوشه.' },
+            'Get-Content': {
+                name: 'Get-Content',
+                description: 'دریافت محتوای یک فایل',
+                syntax: 'Get-Content [-Path] <string[]> [-Filter <string>] [-Include <string[]>] [-Exclude <string[]>] [-ReadCount <int>] [-TotalCount <int>] [-Tail <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Path', description: 'مسیر فایل.' }
+                ],
+                examples: [
+                    { example: 'Get-Content file.txt', description: 'خواندن فایل' }
+                ],
+                notes: 'برای خواندن محتوای فایل.' },
+            'Set-Content': {
+                name: 'Set-Content',
+                description: 'تنظیم محتوای یک فایل',
+                syntax: 'Set-Content [-Path] <string> [-Value] <Object[]> [-PassThru] [-Filter <string>] [-Include <string[]>] [-Exclude <string[]>] [-Force] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Path', description: 'مسیر فایل.' },
+                    { name: '-Value', description: 'محتوای جدید.' }
+                ],
+                examples: [
+                    { example: 'Set-Content file.txt -Value "Hello World"', description: 'نوشتن در فایل' }
+                ],
+                notes: 'برای نوشتن در فایل.' },
+            'Add-Content': {
+                name: 'Add-Content',
+                description: 'افزودن محتوا به یک فایل',
+                syntax: 'Add-Content [-Path] <string[]> [-Value] <Object[]> [-PassThru] [-Filter <string>] [-Include <string[]>] [-Exclude <string[]>] [-Force] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Path', description: 'مسیر فایل.' },
+                    { name: '-Value', description: 'محتوای اضافه.' }
+                ],
+                examples: [
+                    { example: 'Add-Content log.txt -Value "New log entry"', description: 'افزودن به فایل' }
+                ],
+                notes: 'برای اضافه کردن به فایل.' },
+            'Get-Command': {
+                name: 'Get-Command',
+                description: 'دریافت اطلاعات درباره یک دستور',
+                syntax: 'Get-Command [[-Name] <string[]>] [-CommandType <CommandTypes[]>] [-ModuleName <string[]>] [-FullyQualifiedModule <ModuleSpecification[]>] [-TotalCount <int>] [-Syntax] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام دستور.' }
+                ],
+                examples: [
+                    { example: 'Get-Command Get-Process', description: 'اطلاعات دستور' }
+                ],
+                notes: 'برای کشف دستورات.' },
+            'Get-Help': {
+                name: 'Get-Help',
+                description: 'دریافت راهنما برای یک دستور',
+                syntax: 'Get-Help [[-Name] <string>] [-Path <string>] [-Category <string[]>] [-Component <string[]>] [-Functionality <string[]>] [-Role <string[]>] [-Full] [-Online] [-Examples] [-Parameter <string>] [-Detailed] [-All] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام دستور.' },
+                    { name: '-Full', description: 'راهنمای کامل.' },
+                    { name: '-Examples', description: 'مثال‌ها.' }
+                ],
+                examples: [
+                    { example: 'Get-Help Get-Process', description: 'راهنمای دستور' },
+                    { example: 'Get-Help Get-Process -Examples', description: 'مثال‌های دستور' }
+                ],
+                notes: 'برای یادگیری دستورات.' },
+            'Get-Module': {
+                name: 'Get-Module',
+                description: 'دریافت ماژول‌های نصب شده',
+                syntax: 'Get-Module [[-Name] <string[]>] [-All] [-ListAvailable] [-Refresh] [<CommonParameters>]',
+                parameters: [
+                    { name: '-ListAvailable', description: 'همه ماژول‌های موجود.' }
+                ],
+                examples: [
+                    { example: 'Get-Module', description: 'ماژول‌های بارگذاری شده' },
+                    { example: 'Get-Module -ListAvailable', description: 'همه ماژول‌ها' }
+                ],
+                notes: 'برای مدیریت ماژول‌ها.' },
+            'Import-Module': {
+                name: 'Import-Module',
+                description: 'وارد کردن یک ماژول',
+                syntax: 'Import-Module [-Name] <string[]> [-Alias <string[]>] [-ArgumentList <Object[]>] [-AsCustomObject] [-Cmdlet <string[]>] [-DisableNameChecking] [-Force] [-Global] [-Prefix <string>] [-Function <string[]>] [-Variable <string[]>] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام ماژول.' }
+                ],
+                examples: [
+                    { example: 'Import-Module NetSecurity', description: 'بارگذاری ماژول' }
+                ],
+                notes: 'برای استفاده از دستورات یک ماژول.' },
+            'Export-Csv': {
+                name: 'Export-Csv',
+                description: 'ذخیره اشیاء در یک فایل CSV',
+                syntax: 'Export-Csv [-InputObject] <PSObject> [-Path] <string> [-Force] [-NoClobber] [-Encoding <string>] [-Append] [<CommonParameters>]',
+                parameters: [
+                    { name: '-InputObject', description: 'داده ورودی (معمولاً pipe می‌شود).' },
+                    { name: '-Path', description: 'مسیر فایل CSV.' }
+                ],
+                examples: [
+                    { example: 'Get-Process | Export-Csv -Path "processes.csv"', description: 'ذخیره فرآیندها در CSV' }
+                ],
+                notes: 'برای گزارش‌گیری.' },
+            'ConvertTo-Json': {
+                name: 'ConvertTo-Json',
+                description: 'تبدیل اشیاء به فرمت JSON',
+                syntax: 'ConvertTo-Json [-InputObject] <PSObject> [-Depth <int>] [-Compress] [-EnumsAsStrings] [-AsArray] [<CommonParameters>]',
+                parameters: [
+                    { name: '-InputObject', description: 'داده ورودی.' },
+                    { name: '-Depth', description: 'عمق تبدیل.' }
+                ],
+                examples: [
+                    { example: 'Get-ComputerInfo | ConvertTo-Json', description: 'تبدیل اطلاعات سیستم به JSON' }
+                ],
+                notes: 'برای کار با APIها یا ذخیره داده.' },
+            'Invoke-WebRequest': {
+                name: 'Invoke-WebRequest',
+                description: 'درخواست یک وب',
+                syntax: 'Invoke-WebRequest [-Uri] <System.Uri> [-Method <WebRequestMethod>] [-UseBasicParsing] [-SessionVariable <string>] [-AllowUnencryptedAuthentication] [-Authentication <WebAuthenticationType>] [-Credential <pscredential>] [-CertificateThumbprint <string>] [-Certificate <System.Security.Cryptography.X509Certificates.X509Certificate>] [-UserAgent <string>] [-DisableKeepAlive] [-Headers <hashtable>] [-MaximumRedirection <int>] [-MaximumRetryCount <int>] [-RetryIntervalSec <int>] [-Body <Object>] [-ContentType <string>] [-TransferEncoding <string>] [-InFile <string>] [-OutFile <string>] [-ResumeOn <System.Net.Http.HttpResponseMessage>] [-SkipCertificateCheck] [-SkipHeaderValidation] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Uri', description: 'آدرس URL.' },
+                    { name: '-Method', description: 'متد HTTP (GET، POST).' },
+                    { name: '-OutFile', description: 'ذخیره خروجی در فایل.' }
+                ],
+                examples: [
+                    { example: 'Invoke-WebRequest -Uri "https://httpbin.org/get" -Method GET', description: 'درخواست GET' },
+                    { example: 'Invoke-WebRequest -Uri "https://example.com/file.zip" -OutFile "file.zip"', description: 'دانلود فایل' }
+                ],
+                notes: 'برای تعامل با وب و APIها.' },
+            'Start-Process': {
+                name: 'Start-Process',
+                description: 'شروع یک فرآیند',
+                syntax: 'Start-Process [-FilePath] <string> [-ArgumentList <string[]>] [-WorkingDirectory <string>] [-LoadUserProfile] [-NoNewWindow] [-PassThru] [-RedirectStandardError <string>] [-RedirectStandardInput <string>] [-RedirectStandardOutput <string>] [-Verb <string>] [-WindowStyle <ProcessWindowStyle>] [-Wait] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-FilePath', description: 'مسیر فایل اجرایی.' },
+                    { name: '-ArgumentList', description: 'آرگومان‌ها.' },
+                    { name: '-Verb', description: 'کار (RunAs برای ادمین).' }
+                ],
+                examples: [
+                    { example: 'Start-Process notepad.exe', description: 'اجرای نوت‌پد' },
+                    { example: 'Start-Process cmd.exe -Verb RunAs', description: 'CMD با دسترسی ادمین' }
+                ],
+                notes: 'برای اجرای برنامه‌ها.' },
+            'Stop-Process': {
+                name: 'Stop-Process',
+                description: 'متوقف کردن یک فرآیند',
+                syntax: 'Stop-Process [-Id] <int[]> [-PassThru] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>] یا Stop-Process [-InputObject] <Process[]> [-PassThru] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Id', description: 'PID فرآیند.' },
+                    { name: '-Force', description: 'نیروی توقف.' }
+                ],
+                examples: [
+                    { example: 'Stop-Process -Name notepad', description: 'بستن نوت‌پد' },
+                    { example: 'Stop-Process -Id 1234 -Force', description: 'نیروی بستن PID 1234' }
+                ],
+                notes: 'برای بستن فرآیندها.' },
+            'Restart-Computer': {
+                name: 'Restart-Computer',
+                description: 'راه‌اندازی مجدد کامپیوتر',
+                syntax: 'Restart-Computer [[-ComputerName] <string[]>] [-Credential <PSCredential>] [-ThrottleLimit <int>] [-Authentication <AuthenticationLevel>] [-DcomAuthentication <PSCredential>] [-Protocol <DcomProtocol>] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Force', description: 'نیروی راه‌اندازی مجدد.' }
+                ],
+                examples: [
+                    { example: 'Restart-Computer -Force', description: 'راه‌اندازی مجدد' }
+                ],
+                notes: 'نیاز به دسترسی ادمین دارد.' },
+            'Stop-Computer': {
+                name: 'Stop-Computer',
+                description: 'خاموش کردن کامپیوتر',
+                syntax: 'Stop-Computer [[-ComputerName] <string[]>] [-Credential <PSCredential>] [-ThrottleLimit <int>] [-Authentication <AuthenticationLevel>] [-DcomAuthentication <PSCredential>] [-Protocol <DcomProtocol>] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Force', description: 'نیروی خاموش کردن.' }
+                ],
+                examples: [
+                    { example: 'Stop-Computer -Force', description: 'خاموش کردن' }
+                ],
+                notes: 'نیاز به دسترسی ادمین دارد.' },
+            'Get-NetAdapter': {
+                name: 'Get-NetAdapter',
+                description: 'دریافت اطلاعات اداپتورهای شبکه',
+                syntax: 'Get-NetAdapter [[-Name] <string[]>] [-IncludeHidden] [-Physical] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام اداپتور.' },
+                    { name: '-Physical', description: 'فقط اداپتورهای فیزیکی.' }
+                ],
+                examples: [
+                    { example: 'Get-NetAdapter', description: 'همه اداپتورها' },
+                    { example: 'Get-NetAdapter -Physical', description: 'فیزیکی‌ها' }
+                ],
+                notes: 'برای مدیریت شبکه.' },
+            'Get-Disk': {
+                name: 'Get-Disk',
+                description: 'دریافت اطلاعات دیسک‌ها',
+                syntax: 'Get-Disk [[-Number] <UInt32[]>] [-CimSession <CimSession>] [-ThrottleLimit <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Number', description: 'شماره دیسک.' }
+                ],
+                examples: [
+                    { example: 'Get-Disk', description: 'همه دیسک‌ها' }
+                ],
+                notes: 'برای مدیریت دیسک.' },
+            'Get-Volume': {
+                name: 'Get-Volume',
+                description: 'دریافت اطلاعات ولوم‌ها',
+                syntax: 'Get-Volume [[-DriveLetter] <char[]>] [-CimSession <CimSession>] [-ThrottleLimit <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-DriveLetter', description: 'حرف درایو.' }
+                ],
+                examples: [
+                    { example: 'Get-Volume', description: 'همه ولوم‌ها' },
+                    { example: 'Get-Volume -DriveLetter C', description: 'ولوم C' }
+                ],
+                notes: 'برای مدیریت فضای دیسک.' },
+            'Get-NetRoute': {
+                name: 'Get-NetRoute',
+                description: 'دریافت جدول مسیریابی',
+                syntax: 'Get-NetRoute [[-DestinationPrefix] <string[]>] [-NextHop <string[]>] [-InterfaceAlias <string[]>] [-InterfaceIndex <UInt32[]>] [-AddressFamily <AddressFamily>] [-PolicyStore <string>] [-AsJob] [-CimSession <CimSession>] [-ThrottleLimit <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-AddressFamily', description: 'IPv4 یا IPv6.' }
+                ],
+                examples: [
+                    { example: 'Get-NetRoute', description: 'همه مسیرها' }
+                ],
+                notes: 'برای تحلیل مسیرهای شبکه.' },
+            'Set-NetIPInterface': {
+                name: 'Set-NetIPInterface',
+                description: 'تنظیم پیکربندی اینترفیس IP',
+                syntax: 'Set-NetIPInterface [-InterfaceAlias <string[]>] [-InterfaceIndex <UInt32[]>] [-AddressFamily <AddressFamily>] [-AdminSolicitationLimit <UInt32>] [-AdvertisingEnabled <bool>] [-AutomaticMetricEnabled <bool>] [-Dhcp <string>] [-DirectedBroadcastEnabled <bool>] [-DnsAutoConfigurationEnabled <bool>] [-DnsEnabled <bool>] [-DnsSuffix <string>] [-ForwardingEnabled <bool>] [-IgnoreDefaultRoute< bool>] [-ManagedAddressConfigurationEnabled <bool>] [-MulticastForwarding <string>] [-NlMtu <UInt32>] [-OtherStatefulConfigurationEnabled <bool>] [-RouterDiscovery <string>] [-WeakHostReceive <string>] [-WeakHostSend <string>] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-InterfaceAlias', description: 'نام اینترفیس.' },
+                    { name: '-AutomaticMetricEnabled', description: 'فعال/غیرفعال کردن متریک خودکار.' }
+                ],
+                examples: [
+                    { example: 'Set-NetIPInterface -InterfaceAlias "Ethernet" -AutomaticMetric Enabled', description: 'فعال کردن متریک خودکار' }
+                ],
+                notes: 'برای پیکربندی پیشرفته شبکه.' },
+            'Get-NetFirewallRule': {
+                name: 'Get-NetFirewallRule',
+                description: 'دریافت قوانین فایروال',
+                syntax: 'Get-NetFirewallRule [-Name <string[]>] [-DisplayName <string[]>] [-Group <string[]>] [-Platform <string[]>] [-PolicyStore <string[]>] [-Profile <string[]>] [-Direction <string[]>] [-Action <string[]>] [-Enabled <string[]>] [-And <CimSession[]>] [-Or <CimSession[]>] [-AsJob] [-CimSession <CimSession[]>] [-ThrottleLimit <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-DisplayName', description: 'نام نمایشی قانون.' },
+                    { name: '-Enabled', description: 'وضعیت فعال/غیرفعال.' }
+                ],
+                examples: [
+                    { example: 'Get-NetFirewallRule -DisplayName "*Windows*" -Enabled True', description: 'قوانین فعال مربوط به ویندوز' }
+                ],
+                notes: 'برای مدیریت فایروال.' },
+            'Enable-NetFirewallRule': {
+                name: 'Enable-NetFirewallRule',
+                description: 'فعال کردن قانون فایروال',
+                syntax: 'Enable-NetFirewallRule [-Name] <string[]> [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام قانون.' }
+                ],
+                examples: [
+                    { example: 'Enable-NetFirewallRule -Name "MyRule"', description: 'فعال کردن قانون' }
+                ],
+                notes: 'برای فعال کردن قانون.' },
+            'Disable-NetFirewallRule': {
+                name: 'Disable-NetFirewallRule',
+                description: 'غیرفعال کردن قانون فایروال',
+                syntax: 'Disable-NetFirewallRule [-Name] <string[]> [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام قانون.' }
+                ],
+                examples: [
+                    { example: 'Disable-NetFirewallRule -Name "MyRule"', description: 'غیرفعال کردن قانون' }
+                ],
+                notes: 'برای غیرفعال کردن قانون.' },
+            'Get-LocalUser': {
+                name: 'Get-LocalUser',
+                description: 'دریافت کاربران محلی',
+                syntax: 'Get-LocalUser [[-Name] <string[]>] [-Include <string[]>] [-Exclude <string[]>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام کاربر.' }
+                ],
+                examples: [
+                    { example: 'Get-LocalUser', description: 'همه کاربران' }
+                ],
+                notes: 'برای مدیریت کاربران.' },
+            'Get-LocalGroup': {
+                name: 'Get-LocalGroup',
+                description: 'دریافت گروه‌های محلی',
+                syntax: 'Get-LocalGroup [[-Name] <string[]>] [-Include <string[]>] [-Exclude <string[]>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام گروه.' }
+                ],
+                examples: [
+                    { example: 'Get-LocalGroup', description: 'همه گروه‌ها' }
+                ],
+                notes: 'برای مدیریت گروه‌ها.' },
+            'Get-ScheduledTask': {
+                name: 'Get-ScheduledTask',
+                description: 'دریافت وظایف زمان‌بندی شده',
+                syntax: 'Get-ScheduledTask [[-TaskName] <string[]>] [-TaskPath <string[]>] [-AsJob] [-CimSession <CimSession[]>] [-ThrottleLimit <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-TaskName', description: 'نام وظیفه.' },
+                    { name: '-TaskPath', description: 'مسیر وظیفه.' }
+                ],
+                examples: [
+                    { example: 'Get-ScheduledTask', description: 'همه وظایف' }
+                ],
+                notes: 'برای مدیریت وظایف.' },
+            'Start-ScheduledTask': {
+                name: 'Start-ScheduledTask',
+                description: 'شروع یک وظیفه زمان‌بندی شده',
+                syntax: 'Start-ScheduledTask [-TaskName] <string[]> [-TaskPath <string>] [-AsJob] [-CimSession <CimSession[]>] [-ThrottleLimit <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-TaskName', description: 'نام وظیفه.' }
+                ],
+                examples: [
+                    { example: 'Start-ScheduledTask -TaskName "MyTask"', description: 'شروع وظیفه' }
+                ],
+                notes: 'برای شروع وظیفه.' },
+            'Stop-ScheduledTask': {
+                name: 'Stop-ScheduledTask',
+                description: 'متوقف کردن یک وظیفه زمان‌بندی شده',
+                syntax: 'Stop-ScheduledTask [-TaskName] <string[]> [-TaskPath <string>] [-AsJob] [-CimSession <CimSession[]>] [-ThrottleLimit <int>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-TaskName', description: 'نام وظیفه.' }
+                ],
+                examples: [
+                    { example: 'Stop-ScheduledTask -TaskName "MyTask"', description: 'متوقف کردن وظیفه' }
+                ],
+                notes: 'برای توقف وظیفه.' },
+            'Get-HotFix': {
+                name: 'Get-HotFix',
+                description: 'دریافت لیست به‌روزرسانی‌های نصب شده',
+                syntax: 'Get-HotFix [[-Id] <string[]>] [-ComputerName <string[]>] [-Credential <PSCredential>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Id', description: 'شماره به‌روزرسانی.' }
+                ],
+                examples: [
+                    { example: 'Get-HotFix', description: 'همه به‌روزرسانی‌ها' }
+                ],
+                notes: 'برای بررسی نصب به‌روزرسانی‌ها.' },
+            'Get-WindowsUpdateLog': {
+                name: 'Get-WindowsUpdateLog',
+                description: 'دریافت گزارش به‌روزرسانی‌های ویندوز',
+                syntax: 'Get-WindowsUpdateLog [-LogPath <string>] [-SummaryPath <string>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-LogPath', description: 'مسیر گزارش.' }
+                ],
+                examples: [
+                    { example: 'Get-WindowsUpdateLog', description: 'گزارش به‌روزرسانی' }
+                ],
+                notes: 'برای تحلیل مشکلات به‌روزرسانی.' },
+            'Get-AppxPackage': {
+                name: 'Get-AppxPackage',
+                description: 'دریافت بسته‌های نصب شده UWP',
+                syntax: 'Get-AppxPackage [[-Name] <string>] [-AllUsers] [-User <string>] [-PackageTypeFilter <string>] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Name', description: 'نام بسته.' },
+                    { name: '-AllUsers', description: 'همه کاربران.' }
+                ],
+                examples: [
+                    { example: 'Get-AppxPackage', description: 'همه بسته‌ها' }
+                ],
+                notes: 'برای مدیریت اپ‌های UWP.' },
+            'Get-ExecutionPolicy': {
+                name: 'Get-ExecutionPolicy',
+                description: 'دریافت سیاست اجرای اسکریپت',
+                syntax: 'Get-ExecutionPolicy [[-Scope] <ExecutionPolicyScope>] [-List] [<CommonParameters>]',
+                parameters: [
+                    { name: '-Scope', description: 'محدوده (CurrentUser، LocalMachine، ...).' }
+                ],
+                examples: [
+                    { example: 'Get-ExecutionPolicy', description: 'سیاست فعلی' }
+                ],
+                notes: 'برای بررسی مجاز بودن اجرای اسکریپت.' },
+            'Set-ExecutionPolicy': {
+                name: 'Set-ExecutionPolicy',
+                description: 'تنظیم سیاست اجرای اسکریپت',
+                syntax: 'Set-ExecutionPolicy [-ExecutionPolicy] <ExecutionPolicy> [-Scope <ExecutionPolicyScope>] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]',
+                parameters: [
+                    { name: '-ExecutionPolicy', description: 'سیاست (Restricted، RemoteSigned، ...).' },
+                    { name: '-Scope', description: 'محدوده.' },
+                    { name: '-Force', description: 'بدون تأیید.' }
+                ],
+                examples: [
+                    { example: 'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser', description: 'تنظیم سیاست' }
+                ],
+                notes: 'نیاز به دسترسی ادمین دارد.' }
+        };
+
+        // Add more detailed command information for Run section
+        const detailedRunCommands = {
+            'cmd': {
+                name: 'cmd',
+                description: 'اجرای خط فرمان (Command Prompt)',
+                syntax: 'cmd [/A | /U] [/Q] [/D] [/E:ON | /E:OFF] [/F:ON | /F:OFF] [/V:ON | /V:OFF] [[/S] [/C | /K] string]',
+                parameters: [
+                    { name: '/C', description: 'اجرای دستور مشخص شده و سپس خروج.' },
+                    { name: '/K', description: 'اجرای دستور مشخص شده و ماندن در CMD.' },
+                    { name: '/S', description: 'تغییر نحوه پردازش /C یا /K.' }
+                ],
+                examples: [
+                    { example: 'cmd', description: 'باز کردن CMD معمولی' },
+                    { example: 'cmd /C dir C:\\', description: 'اجرای یک دستور و خروج' },
+                    { example: 'cmd /K ipconfig', description: 'اجرای یک دستور و ماندن در CMD' }
+                ],
+                notes: 'این دستور یکی از پایه‌ای‌ترین راه‌های دسترسی به محیط خط فرمان است. برای اجرای بیشتر دستورات CMD مناسب است.'
+            },
+            'powershell': {
+                name: 'powershell',
+                description: 'اجرای PowerShell',
+                syntax: 'powershell.exe [-ExecutionPolicy {Bypass | AllSigned | RemoteSigned | Restricted}] [-NoLogo] [-NonInteractive] [-NoProfile] [-WindowStyle {Normal | Minimized | Maximized | Hidden}] [-Command { - | filename [args] | {scriptblock} [-args args] }]',
+                parameters: [
+                    { name: '-ExecutionPolicy', description: 'سیاست اجرای اسکریپت.' },
+                    { name: '-NoProfile', description: 'عدم بارگذاری پروفایل.' },
+                    { name: '-Command', description: 'اجرای یک دستور یا اسکریپت.' }
+                ],
+                examples: [
+                    { example: 'powershell', description: 'باز کردن PowerShell' },
+                    { example: 'powershell -NoProfile', description: 'بدون پروفایل' },
+                    { example: 'powershell -Command "Get-Process"', description: 'اجرای یک دستور' }
+                ],
+                notes: 'محیط پیشرفته‌تر نسبت به CMD.' },
+            'msconfig': {
+                name: 'msconfig',
+                description: 'پیکربندی سیستم ویندوز',
+                syntax: 'msconfig',
+                parameters: [],
+                examples: [
+                    { example: 'msconfig', description: 'باز کردن پیکربندی سیستم' }
+                ],
+                notes: 'برای مدیریت موارد راه‌اندازی و خدمات.' },
+            'regedit': {
+                name: 'regedit',
+                description: 'ویرایشگر رجیستری',
+                syntax: 'regedit [/s] [filename]',
+                parameters: [
+                    { name: '/s', description: 'اجرای فایل .reg بدون نمایش.' }
+                ],
+                examples: [
+                    { example: 'regedit', description: 'باز کردن ویرایشگر' }
+                ],
+                notes: 'برای دسترسی مستقیم به رجیستری. دقت زیادی لازم است.' },
+            'taskmgr': {
+                name: 'taskmgr',
+                description: 'مدیر وظیفه (Task Manager)',
+                syntax: 'taskmgr',
+                parameters: [],
+                examples: [
+                    { example: 'taskmgr', description: 'باز کردن مدیر وظیفه' }
+                ],
+                notes: 'برای نظارت بر فرآیندها و منابع.' },
+            'devmgmt.msc': {
+                name: 'devmgmt.msc',
+                description: 'مدیریت دستگاه‌ها',
+                syntax: 'devmgmt.msc',
+                parameters: [],
+                examples: [
+                    { example: 'devmgmt.msc', description: 'باز کردن مدیریت دستگاه‌ها' }
+                ],
+                notes: 'برای مدیریت درایورها و دستگاه‌های سخت‌افزاری.' },
+            'services.msc': {
+                name: 'services.msc',
+                description: 'مدیریت سرویس‌ها',
+                syntax: 'services.msc',
+                parameters: [],
+                examples: [
+                    { example: 'services.msc', description: 'باز کردن مدیریت سرویس‌ها' }
+                ],
+                notes: 'برای مدیریت سرویس‌های سیستم.' },
+            'dxdiag': {
+                name: 'dxdiag',
+                description: 'اطلاعات سخت‌افزار دیسک ت Direct X',
+                syntax: 'dxdiag',
+                parameters: [],
+                examples: [
+                    { example: 'dxdiag', description: 'باز کردن اطلاعات Direct X' }
+                ],
+                notes: 'برای بررسی اطلاعات گرافیک و صدا.' },
+            'gpedit.msc': {
+                name: 'gpedit.msc',
+                description: 'ویرایشگر سیاست گروهی (Professional/Enterprise)',
+                syntax: 'gpedit.msc',
+                parameters: [],
+                examples: [
+                    { example: 'gpedit.msc', description: 'باز کردن سیاست گروهی' }
+                ],
+                notes: 'در ویندوز Home در دسترس نیست.' },
+            'perfmon': {
+                name: 'perfmon',
+                description: 'مانیتور عملکرد',
+                syntax: 'perfmon',
+                parameters: [],
+                examples: [
+                    { example: 'perfmon', description: 'باز کردن مانیتور عملکرد' }
+                ],
+                notes: 'برای نظارت پیشرفته بر عملکرد.' },
+            'eventvwr.msc': {
+                name: 'eventvwr.msc',
+                description: 'نمایشگر رویدادها',
+                syntax: 'eventvwr.msc',
+                parameters: [],
+                examples: [
+                    { example: 'eventvwr.msc', description: 'باز کردن گزارش رویدادها' }
+                ],
+                notes: 'برای تحلیل خطاها و عملکرد.' },
+            'diskmgmt.msc': {
+                name: 'diskmgmt.msc',
+                description: 'مدیریت دیسک',
+                syntax: 'diskmgmt.msc',
+                parameters: [],
+                examples: [
+                    { example: 'diskmgmt.msc', description: 'باز کردن مدیریت دیسک' }
+                ],
+                notes: 'برای مدیریت پارتیشن‌ها و درایوها.' },
+            'compmgmt.msc': {
+                name: 'compmgmt.msc',
+                description: 'مدیریت کامپیوتر',
+                syntax: 'compmgmt.msc',
+                parameters: [],
+                examples: [
+                    { example: 'compmgmt.msc', description: 'باز کردن مدیریت کامپیوتر' }
+                ],
+                notes: 'مرکزی برای مدیریت سیستم.' },
+            'cleanmgr': {
+                name: 'cleanmgr',
+                description: 'پاک‌سازی دیسک',
+                syntax: 'cleanmgr [/d DriveLetter] [/sageset:Number] [/sagerun:Number]',
+                parameters: [
+                    { name: '/d DriveLetter', description: 'درایو مورد نظر.' }
+                ],
+                examples: [
+                    { example: 'cleanmgr', description: 'باز کردن پاک‌سازی دیسک' }
+                ],
+                notes: 'برای آزاد کردن فضای دیسک.' },
+            'defrag': {
+                name: 'defrag',
+                description: 'دیفرگمنت کردن درایو',
+                syntax: 'defrag [Volume] [/U] [/V] [/A] [/F] [/H] [/M [Time] [/I [Time]] [/X] [/B] [/R [Threshold]] [/L] [/E [Volume] [...]] [/O] [/L]',
+                parameters: [
+                    { name: 'Volume', description: 'درایو مورد نظر (مثلاً C:).' },
+                    { name: '/U', description: 'نمایش پیشرفت.' },
+                    { name: '/V', description: 'نمایش اطلاعات جزئی.' },
+                    { name: '/O', description: 'بهینه‌سازی کامل.' }
+                ],
+                examples: [
+                    { example: 'defrag C:', description: 'دیفرگمنت C' },
+                    { example: 'defrag C: /O', description: 'بهینه‌سازی کامل C' }
+                ],
+                notes: 'برای بهبود عملکرد HDD.' },
+            'notepad': {
+                name: 'notepad',
+                description: 'اجرای نوت‌پد',
+                syntax: 'notepad [FileName]',
+                parameters: [
+                    { name: 'FileName', description: 'نام فایل برای باز کردن.' }
+                ],
+                examples: [
+                    { example: 'notepad', description: 'اجرای نوت‌پد' },
+                    { example: 'notepad file.txt', description: 'باز کردن فایل' }
+                ],
+                notes: 'ویرایشگر متن ساده.' },
+            'calc': {
+                name: 'calc',
+                description: 'اجرای ماشین حساب',
+                syntax: 'calc',
+                parameters: [],
+                examples: [
+                    { example: 'calc', description: 'اجرای ماشین حساب' }
+                ],
+                notes: 'ابزار ماشین حساب.' },
+            'mspaint': {
+                name: 'mspaint',
+                description: 'اجرای نقاشی مایکروسافت',
+                syntax: 'mspaint [FileName]',
+                parameters: [
+                    { name: 'FileName', description: 'نام فایل تصویر.' }
+                ],
+                examples: [
+                    { example: 'mspaint', description: 'اجرای نقاشی' }
+                ],
+                notes: 'ابزار نقاشی.' },
+            'write': {
+                name: 'write',
+                description: 'اجرای ویرایشگر واژه (Wordpad)',
+                syntax: 'write [FileName]',
+                parameters: [
+                    { name: 'FileName', description: 'نام فایل.' }
+                ],
+                examples: [
+                    { example: 'write', description: 'اجرای Wordpad' }
+                ],
+                notes: 'ویرایشگر پیشرفته‌تر از نوت‌پد.' },
+            'control': {
+                name: 'control',
+                description: 'پنل کنترل',
+                syntax: 'control [PageName]',
+                parameters: [
+                    { name: 'PageName', description: 'نام صفحه خاص (اختیاری).' }
+                ],
+                examples: [
+                    { example: 'control', description: 'باز کردن پنل کنترل' }
+                ],
+                notes: 'مرکز تنظیمات سیستم.' },
+            'control printers': {
+                name: 'control printers',
+                description: 'مدیریت چاپگرها',
+                syntax: 'control printers',
+                parameters: [],
+                examples: [
+                    { example: 'control printers', description: 'باز کردن مدیریت چاپگرها' }
+                ],
+                notes: 'برای مدیریت چاپگرها.' },
+            'inetcpl.cpl': {
+                name: 'inetcpl.cpl',
+                description: 'تنظیمات اینترنت',
+                syntax: 'inetcpl.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'inetcpl.cpl', description: 'باز کردن تنظیمات اینترنت' }
+                ],
+                notes: 'برای تنظیمات مرورگر.' },
+            'ncpa.cpl': {
+                name: 'ncpa.cpl',
+                description: 'کانکشن‌های شبکه',
+                syntax: 'ncpa.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'ncpa.cpl', description: 'باز کردن کانکشن‌های شبکه' }
+                ],
+                notes: 'برای مدیریت اتصالات شبکه.' },
+            'sysdm.cpl': {
+                name: 'sysdm.cpl',
+                description: 'خواص سیستم',
+                syntax: 'sysdm.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'sysdm.cpl', description: 'باز کردن خواص سیستم' }
+                ],
+                notes: 'برای تنظیمات سیستم و سخت‌افزار.' },
+            'appwiz.cpl': {
+                name: 'appwiz.cpl',
+                description: 'نصب/حذف برنامه‌ها',
+                syntax: 'appwiz.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'appwiz.cpl', description: 'باز کردن نصب/حذف برنامه‌ها' }
+                ],
+                notes: 'برای مدیریت نرم‌افزارها.' },
+            'firewall.cpl': {
+                name: 'firewall.cpl',
+                description: 'تنظیمات فایروال',
+                syntax: 'firewall.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'firewall.cpl', description: 'باز کردن تنظیمات فایروال' }
+                ],
+                notes: 'برای مدیریت فایروال.' },
+            'timedate.cpl': {
+                name: 'timedate.cpl',
+                description: 'تنظیمات تاریخ و زمان',
+                syntax: 'timedate.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'timedate.cpl', description: 'باز کردن تنظیمات تاریخ و زمان' }
+                ],
+                notes: 'برای تنظیم ساعت و تاریخ.' },
+            'main.cpl': {
+                name: 'main.cpl',
+                description: 'تنظیمات ماوس',
+                syntax: 'main.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'main.cpl', description: 'باز کردن تنظیمات ماوس' }
+                ],
+                notes: 'برای تنظیمات ماوس.' },
+            'mmsys.cpl': {
+                name: 'mmsys.cpl',
+                description: 'تنظیمات صدا',
+                syntax: 'mmsys.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'mmsys.cpl', description: 'باز کردن تنظیمات صدا' }
+                ],
+                notes: 'برای تنظیمات صدا.' },
+            'desk.cpl': {
+                name: 'desk.cpl',
+                description: 'تنظیمات نمایشگر',
+                syntax: 'desk.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'desk.cpl', description: 'باز کردن تنظیمات نمایشگر' }
+                ],
+                notes: 'برای تنظیمات صفحه نمایش.' },
+            'intl.cpl': {
+                name: 'intl.cpl',
+                description: 'تنظیمات منطقه',
+                syntax: 'intl.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'intl.cpl', description: 'باز کردن تنظیمات منطقه' }
+                ],
+                notes: 'برای تنظیمات زبان و منطقه.' },
+            'usrmgr.cpl': {
+                name: 'usrmgr.cpl',
+                description: 'مدیریت کاربران (Home)',
+                syntax: 'usrmgr.cpl',
+                parameters: [],
+                examples: [
+                    { example: 'usrmgr.cpl', description: 'باز کردن مدیریت کاربران' }
+                ],
+                notes: 'در ویندوز Home محدود است.' },
+            'secpol.msc': {
+                name: 'secpol.msc',
+                description: 'تنظیمات امنیت محلی (Professional/Enterprise)',
+                syntax: 'secpol.msc',
+                parameters: [],
+                examples: [
+                    { example: 'secpol.msc', description: 'باز کردن تنظیمات امنیت محلی' }
+                ],
+                notes: 'در ویندوز Home در دسترس نیست.' },
+            'certmgr.msc': {
+                name: 'certmgr.msc',
+                description: 'مدیریت گواهینامه‌ها',
+                syntax: 'certmgr.msc',
+                parameters: [],
+                examples: [
+                    { example: 'certmgr.msc', description: 'باز کردن مدیریت گواهینامه‌ها' }
+                ],
+                notes: 'برای مدیریت گواهی‌ها.' },
+            'lusrmgr.msc': {
+                name: 'lusrmgr.msc',
+                description: 'مدیریت کاربران و گروه‌های محلی (Professional/Enterprise)',
+                syntax: 'lusrmgr.msc',
+                parameters: [],
+                examples: [
+                    { example: 'lusrmgr.msc', description: 'باز کردن مدیریت کاربران محلی' }
+                ],
+                notes: 'در ویندوز Home در دسترس نیست.' },
+            'mstsc': {
+                name: 'mstsc',
+                description: 'اتصال دسکتاپ از راه دور',
+                syntax: 'mstsc [/v:ServerName] [/admin] [/f] [/w:width] [/h:height] ...',
+                parameters: [
+                    { name: '/v:ServerName', description: 'نام یا IP سرور.' }
+                ],
+                examples: [
+                    { example: 'mstsc', description: 'باز کردن اتصال راه دور' }
+                ],
+                notes: 'برای دسترسی از راه دور.' },
+            'mobsync': {
+                name: 'mobsync',
+                description: 'همگام‌سازی',
+                syntax: 'mobsync',
+                parameters: [],
+                examples: [
+                    { example: 'mobsync', description: 'باز کردن همگام‌سازی' }
+                ],
+                notes: 'برای همگام‌سازی داده.' },
+            'explorer': {
+                name: 'explorer',
+                description: 'اجرای مرورگر فایل',
+                syntax: 'explorer [Path]',
+                parameters: [
+                    { name: 'Path', description: 'مسیر اولیه.' }
+                ],
+                examples: [
+                    { example: 'explorer', description: 'باز کردن مرورگر فایل' },
+                    { example: 'explorer C:\\Users', description: 'باز کردن مسیر خاص' }
+                ],
+                notes: 'مرورگر فایل پیش‌فرض.' },
+            'iexplore': {
+                name: 'iexplore',
+                description: 'اجرای اینترنت اکسپلورر',
+                syntax: 'iexplore [URL]',
+                parameters: [
+                    { name: 'URL', description: 'آدرس وب.' }
+                ],
+                examples: [
+                    { example: 'iexplore', description: 'اجرای اینترنت اکسپلورر' }
+                ],
+                notes: 'مرورگر قدیمی مایکروسافت.' },
+            'winver': {
+                name: 'winver',
+                description: 'نمایش اطلاعات نسخه ویندوز',
+                syntax: 'winver',
+                parameters: [],
+                examples: [
+                    { example: 'winver', description: 'نمایش نسخه ویندوز' }
+                ],
+                notes: 'اطلاعات نسخه و ساخت.' },
+            'shutdown': {
+                name: 'shutdown',
+                description: 'خاموش کردن یا راه‌اندازی مجدد سیستم',
+                syntax: 'shutdown [/s | /r | /l | /a] [/t time] [/c "comment"] ...',
+                parameters: [
+                    { name: '/s', description: 'خاموش کردن.' },
+                    { name: '/r', description: 'راه‌اندازی مجدد.' },
+                    { name: '/t time', description: 'زمان انتظار به ثانیه.' },
+                    { name: '/c "comment"', description: 'توضیح.' }
+                ],
+                examples: [
+                    { example: 'shutdown /s /t 0', description: 'خاموش کردن فوری' },
+                    { example: 'shutdown /r /t 60', description: 'راه‌اندازی مجدد بعد از 60 ثانیه' }
+                ],
+                notes: 'نیاز به دسترسی ادمین ممکن است داشته باشد.' },
+            'slmgr.vbs': {
+                name: 'slmgr.vbs',
+                description: 'مدیریت لایسنس ویندوز',
+                syntax: 'slmgr.vbs [Option]',
+                parameters: [
+                    { name: '/dli', description: 'نمایش وضعیت لایسنس.' },
+                    { name: '/dlv', description: 'نمایش جزئیات لایسنس.' },
+                    { name: '/xpr', description: 'تاریخ انقضا.' }
+                ],
+                examples: [
+                    { example: 'slmgr.vbs /dli', description: 'بررسی وضعیت لایسنس' }
+                ],
+                notes: 'برای مدیریت فعال‌سازی.' }
+        };
+
+        // Override the showDetails function to use detailed information
+        CommandManager.showDetails = (command, type) => {
+            // Update active state in list
+            document.querySelectorAll(`#${type}CommandList .command-list-item`).forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Find the detailed info
+            let detailedInfo = null;
+            let titleId, contentId, pinBtnId, copyBtnId, execBtnId, detailsContent = '';
+
+            switch (type) {
+                case 'cmd':
+                    detailedInfo = detailedCmdCommands[command.name];
+                    titleId = 'commandDetailsTitle';
+                    contentId = 'commandDetailsContent';
+                    pinBtnId = 'pinCommandBtn';
+                    copyBtnId = 'copyCommandBtn';
+                    execBtnId = 'executeCommandBtn';
+                    break;
+                case 'ps':
+                    detailedInfo = detailedPsCommands[command.name];
+                    titleId = 'psCommandDetailsTitle';
+                    contentId = 'psCommandDetailsContent';
+                    pinBtnId = 'pinPsCommandBtn';
+                    copyBtnId = 'copyPsCommandBtn';
+                    execBtnId = 'executePsCommandBtn';
+                    break;
+                case 'run':
+                    detailedInfo = detailedRunCommands[command.name];
+                    titleId = 'runCommandDetailsTitle';
+                    contentId = 'runCommandDetailsContent';
+                    pinBtnId = 'pinRunCommandBtn';
+                    copyBtnId = 'copyRunCommandBtn';
+                    execBtnId = 'executeRunCommandBtn';
+                    break;
+            }
+
+            if (!detailedInfo) {
+                // Fallback to basic if detailed not found
+                detailedInfo = command;
+            }
+
+            // Build HTML content
+            detailsContent = `
+                <h4 class="command-details-title">${Utils.sanitizeInput(detailedInfo.name)}</h4>
+                <p class="command-details-description">
+                    ${Utils.sanitizeInput(detailedInfo.description)}
+                </p>
+                <div class="command-details-syntax">
+                    ${Utils.sanitizeInput(detailedInfo.syntax)}
+                </div>
+                <div class="command-details-parameters">
+                    <h5>پارامترها:</h5>
+                    ${detailedInfo.parameters.map(param => `
+                        <div class="parameter-item">
+                            <div class="parameter-name">${Utils.sanitizeInput(param.name)}</div>
+                            <div class="parameter-desc">${Utils.sanitizeInput(param.description)}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="command-details-examples">
+                    <h5>مثال‌ها:</h5>
+                    ${detailedInfo.examples.map(ex => `
+                        <div class="example-item">
+                            <p><strong>${Utils.sanitizeInput(ex.example)}:</strong></p>
+                            <div class="example-code">${Utils.sanitizeInput(ex.example)}</div>
+                            <p>${Utils.sanitizeInput(ex.description)}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="command-details-notes">
+                    <h5>نکات:</h5>
+                    <p>${Utils.sanitizeInput(detailedInfo.notes)}</p>
+                </div>
+            `;
+
+            // Update UI
+            if (titleId) document.getElementById(titleId).textContent = detailedInfo.name;
+            if (contentId) document.getElementById(contentId).innerHTML = detailsContent;
+
+            // Store reference for copy/execute
+            ArkaApp.state.activeCommandDetails = { command: detailedInfo, type };
+
+            // Attach event listeners for actions
+            if (copyBtnId) {
+                const copyBtn = document.getElementById(copyBtnId);
+                copyBtn.onclick = () => CommandManager.copyCommand(detailedInfo.name);
+            }
+            if (execBtnId) {
+                const execBtn = document.getElementById(execBtnId);
+                execBtn.onclick = () => CommandManager.executeCommand(detailedInfo.name, type);
+            }
+            if (pinBtnId) {
+                const pinBtn = document.getElementById(pinBtnId);
+                pinBtn.onclick = () => CommandManager.pinCommand(detailedInfo.name, type);
+            }
+        };
+
+        // ============================================
+        // 16. Enhanced AI Manager (with context and history)
+        // ============================================
+
+        AIManager.handleChatInput = () => {
+            const inputElement = document.getElementById('aiChatInput');
+            const message = inputElement.value.trim();
+            if (!message) return;
+
+            // Add user message to chat and history
+            AIManager.addMessageToChat(message, 'user');
+            ArkaApp.state.chatHistory.push({ sender: 'user', text: message, timestamp: new Date().toISOString() });
+
+            // Clear input
+            inputElement.value = '';
+
+            // Simulate AI response with context
+            setTimeout(() => {
+                const aiResponse = AIManager.generateResponse(message, ArkaApp.state.chatHistory);
+                AIManager.addMessageToChat(aiResponse, 'ai');
+                ArkaApp.state.chatHistory.push({ sender: 'ai', text: aiResponse, timestamp: new Date().toISOString() });
+
+                // Save updated history
+                Storage.set('arka_chat_history', ArkaApp.state.chatHistory);
+            }, 1000); // Simulate processing delay
+        };
+
+        AIManager.generateResponse = (input, history) => {
+            // Improved simulation with context
+            const lowerInput = input.toLowerCase();
+            const lastUserMessage = history.filter(h => h.sender === 'user').pop();
+
+            // Contextual responses based on previous messages
+            if (history.length > 2 && lastUserMessage && lastUserMessage.text.toLowerCase().includes('داغ')) {
+                if (lowerInput.includes('چگونه') || lowerInput.includes('راه') || lowerInput.includes('کمک')) {
+                    return "برای حل مشکل گرمای سیستم، می‌توانید ابتدا دستور <code>msinfo32</code> را از بخش 'Run' اجرا کنید تا اطلاعات سخت‌افزار را بررسی کنید. اگر پردازنده یا گرافیک شما مدام در حد بالا کار می‌کنند، ممکن است یک فرآیند مشکوک باشد. می‌توانید از <code>tasklist</code> در CMD یا <code>Get-Process</code> در PowerShell برای بررسی فرآیندهای پر مصرف استفاده کنید. همچنین چک کنید که خنک‌کننده‌ها (فروترها) دچار گرد و غبار نشده باشند. آیا می‌خواهید نحوه بررسی فرآیندهای پر مصرف را بدانید؟";
+                }
+            }
+
+            if (lowerInput.includes('سیستم') && lowerInput.includes('داغ')) {
+                return "به نظر می‌رسد مشکل گرمای سیستم دارید. می‌توانید دستور <code>msinfo32</code> را از بخش 'Run' اجرا کنید تا جزئیات سخت‌افزار را بررسی کنید. همچنین می‌توانید از بخش 'دستورات' دستور <code>perfmon</code> را برای بررسی مانیتور عملکرد امتحان کنید. آیا می‌خواهید راهنمایی بیشتری داشته باشید؟";
+            }
+            if (lowerInput.includes('فضای') && lowerInput.includes('دیسک')) {
+                return "برای آزاد کردن فضای دیسک، می‌توانید از دستور <code>cleanmgr</code> در بخش 'Run' استفاده کنید. همچنین دستور <code>dir /s</code> در CMD می‌تواند کمک کند تا فایل‌های بزرگ را پیدا کنید. آیا می‌خواهید چگونه این کار را انجام دهم؟";
+            }
+            if (lowerInput.includes('سرعت') && lowerInput.includes('ویندوز')) {
+                return "برای افزایش سرعت ویندوز، می‌توانید خدمات غیرضروری را غیرفعال کنید. از منوی بالا بخش 'PowerShell' را انتخاب کنید و دستور <code>Get-Service | Where-Object {$_.StartType -eq 'Automatic' -and $_.Status -eq 'Stopped'}</code> را جستجو کنید. سپس می‌توانید وضعیت آن‌ها را بررسی و تغییر دهید. همچنین دستور <code>msconfig</code> در 'Run' می‌تواند کمک کننده باشد.";
+            }
+            if (lowerInput.includes('cmd') || lowerInput.includes('خط فرمان')) {
+                return "CMD (خط فرمان) یک محیط متنی برای اجرای دستورات ویندوز است. می‌توانید دستوراتی مانند <code>dir</code> برای لیست فایل‌ها، <code>ipconfig</code> برای اطلاعات شبکه، یا <code>tasklist</code> برای فرآیندها را اجرا کنید. از منوی بالا بخش 'CMD' را انتخاب کنید تا لیست کامل دستورات را ببینید و کمک لازم را دریافت کنید.";
+            }
+            if (lowerInput.includes('powershell')) {
+                return "PowerShell یک محیط پیشرفته‌تر نسبت به CMD است که از اسکریپت‌نویسی پشتیبانی می‌کند. می‌توانید از دستوراتی مانند <code>Get-Process</code>، <code>Get-Service</code>، یا <code>Get-NetIPConfiguration</code> استفاده کنید. از منوی بالا بخش 'PowerShell' را انتخاب کنید تا لیست کامل دستورات را ببینید.";
+            }
+            if (lowerInput.includes('run')) {
+                return "پنجره 'Run' (یا دستور Run) امکان اجرای سریع برنامه‌ها و ابزارهای سیستمی را فراهم می‌کند. دستوراتی مانند <code>msconfig</code>، <code>regedit</code>، <code>taskmgr</code> و بسیاری دیگر را می‌توان از این طریق اجرا کرد. از منوی بالا بخش 'Run' را انتخاب کنید.";
+            }
+            if (lowerInput.includes('سلام') || lowerInput.includes('درود') || lowerInput.includes('خوبی')) {
+                return "درود! من دستیار هوش مصنوعی Arka هستم. چطور می‌تونم کمکتون کنم؟ می‌تونی در مورد مشکل سیستمت، دستور خاصی که نیاز داری یا نحوه اجرای کاری بپرسی. من می‌تونم بین CMD، PowerShell و Run کمک کنم.";
+            }
+            if (lowerInput.includes('ممنون') || lowerInput.includes('خوب بود')) {
+                return "خواهش می‌کنم! اگر سوال دیگه‌ای داشتی، در خدمتم.";
+            }
+
+            return "ممنون از پیام شما. من یک مدل زبانی هوش مصنوعی هستم و در حال حاضر قادر به اجرای مستقیم دستورات روی سیستم شما نیستم، اما می‌توانم راهنمایی‌های لازم را بر اساس دانش خود ارائه دهم. لطفاً مشکل یا سوال خود را با جزئیات بیشتری بیان کنید. می‌توانم در مورد دستورات CMD، PowerShell یا Run کمک کنم.";
+        };
+
+        // Load chat history on init
+        AIManager.loadHistory = () => {
+            const chatContainer = document.getElementById('chatMessages');
+            chatContainer.innerHTML = ''; // Clear current chat view
+            ArkaApp.state.chatHistory.forEach(msg => {
+                AIManager.addMessageToChat(msg.text, msg.sender);
+            });
+        };
+
+        // ============================================
+        // 17. Enhanced Page Manager (with history load)
+        // ============================================
+
+        PageManager.loadAiCenter = () => {
+            // Load chat history when AI center is opened
+            AIManager.loadHistory();
+        };
+
+        // ============================================
+        // 18. Quick Actions Handler
+        // ============================================
+
+        const QuickActions = {
+            init: () => {
+                document.querySelectorAll('.action-btn[data-action]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const action = btn.getAttribute('data-action');
+                        QuickActions.executeAction(action);
+                    });
+                });
+            },
+
+            executeAction: (action) => {
+                EventManager.track('quick_action_clicked', { action });
+                let commandToExecute = '';
+                let type = 'run'; // Default to Run for these quick actions
+
+                switch (action) {
+                    case 'disk-cleanup':
+                        commandToExecute = 'cleanmgr';
+                        break;
+                    case 'defrag':
+                        commandToExecute = 'defrag C:';
+                        break;
+                    case 'update':
+                        commandToExecute = 'wuapp'; // Opens Windows Update UI
+                        break;
+                    case 'backup':
+                        commandToExecute = 'control /name Microsoft.BackupAndRestore'; // Opens Backup UI
+                        break;
+                    case 'optimize':
+                        commandToExecute = 'msconfig';
+                        break;
+                    case 'security-scan':
+                        // This is a common command for Windows Defender quick scan
+                        commandToExecute = 'powershell -WindowStyle Hidden -Command "Start-MpScan -ScanType QuickScan"';
+                        type = 'cmd'; // Technically runs via cmd, but executes ps command
+                        break;
+                    default:
+                        Toast.show('این اقدام هنوز پیاده‌سازی نشده است.', 'warning');
+                        return;
+                }
+
+                if (commandToExecute) {
+                    Toast.show(`در حال تلاش برای اجرای "${commandToExecute}"...`, 'info');
+                    // Simulate execution as before
+                    CommandManager.executeCommand(commandToExecute, type);
+                }
+            }
+        };
+
+        // ============================================
+        // 19. System Alert Manager (Simulated)
+        // ============================================
+
+        const SystemAlertManager = {
+            alerts: [
+                { id: 1, type: 'warning', title: 'به‌روزرسانی در دسترس', message: 'به‌روزرسانی امنیتی برای ویندوز موجود است. لطفاً در اسرع وقت نصب کنید.', time: '10:30' },
+                { id: 2, type: 'info', title: 'پشتیبان‌گیری توصیه می‌شود', message: 'آخرین نسخه پشتیبان سیستم شما بیش از یک هفته است. در نظر داشته باشید یک نسخه جدید تهیه کنید.', time: '09:45' },
+                { id: 3, type: 'warning', title: 'دیسک C: پر است', message: 'فضای دیسک C: به 90% رسیده است. پیشنهاد می‌شود فایل‌های زائد را پاک کنید.', time: '08:15' }
+            ],
+
+            showNextAlert: () => {
+                // In a real app, this would be triggered by system events or polling.
+                // Here we just simulate showing an alert periodically.
+                const container = document.getElementById('systemAlertsContainer');
+                if (container && SystemAlertManager.alerts.length > 0) {
+                    const alertData = SystemAlertManager.alerts.pop(); // Get the last one
+                    SystemAlertManager.displayAlert(alertData);
+                }
+            },
+
+            displayAlert: (alertData) => {
+                const container = document.getElementById('systemAlertsContainer');
+                const alertElement = document.createElement('div');
+                alertElement.className = `system-alert alert-${alertData.type} show`;
+                alertElement.setAttribute('role', 'alert');
+                alertElement.setAttribute('aria-live', 'polite');
+                alertElement.innerHTML = `
+                    <div class="toast-content">
+                        <div class="toast-icon">${alertData.type === 'warning' ? '⚠️' : 'ℹ️'}</div>
+                        <div class="toast-message">
+                            <strong>${Utils.sanitizeInput(alertData.title)}</strong><br>
+                            ${Utils.sanitizeInput(alertData.message)}
+                        </div>
+                    </div>
+                    <button class="toast-close" aria-label="بستن اعلان">&times;</button>
+                `;
+
+                container.appendChild(alertElement);
+
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    alertElement.classList.remove('show');
+                    setTimeout(() => {
+                        if (alertElement.parentNode) {
+                            alertElement.parentNode.removeChild(alertElement);
+                        }
+                    }, 300);
+                }, 10000);
+
+                alertElement.querySelector('.toast-close').addEventListener('click', () => {
+                    alertElement.classList.remove('show');
+                    setTimeout(() => {
+                        if (alertElement.parentNode) {
+                            alertElement.parentNode.removeChild(alertElement);
+                        }
+                    }, 300);
+                });
+            }
+        };
+
+        // ============================================
+        // 20. Improved Event Tracking (Rate Limited)
+        // ============================================
+
+        EventManager.track = (eventName, eventData = {}) => {
+            if (typeof eventName !== 'string') {
+                console.error('Invalid event name:', eventName);
+                return;
+            }
+
+            // Rate limiting - max 10 events per second per user session
+            const now = Date.now();
+            if (!ArkaApp.state.eventTimestamps) {
+                ArkaApp.state.eventTimestamps = [];
+            }
+            const recentEvents = ArkaApp.state.eventTimestamps.filter(ts => now - ts < 1000);
+            if (recentEvents.length >= 10) {
+                console.warn('Event rate limit exceeded for session');
+                return;
+            }
+            recentEvents.push(now);
+            ArkaApp.state.eventTimestamps = recentEvents.slice(-20); // Keep last 20 timestamps
+
+            // Log event
+            const eventLog = {
+                event: eventName,
+                data: Utils.deepClone(eventData),
+                time: now,
+                url: window.location.href,
+                userAgent: navigator.userAgent,
+                language: navigator.language
+            };
+            // console.log(`📊 Event tracked: ${eventName}`, eventLog); // Comment out for prod
+
+            // Store in memory
+            ArkaApp.state.eventLog.push(eventLog);
+
+            // Store in localStorage for persistence (last 100)
+            Storage.set('arka_events', ArkaApp.state.eventLog.slice(-100));
+        };
+
+        // ============================================
+        // 21. Sound Manager (Placeholder - Preload simulation)
+        // ============================================
+
+        const SoundManager = {
+            init: () => {
+                // In a real app, you would preload sounds here.
+                // For this static demo, we just simulate the availability.
+                console.log('SoundManager initialized (simulated)');
+                // ArkaApp.sounds.click = new Audio('path/to/click.wav');
+                // ArkaApp.sounds.success = new Audio('path/to/success.wav');
+                // ArkaApp.sounds.error = new Audio('path/to/error.wav');
+                // ArkaApp.sounds.terminal = new Audio('path/to/terminal.wav');
+                // Preload simulation
+                ArkaApp.config.soundEnabled = Storage.get('arka_sound_enabled', ArkaApp.config.soundEnabled);
+                document.getElementById('soundIcon').className = ArkaApp.config.soundEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+            }
+        };
+
+        // ============================================
+        // 22. Theme Manager (with localStorage persistence)
+        // ============================================
+
+        const ThemeManager = {
+            init: () => {
+                const savedTheme = Storage.get('arka_theme', ArkaApp.config.theme);
+                ThemeManager.setTheme(savedTheme);
+            },
+
+            setTheme: (theme) => {
+                ArkaApp.config.theme = theme;
+                document.body.setAttribute('data-theme', theme);
+                Storage.set('arka_theme', theme);
+                // Update theme icon if necessary
+                // This is handled by the toggle function now
+            }
+        };
+
+        // ============================================
+        // 23. Main Initialization Updates
+        // ============================================
+
+        const initApp = async () => {
+            console.log('Initializing Arka App v' + ArkaApp.config.version);
+
+            // 1. Initialize Storage and State
+            ArkaApp.state.permissions = Storage.get('arka_permissions', ArkaApp.state.permissions);
+            ArkaApp.state.systemInfo = Storage.get('arka_system_info', ArkaApp.state.systemInfo);
+            ArkaApp.state.chatHistory = Storage.get('arka_chat_history', ArkaApp.state.chatHistory);
+            ArkaApp.state.pinnedCommands = [
+                ...Storage.get('cmd_pinned', []),
+                ...Storage.get('ps_pinned', []),
+                ...Storage.get('run_pinned', [])
+            ];
+
+            // 2. Check for Mobile
+            if (ArkaApp.state.isMobile) {
+                document.getElementById('mobileWarningOverlay').style.display = 'flex';
+                document.getElementById('closeMobileWarningBtn').addEventListener('click', () => {
+                    document.getElementById('mobileWarningOverlay').style.display = 'none';
+                });
+            }
+
+            // 3. Simulate Loading Progress
+            const progressFill = document.getElementById('loadingProgressFill');
+            const progressText = document.getElementById('loadingProgressText');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `${progress}%`;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('loadingOverlay').classList.add('hidden');
+                        document.body.classList.remove('no-js');
+                        document.getElementById('mainContent').classList.add('loaded');
+                        ArkaApp.state.isLoading = false;
+                    }, 500);
+                }
+            }, 200); // Simulate loading time
+
+            // 4. Initialize Managers after loading
+            setTimeout(() => {
+                // Load commands
+                CommandManager.loadCommands();
+
+                // Initialize Chart Manager
+                ChartManager.init();
+
+                // Initialize Sound Manager
+                SoundManager.init();
+
+                // Initialize Theme Manager
+                ThemeManager.init();
+
+                // Initialize Page Manager
+                PageManager.init();
+
+                // Initialize AI Manager
+                AIManager.init();
+
+                // Initialize Quick Actions
+                QuickActions.init();
+
+                // Attach global event listeners
+                document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
+                document.getElementById('soundToggleBtn').addEventListener('click', toggleSound);
+
+                // Attach search listeners (already defined above, no need to redefine)
+
+                // Modal Close Buttons (already defined above, no need to redefine)
+
+                // Close modals on overlay click (already defined above, no need to redefine)
+
+                // Initialize System Alert Manager simulation
+                // Show an alert every 30 seconds for demo
+                // setInterval(SystemAlertManager.showNextAlert, 30000);
+
+            }, 1100); // Match the simulated loading time
+
+            // 5. Request Basic Permissions (example)
+            const profiler = new SystemProfiler();
+            // Request basic info on initial load (this is just an example trigger)
+            // setTimeout(() => profiler.requestPermission('basicInfo'), 3000);
+
+            console.log('Arka App initialized.');
+        };
 
     </script>
 </body>
